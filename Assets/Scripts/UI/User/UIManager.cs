@@ -15,12 +15,29 @@ public class UIManager : MonoBehaviour
     [SerializeField] protected GameObject statusUI;
     public GameObject StatusUI { get { return this.statusUI; } set { this.statusUI = value; } }
 
+    protected List<GameObject> popUpUI;
+    public List<GameObject> PopUPUI { get { return this.popUpUI; }set { this.popUpUI = value; } }
+
+    private void Awake()
+    {
+        PopUPUI.Add(InventoryUI);
+        PopUPUI.Add(StatusUI);
+    }
+
     public void OpenCloseInventory()
     {
+        ClosePoP();
         InventoryUI.SetActive(!InventoryUI.activeSelf);
     }
     public void OpenCloseStatus()
     {
+        ClosePoP();
         StatusUI.SetActive(!StatusUI.activeSelf);
+    }
+
+    private void ClosePoP()
+    {
+        InventoryUI.SetActive(false);
+        StatusUI.SetActive(false);
     }
 }

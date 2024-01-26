@@ -17,10 +17,4 @@ public class BottomUI : MonoBehaviour
             });
         }
     }
-    private void LateUpdate()
-    {
-        if (GameManager.instance.UIManager.InventoryUI.activeSelf)
-        {
-        }
-    }
 }
