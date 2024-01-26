@@ -7,9 +7,21 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 
 public class BattleManager : MonoBehaviour
 {
+    public static BattleManager instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
     public GameObject enemyPrefab;
     public Transform enemyBattleTransform;
     Unit enemyUnit;
+
+    public Transform playerBattleTransform;
+    Unit playerUnit;
 
     //public BattleHUD playerHUD;
     //public BattleHUD enemyHUD;
@@ -35,6 +47,9 @@ public class BattleManager : MonoBehaviour
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
         enemyUnit = enemyGO.GetComponent<Unit>();
 
+        GameObject playerGO = Instantiate(GameManager.instance.playerPrefab, playerBattleTransform);
+        playerUnit = playerGO.GetComponent<Unit>();
+
         dialogueText.text = enemyUnit.unitName;
 
         //playerHUD.SetHUD(GameManager.instance.playerUnit);
@@ -48,7 +63,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        bool isDead = enemyUnit.TakeDamage(GameManager.instance.playerUnit.damage);
+        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
 
         //enemyHUD.SetHP(enemyUnit.currentHP);
         dialogueText.text = "The Attack is sucessful!";
@@ -74,7 +89,7 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        bool isDead = GameManager.instance.playerUnit.TakeDamage(enemyUnit.damage);
+        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
 
         //playerHUD.SetHP(GameManager.instance.playerUnit.currentHP);
 
@@ -102,6 +117,8 @@ public class BattleManager : MonoBehaviour
         {
             dialogueText.text = "You lose";
         }
+
+        Destroy(this.gameObject);
     }
 
     void PlayerTurn()
@@ -114,7 +131,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator PlayerHeal()
     {
-        GameManager.instance.playerUnit.Heal(5);
+        playerUnit.Heal(5);
 
         //playerHUD.SetHP(GameManager.instance.playerUnit.currentHP);
         dialogueText.text = "Heal!";
@@ -123,6 +140,14 @@ public class BattleManager : MonoBehaviour
 
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
+
+    }
+
+    public void OnDodgeButton()
+    {
+        if (state != BattleState.ENEMYTURN)
+            return;
+
 
     }
 
