@@ -12,7 +12,7 @@ public class Naver : MonoBehaviour
     int waitingtime;
     public RawImage mapRawImage;
 
-    [Header("╦й а╓╨╦ ют╥б")]
+    [Header("О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫т╥О©╫")]
     public string strBaseURL = "";
     public string latutuede = "";
     public string longitude = "";

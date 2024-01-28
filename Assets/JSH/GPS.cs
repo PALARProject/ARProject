@@ -75,7 +75,7 @@ using UnityEngine.UI;
         }
     }
 
-    // ÁöÇ¥¸é °Å¸® °è»ê °ø½Ä(ÇÏ¹ö»çÀÎ °ø½Ä)
+    // ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     private double distance(double lat1, double lon1, double lat2, double lon2)
     {
         double theta = lon1 - lon2;
@@ -88,7 +88,7 @@ using UnityEngine.UI;
 
         dist = dist * 60 * 1.1515;
 
-        dist = dist * 1609.344; // ¹ÌÅÍ º¯È¯
+        dist = dist * 1609.344; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 
         return dist;
     }
