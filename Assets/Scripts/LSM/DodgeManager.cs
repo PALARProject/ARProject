@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum Direction { LEFT, RIGHT, FORWARD };
 
@@ -34,9 +35,14 @@ public class DodgeManager : MonoBehaviour
         if (isCheck) return;
 
         countdown -= Time.deltaTime;
-        if(countdown <=3)
+        if(countdown <=4f && countdown > 1f)
         {
-            countText.text = Mathf.FloatToHalf(countdown).ToString();
+            countUI.SetActive(true);
+            countText.text = Mathf.FloorToInt(countdown).ToString();
+        }
+        else if(countdown <= 1)
+        {
+            countText.text = "회피!";
         }
 
         if(countdown <= 0)
@@ -44,8 +50,10 @@ public class DodgeManager : MonoBehaviour
             countdown = 0f;
             countUI.SetActive(false);
             ControlDodgeValue();
+            CheckDodge();
 
             isCheck = true;
+            faceManager.facesChanged -= OnFaceChanged;
         }
     }
 
@@ -68,7 +76,17 @@ public class DodgeManager : MonoBehaviour
 
     void CheckDodge()
     {
+        if (playerDirection == AIDirection)
+        {
+            Debug.Log("게임 오버!");
+            ShowResult(false);
 
+        }
+        else
+        {
+            Debug.Log("회피 성공!");
+            ShowResult(true);
+        }
     }
 
     void OnFaceChanged(ARFacesChangedEventArgs args)
@@ -100,5 +118,26 @@ public class DodgeManager : MonoBehaviour
         {
             Debug.LogError("얼굴을 찾을 수 없습니다.");
         }
+    }
+
+    void ShowResult(bool success)
+    {
+        StartCoroutine(ShowResultReturn(success));
+    }
+
+    IEnumerator ShowResultReturn(bool success)
+    {
+        if (success)
+        {
+            Debug.Log("회피 성공!");
+        }
+        else
+        {
+            Debug.Log("회피 실패!");
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene("LSMTestScene");
     }
 }
