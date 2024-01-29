@@ -48,7 +48,6 @@ public class DodgeManager : MonoBehaviour
         if(countdown <= 0)
         {
             countdown = 0f;
-            countUI.SetActive(false);
             ControlDodgeValue();
             CheckDodge();
 
@@ -130,13 +129,15 @@ public class DodgeManager : MonoBehaviour
         if (success)
         {
             Debug.Log("회피 성공!");
+            countText.text = AIDirection.ToString() + playerDirection.ToString() +"성공!";
         }
         else
         {
             Debug.Log("회피 실패!");
+            countText.text = AIDirection.ToString() + playerDirection.ToString() + "실패!";
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         SceneManager.LoadScene("LSMTestScene");
     }
