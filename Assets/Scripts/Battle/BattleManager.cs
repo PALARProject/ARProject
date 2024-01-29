@@ -21,12 +21,14 @@ public class BattleManager : MonoBehaviour
     public GameObject enemyPrefab;
     public Transform enemyBattleTransform;
     Unit enemyUnit;
+
+    public GameObject playerPrefab;
     Unit playerUnit;
 
     public BattleHUD playerHUD;
     public BattleHUD enemyHUD;
 
-    public Text dialogueText;
+    public TextMeshProUGUI dialogueText;
     public BattleState state;
 
     public Button attackButton;
@@ -47,7 +49,7 @@ public class BattleManager : MonoBehaviour
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
         enemyUnit = enemyGO.GetComponent<Unit>();
 
-        playerUnit = GameManager.instance.playerPrefab.GetComponent<Unit>();
+        playerUnit = playerPrefab.GetComponent<Unit>();
 
         dialogueText.text = enemyUnit.unitName;
 
@@ -64,7 +66,7 @@ public class BattleManager : MonoBehaviour
     {
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
 
-        enemyHUD.SetHP(enemyUnit.currentHP);
+        enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
         dialogueText.text = "The Attack is sucessful!";
 
         yield return new WaitForSeconds(2f);
@@ -87,6 +89,7 @@ public class BattleManager : MonoBehaviour
 
         dialogueText.text = enemyUnit.unitName + "'s attack!";
         bool isPlayerDead = playerUnit.TakeDamage(0);
+        playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
 
         if (isPlayerDead)
@@ -107,6 +110,7 @@ public class BattleManager : MonoBehaviour
 
         dialogueText.text = enemyUnit.unitName + "'s attack!";
         bool isPlayerDead = playerUnit.TakeDamage(enemyUnit.damage * 2);
+        playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
 
         if (isPlayerDead)
@@ -127,21 +131,21 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+        bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
 
-        playerHUD.SetHP(playerUnit.currentHP);
+        playerHUD.SetHP(playerUnit, playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);
 
-        if (isDead)
+        if (isEnemyDead)
         {
             state = BattleState.LOST;
             EndBattle();
         }
         else
         {
-            state = BattleState.WON;
-            EndBattle();
+            state = BattleState.PLAYERTURN;
+            PlayerTurn();
         }
     }
 
@@ -169,7 +173,7 @@ public class BattleManager : MonoBehaviour
 
     public void OnDodgeButton()
     {
-        if (state != BattleState.ENEMYTURN)
+        if (state != BattleState.PLAYERTURN)
             return;
 
         SceneManager.LoadScene("DodgeScene");

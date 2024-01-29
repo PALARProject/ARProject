@@ -5,7 +5,6 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public string unitName;
-    public int unitLevel;
     public int damage;
     public int maxHP;
     public int currentHP;
@@ -23,11 +22,4 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void Heal(int amount)
-    {
-        currentHP += amount;
-
-        if (currentHP > maxHP)
-            currentHP = maxHP;
-    }
 }

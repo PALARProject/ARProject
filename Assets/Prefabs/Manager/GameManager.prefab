@@ -51,6 +51,7 @@ MonoBehaviour:
   dbManager: {fileID: 8359699225026880167}
   inventoryManager: {fileID: 8359699225235894645}
   uiManager: {fileID: 8359699225710081437}
+  playerPrefab: {fileID: 2292629428949827295, guid: 5abedd235e4a40c47a435dde95d32160, type: 3}
 --- !u!1001 &270139061809653192
 PrefabInstance:
   m_ObjectHideFlags: 0
