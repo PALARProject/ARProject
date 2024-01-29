@@ -17,7 +17,6 @@ public class InventoryManager : MonoBehaviour
         {
             int index = i;
             Items[index].onClick.AddListener(()=> { 
-                Debug.Log(index);
                 OutputInventory(index);
             });
             Item_Images[index] = Items[index].gameObject.GetComponent<Image>();
