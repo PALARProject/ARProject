@@ -33,4 +33,30 @@ public class ChangedCam : MonoBehaviour
             isAR = true;
         }
     }
+
+    public void AvoidStateCam()
+    {
+        ARSession.SetActive(true);
+        mainCam.SetActive(false);
+    }
+
+    public void ChangeBattleStateCam()
+    {
+        if (isAR == false)
+        {
+            mainCam.SetActive(true);
+            ARSession.SetActive(false);
+        }
+        else
+        {
+            ARSessionOrgin.SetActive(true);
+        }
+    }
+
+    public void OffSessionOrigin()
+    {
+        if (isAR == true)
+            ARSessionOrgin.SetActive(false);
+    }
+
 }

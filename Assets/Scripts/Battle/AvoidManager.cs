@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public enum Direction { LEFT, RIGHT, FORWARD };
 
-public class DodgeManager : MonoBehaviour
+public class AvoidManager : MonoBehaviour
 {
     public float countdown;
     public GameObject countUI;
     public Text countText;
 
     public ARFaceManager faceManager;
+    public GameObject ChangeCam;
 
     public Direction playerDirection;
     public Direction AIDirection;
 
     public bool isCheck;
 
-    void Start()
+    public GameObject AvoidUI;
+    public GameObject BattleUI;
+
+    private void OnEnable()
     {
         countdown = 7;
         isCheck = false;
@@ -48,15 +51,15 @@ public class DodgeManager : MonoBehaviour
         if(countdown <= 0)
         {
             countdown = 0f;
-            ControlDodgeValue();
-            CheckDodge();
+            ControlAvoidValue();
+            CheckAvoid();
 
             isCheck = true;
             faceManager.facesChanged -= OnFaceChanged;
         }
     }
 
-    void ControlDodgeValue()
+    void ControlAvoidValue()
     {
         int randValue = Random.Range(0, 3);
         switch(randValue)
@@ -73,7 +76,7 @@ public class DodgeManager : MonoBehaviour
         }
     }
 
-    void CheckDodge()
+    void CheckAvoid()
     {
         if (playerDirection == AIDirection)
         {
@@ -128,17 +131,21 @@ public class DodgeManager : MonoBehaviour
     {
         if (success)
         {
-            Debug.Log("회피 성공!");
             countText.text = AIDirection.ToString() + playerDirection.ToString() +"성공!";
+            BattleManager.instance.AvoidSuccess();
         }
         else
-        {
-            Debug.Log("회피 실패!");
+        { 
             countText.text = AIDirection.ToString() + playerDirection.ToString() + "실패!";
+            BattleManager.instance.AvoidFailed();
         }
 
         yield return new WaitForSeconds(3f);
 
-        SceneManager.LoadScene("LSMTestScene");
+        countText.text = "";
+        BattleUI.SetActive(true);
+
+        ChangeCam.GetComponent<ChangedCam>().ChangeBattleStateCam();
+        AvoidUI.SetActive(false);
     }
 }

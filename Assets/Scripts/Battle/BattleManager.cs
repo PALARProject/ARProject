@@ -32,7 +32,15 @@ public class BattleManager : MonoBehaviour
     public BattleState state;
 
     public Button attackButton;
-    public Button healButton;
+    public Button avoidButton;
+    public Button EscapeButton;
+
+    public GameObject AvoidUI;
+    public GameObject BattleUI;
+
+    //AR 
+    public GameObject ChangeCam;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +48,8 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(SetupBattle());
 
         attackButton.interactable = false;
-        healButton.interactable = false;
+        avoidButton.interactable = false;
+        EscapeButton.interactable = false;
     }
 
     // Update is called once per frame
@@ -83,11 +92,11 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    IEnumerator EnemyAfterDodgeSucess()
+    IEnumerator EnemyAfterAvoidSucess()
     {
         yield return new WaitForSeconds(2f);
 
-        dialogueText.text = enemyUnit.unitName + "'s attack!";
+        dialogueText.text = enemyUnit.unitName + "attack";
         bool isPlayerDead = playerUnit.TakeDamage(0);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
@@ -104,14 +113,15 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    IEnumerator EnemyAfterDodgeFailed()
+    IEnumerator EnemyAfterAvoidFailed()
     {
         yield return new WaitForSeconds(2f);
 
-        dialogueText.text = enemyUnit.unitName + "'s attack!";
+        dialogueText.text = enemyUnit.unitName + "attack!";
         bool isPlayerDead = playerUnit.TakeDamage(enemyUnit.damage * 2);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
+
 
         if (isPlayerDead)
         {
@@ -153,11 +163,11 @@ public class BattleManager : MonoBehaviour
     {
         if (state == BattleState.WON)
         {
-            dialogueText.text = "You won!";
+            dialogueText.text = "win!";
         }
         else if (state == BattleState.LOST)
         {
-            dialogueText.text = "You lose";
+            dialogueText.text = "lose";
         }
 
         Destroy(this.gameObject);
@@ -166,17 +176,28 @@ public class BattleManager : MonoBehaviour
     void PlayerTurn()
     {
         attackButton.interactable = true;
-        healButton.interactable = true;
+        avoidButton.interactable = true;
+        EscapeButton.interactable = true;
 
-        dialogueText.text = "Choose an action:";
+        dialogueText.text = "Action :";
     }
 
-    public void OnDodgeButton()
+    public void OnAvoidButton()
     {
         if (state != BattleState.PLAYERTURN)
             return;
 
-        SceneManager.LoadScene("DodgeScene");
+        if(ChangeCam.GetComponent<ChangedCam>().isAR == false)
+        {
+            ChangeCam.GetComponent<ChangedCam>().AvoidStateCam();
+        }
+        else
+        {
+            ChangeCam.GetComponent<ChangedCam>().OffSessionOrigin();
+        }
+
+        BattleUI.SetActive(false);
+        AvoidUI.SetActive(true);
     }
 
     public void OnAttackButton()
@@ -185,18 +206,19 @@ public class BattleManager : MonoBehaviour
             return;
 
         attackButton.interactable = false;
-        healButton.interactable = false;
+        avoidButton.interactable = false;
+        EscapeButton.interactable = false;
 
         StartCoroutine(PlayerAttack());
     }
 
-    public void DodgeSuccess()
+    public void AvoidSuccess()
     {
-        StartCoroutine(EnemyAfterDodgeSucess());
+        StartCoroutine(EnemyAfterAvoidSucess());
     }
 
-    public void DodgeFailed()
+    public void AvoidFailed()
     {
-        StartCoroutine(EnemyAfterDodgeFailed());
+        StartCoroutine(EnemyAfterAvoidFailed());
     }
 }
