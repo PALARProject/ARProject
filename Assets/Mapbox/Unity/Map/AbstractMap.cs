@@ -2,6 +2,7 @@ using Mapbox.Platform.Cache;
 using Mapbox.Unity.Map.Interfaces;
 using Mapbox.Unity.Map.Strategies;
 using Mapbox.Unity.Map.TileProviders;
+using UnityEngine.UI;
 
 namespace Mapbox.Unity.Map
 {
@@ -25,6 +26,7 @@ namespace Mapbox.Unity.Map
 	[ExecuteInEditMode]
 	public class AbstractMap : MonoBehaviour, IMap
 	{
+		public GameObject Player;
 		#region Private Fields
 
 		[SerializeField] private MapOptions _options = new MapOptions();
@@ -333,8 +335,23 @@ namespace Mapbox.Unity.Map
 				TileProvider.UpdateTileProvider();
 			}
 		}
+        
 
-		public virtual void UpdateMap()
+		public void NewMap(bool coroutine = true)
+        {
+				if (Application.isPlaying)
+				{
+					if (coroutine)
+					{
+						StartCoroutine("SetupAccess");
+					}
+					if (_initializeOnStart)
+					{
+						SetUpMap();
+					}
+				}
+		}
+        public virtual void UpdateMap()
 		{
 			UpdateMap(Conversions.StringToLatLon(_options.locationOptions.latitudeLongitude), Zoom);
 		}
@@ -373,7 +390,7 @@ namespace Mapbox.Unity.Map
 			{
 				SetZoom(zoom);
 			}
-
+			
 			// Compute difference in zoom. Will be used to calculate correct scale of the map.
 			differenceInZoom = Zoom - InitialZoom;
 			isAtInitialZoom = (differenceInZoom - 0.0 < Constants.EpsilonFloatingPoint);
@@ -525,7 +542,7 @@ namespace Mapbox.Unity.Map
 			}
 		}
 
-		private void MapOnStartRoutine(bool coroutine = true)
+		public void MapOnStartRoutine(bool coroutine = true)
 		{
 			if (Application.isPlaying)
 			{
@@ -651,7 +668,8 @@ namespace Mapbox.Unity.Map
 			InitializeMap(_options);
 		}
 
-		protected virtual void TileProvider_OnTileAdded(UnwrappedTileId tileId)
+
+        protected virtual void TileProvider_OnTileAdded(UnwrappedTileId tileId)
 		{
 			var tile = _mapVisualizer.LoadTile(tileId);
 			if (Options.placementOptions.snapMapToZero && !_worldHeightFixed)
