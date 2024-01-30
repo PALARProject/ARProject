@@ -95,15 +95,17 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyAfterAvoidSucess()
     {
         yield return new WaitForSeconds(2f);
+        dialogueText.text = enemyUnit.unitName + "∞° ∫Û∆¥¿ª ∫∏ø¥¥Ÿ!";
 
-        dialogueText.text = enemyUnit.unitName + "attack";
-        bool isPlayerDead = playerUnit.TakeDamage(0);
-        playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
+        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+        dialogueText.text = "The Attack is sucessful!";
+        enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
 
-        if (isPlayerDead)
+        yield return new WaitForSeconds(2f);
+        if (isDead)
         {
-            state = BattleState.LOST;
+            state = BattleState.WON;
             EndBattle();
         }
         else

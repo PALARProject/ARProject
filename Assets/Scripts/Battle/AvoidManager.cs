@@ -11,6 +11,7 @@ public class AvoidManager : MonoBehaviour
     public float countdown;
     public GameObject countUI;
     public Text countText;
+    public Text angleText;
 
     public ARFaceManager faceManager;
     public GameObject ChangeCam;
@@ -27,6 +28,7 @@ public class AvoidManager : MonoBehaviour
     {
         countdown = 7;
         isCheck = false;
+        angleText.text = "";
         countText = countUI.GetComponent<Text>();
 
         faceManager.facesChanged += OnFaceChanged;
@@ -99,13 +101,14 @@ public class AvoidManager : MonoBehaviour
             Quaternion faceRotation = face.transform.rotation;
 
             float yAngle = Quaternion.Euler(0, faceRotation.eulerAngles.y, 0).eulerAngles.y;
+            angleText.text = "";
 
-            if (yAngle > 10f && yAngle < 30f)
+            if (yAngle > 14f && yAngle < 30f)
             {
                 playerDirection = Direction.RIGHT;
                 Debug.Log("사용자가 오른쪽을 향하고 있습니다");
             }
-            else if (yAngle > 340f && yAngle < 355f)
+            else if (yAngle > 330f && yAngle < 355f)
             {
                 playerDirection = Direction.LEFT;
                 Debug.Log("사용자가 왼쪽을 향하고 있습니다");
@@ -118,7 +121,7 @@ public class AvoidManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("얼굴을 찾을 수 없습니다.");
+            angleText.text = "얼굴을 찾을 수 없습니다.";
         }
     }
 
