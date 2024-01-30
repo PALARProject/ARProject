@@ -144,8 +144,8 @@ public class AvoidManager : MonoBehaviour
 
         countText.text = "";
         BattleUI.SetActive(true);
-
-        ChangeCam.GetComponent<ChangedCam>().ChangeBattleStateCam();
         AvoidUI.SetActive(false);
+        ChangeCam.GetComponent<ChangedCam>().ChangeBattleStateCam();
+
     }
 }
