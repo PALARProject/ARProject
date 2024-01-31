@@ -20,6 +20,7 @@ public class BattleManager : MonoBehaviour
     }
     public GameObject enemyPrefab;
     public Transform enemyBattleTransform;
+    public Animator enemyAnim;
     Unit enemyUnit;
 
     public GameObject playerPrefab;
@@ -57,6 +58,7 @@ public class BattleManager : MonoBehaviour
     {
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
         enemyUnit = enemyGO.GetComponent<Unit>();
+        enemyAnim = enemyGO.GetComponent<Animator>();
 
         playerUnit = playerPrefab.GetComponent<Unit>();
 
@@ -83,6 +85,7 @@ public class BattleManager : MonoBehaviour
         if (isDead)
         {
             state = BattleState.WON;
+            enemyAnim.SetTrigger("Die");
             EndBattle();
         }
         else
@@ -106,6 +109,7 @@ public class BattleManager : MonoBehaviour
         if (isDead)
         {
             state = BattleState.WON;
+            enemyAnim.SetTrigger("Die");
             EndBattle();
         }
         else
@@ -119,12 +123,13 @@ public class BattleManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
+        enemyAnim.SetBool("Attack", true);
         dialogueText.text = enemyUnit.unitName + "attack!";
         bool isPlayerDead = playerUnit.TakeDamage(enemyUnit.damage * 2);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
 
-
+        enemyAnim.SetBool("Attack", false);
         if (isPlayerDead)
         {
             state = BattleState.LOST;
@@ -143,12 +148,14 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        enemyAnim.SetBool("Attack", true);
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
 
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);
 
+        enemyAnim.SetBool("Attack", false);
         if (isEnemyDead)
         {
             state = BattleState.LOST;

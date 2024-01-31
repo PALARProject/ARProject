@@ -96,7 +96,7 @@ Animator:
   m_GameObject: {fileID: 2389278327784902289}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0dd598046ca6108449d1448cdcd3854b, type: 2}
+  m_Controller: {fileID: 22100000, guid: 6b1fa7ef4a7abde4f843a79bd00ebed6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -120,7 +120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: Mino
-  unitLevel: 1
   damage: 10
   maxHP: 20
   currentHP: 20
