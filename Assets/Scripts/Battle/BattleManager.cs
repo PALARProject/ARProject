@@ -18,6 +18,8 @@ public class BattleManager : MonoBehaviour
             instance = this;
         }
     }
+
+    public GameObject EnemyManager;
     public GameObject enemyPrefab;
     public Transform enemyBattleTransform;
     public Animator enemyAnim;

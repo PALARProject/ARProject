@@ -5699,10 +5699,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 514585928}
     - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
-      propertyPath: healButton
-      value: 
-      objectReference: {fileID: 391063719}
-    - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
       propertyPath: avoidButton
       value: 
       objectReference: {fileID: 391063719}
