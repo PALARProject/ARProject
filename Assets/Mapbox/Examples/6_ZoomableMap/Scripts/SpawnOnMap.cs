@@ -27,15 +27,17 @@
 
 		void Start()
 		{
+			Input.location.Start();
 			_locations = new Vector2d[5]; // 5개의 랜덤 위치를 생성
-
+			LocationInfo usrlocation = Input.location.lastData;
 			_spawnedObjects = new List<GameObject>();
 			for (int i = 0; i < 5; i++)
 			{
-				
+				float la = usrlocation.latitude;
+				float lo = usrlocation.longitude;
 				// 랜덤한 위도 및 경도 생성
-				double randomLat = UnityEngine.Random.Range(35.1500f, 35.1590f);
-				double randomLon = UnityEngine.Random.Range(129.0600f, 129.0640f);
+				double randomLat = UnityEngine.Random.Range(la-0.0010f, la+0.0010f);
+				double randomLon = UnityEngine.Random.Range(lo-0.0010f,lo+0.0010f);
 
 				_locations[i] = new Vector2d(randomLat, randomLon);
 
