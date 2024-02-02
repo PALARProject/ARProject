@@ -41,6 +41,8 @@ public class BattleManager : MonoBehaviour
     public GameObject AvoidUI;
     public GameObject BattleUI;
 
+    public BattleResult ResultManager;
+
     //AR 
     public GameObject ChangeCam;
 
@@ -88,7 +90,7 @@ public class BattleManager : MonoBehaviour
         {
             state = BattleState.WON;
             enemyAnim.SetTrigger("Die");
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -112,7 +114,7 @@ public class BattleManager : MonoBehaviour
         {
             state = BattleState.WON;
             enemyAnim.SetTrigger("Die");
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -135,7 +137,7 @@ public class BattleManager : MonoBehaviour
         if (isPlayerDead)
         {
             state = BattleState.LOST;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -161,7 +163,7 @@ public class BattleManager : MonoBehaviour
         if (isEnemyDead)
         {
             state = BattleState.LOST;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -170,14 +172,17 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    void EndBattle()
+    IEnumerator EndBattle()
     {
+        yield return new WaitForSeconds(2f);
         if (state == BattleState.WON)
         {
+            ResultManager.ActiveResultUI(true);
             dialogueText.text = "win!";
         }
         else if (state == BattleState.LOST)
         {
+            ResultManager.ActiveResultUI(false);
             dialogueText.text = "lose";
         }
 
