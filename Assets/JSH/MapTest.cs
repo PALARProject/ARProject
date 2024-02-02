@@ -1,30 +1,37 @@
-namespace Mapbox.Unity.Map
-{ 
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-using Mapbox.Unity.Location;
-    using Mapbox.Unity.Map;
+using UnityEngine;
+using Mapbox.Utils;
+using Mapbox.Unity.Map;
 
-    public class MapTest : MonoBehaviour
+public class MapTest: MonoBehaviour
+{
+    [SerializeField]
+    AbstractMap _map;
+    public GameObject A;
+    public GameObject B;
+    public GameObject C;
+    public GameObject D;
+
+   
+   
+    void Start()
     {
-        AbstractMap _map;
+        GetObjectCoordinates();
+    }
 
-        ILocationProvider _locationProvider;
-        // Start is called before the first frame update
-        void Start()
+    void GetObjectCoordinates()
+    {
+        if (_map != null && A != null)
         {
-            _locationProvider = LocationProviderFactory.Instance.DefaultLocationProvider;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-        public  void Maptesty()
-        {
-            Debug.Log(_locationProvider.CurrentLocation.LatitudeLongitude);
+            // 오브젝트의 유니티 좌표를 지도상의 좌표로 변환
+            Vector2d geoCoordinates = _map.WorldToGeoPosition(A.transform.position);
+            if (!double.IsInfinity(geoCoordinates.x) && !double.IsInfinity(geoCoordinates.y))
+            {
+                Debug.Log("Object Coordinates (Latitude, Longitude): " + geoCoordinates.x + ", " + geoCoordinates.y);
+            }
+            else
+            {
+                Debug.LogError("Invalid or out-of-bounds coordinates!");
+            }
         }
     }
 }
