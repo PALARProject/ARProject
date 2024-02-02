@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 public class Onetouch : MonoBehaviour
 {
-    public GameObject camera;
+    public GameObject camera0;
     private float Speed = 5f;
     private Vector2 nowPos, prePos;
     private Vector3 movePos;
@@ -20,7 +20,7 @@ public class Onetouch : MonoBehaviour
             {
                 nowPos = touch.position - touch.deltaPosition;
                 movePos = (Vector3)(prePos - nowPos) * Time.deltaTime * Speed;
-                camera.transform.Translate(movePos);
+                GetComponent<Camera>().transform.Translate(movePos);
                 prePos = touch.position - touch.deltaPosition;
             }
         }

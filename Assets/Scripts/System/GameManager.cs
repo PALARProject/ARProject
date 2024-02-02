@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected UIManager uiManager;
     public UIManager UIManager { get { return this.uiManager; } set { this.uiManager = value; } }
 
+
     private void Awake()
     {
         if (instance == null)
