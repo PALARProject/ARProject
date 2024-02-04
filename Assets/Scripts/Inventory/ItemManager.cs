@@ -30,10 +30,10 @@ public class ItemManager : MonoBehaviour
                 sum += item.Value;
                 if(randomNum < sum)
                 {
-                    ItemInfo itemInfo=await GameManager.instance.DBManager.GetItemTable(item.Key);
-                    GameObject obj=Resources.Load<GameObject>("item/" + itemInfo.itemId);
-                    DropItems.Add(obj);
-                    return obj;
+                    //ItemInfo itemInfo=await GameManager.instance.DBManager.GetItemTable("1");
+                    //GameObject obj=Resources.Load<GameObject>("item/" + itemInfo.itemId);
+                    //DropItems.Add(obj);
+                    //return obj;
                 }
             }
 
@@ -57,11 +57,11 @@ public class ItemInfo
 {
     public int itemId=-1;
     public string name="";
-    public int category=-1;
+    public string category="";
     public int grade=-1;
     public Status status=new Status();
     public ItemInfo() { }
-    public ItemInfo(int _itemId,string _name,int _category, int _grade,Status _status)
+    public ItemInfo(int _itemId,string _name, string _category, int _grade,Status _status)
     {
         itemId = _itemId;
         name = _name;
@@ -82,14 +82,23 @@ public class ItemInfo
 }
 public class Status
 {
-    public float hp=0;
-    public float ap=0;
-    public float dp = 0;
+    public int ap=0;
+    public int dp = 0;
     public Status() { }
-    public Status(float _hp, float _ap, float _dp)
+    public Status(int _ap, int _dp)
     {
-        hp = _hp;
         ap = _ap;
         dp = _dp;
+    }
+}
+
+public class DropTable
+{
+    public int itemId;
+    public Dictionary<int, float> dropItems;
+    public DropTable(int _itemId, Dictionary<int, float> _dropItems)
+    {
+        this.itemId = _itemId;
+        this.dropItems = _dropItems;
     }
 }

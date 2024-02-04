@@ -20,23 +20,34 @@ public class GameManager : MonoBehaviour
     public UIManager UIManager { get { return this.uiManager; } set { this.uiManager = value; } }
 
 
-    private void Awake()
+    private async void Awake()
     {
         if (instance == null)
         {
             instance = this;
         }
+        Dictionary<int, ItemInfo> inven = new Dictionary<int, ItemInfo>();
+        inven.Add(0,await DBManager.GetItemTable("°¡Á×°©¿Ê"));
+        inven.Add(1,await DBManager.GetItemTable("±Ý¼Ó°©¿Ê"));
+        inven.Add(2,await DBManager.GetItemTable("³ª¹«¸ùµÕÀÌ"));
+        inven.Add(3,await DBManager.GetItemTable("¶±°¥³ª¹« ÁöÆÎÀÌ"));
+        inven.Add(4,await DBManager.GetItemTable("ºÓÀº º¸¼®ÀÇ ¸ñ°ÉÀÌ"));
+        inven.Add(5,await DBManager.GetItemTable("¾Ë¼ö¾ø´Â Æ÷¼Ç"));
+        inven.Add(6,await DBManager.GetItemTable("¿À·¡µÈ ¸¶¹ý¼­"));
+        inven.Add(7,await DBManager.GetItemTable("¿ë»çÀÇ °©¿Ê"));
+        inven.Add(8,await DBManager.GetItemTable("¿ë»çÀÇ °Ë"));
         InventoryManager.Init();
+        //UserInfo.inventoryItems;
     }
 }
 public class UserInfo
 {
-    public int userId=-1;
+    public string userName="";
     public Dictionary<int, ItemInfo> inventoryItems=new Dictionary<int, ItemInfo>();
     public UserInfo() { }
-    public UserInfo(int _userId,Dictionary<int, ItemInfo> _inventoryItems)
+    public UserInfo(string _userName, Dictionary<int, ItemInfo> _inventoryItems)
     {
-        this.userId = _userId;
+        this.userName = _userName;
         this.inventoryItems = _inventoryItems;
     }
 }
