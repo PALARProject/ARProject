@@ -43,6 +43,7 @@ public class BattleManager : MonoBehaviour
     public GameObject BattleUI;
 
     public BattleResult ResultManager;
+    public ShakeObject shakeObject;
 
     //AR 
     public GameObject ChangeCam;
@@ -64,6 +65,7 @@ public class BattleManager : MonoBehaviour
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
         enemyUnit = enemyGO.GetComponent<Unit>();
         enemyAnim = enemyGO.GetComponent<Animator>();
+        shakeObject = enemyGO.GetComponent<ShakeObject>();
 
         playerUnit = playerPrefab.GetComponent<Unit>();
 
@@ -81,7 +83,8 @@ public class BattleManager : MonoBehaviour
     IEnumerator PlayerAttack()
     {
         playerEffect.PlayerEffectOn();
-
+        yield return new WaitForSeconds(0.5f);
+        shakeObject.OnShaking();
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
         dialogueText.text = "The Attack is sucessful!";

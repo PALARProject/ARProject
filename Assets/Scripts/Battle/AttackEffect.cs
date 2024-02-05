@@ -28,7 +28,7 @@ public class AttackEffect : MonoBehaviour
     {
         GameObject effect = Instantiate(attackEff, loc, Quaternion.identity);
         effect.gameObject.transform.SetParent(gameObject.transform);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.7f);
         Destroy(effect);
     }
 }
