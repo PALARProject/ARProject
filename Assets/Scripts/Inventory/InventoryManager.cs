@@ -8,7 +8,7 @@ using TMPro;
 public class InventoryManager : MonoBehaviour
 {
     public Button[] Items;
-    private Image[] Item_Images;
+    [HideInInspector]public Image[] Item_Images;
 
     private void Awake()
     {
@@ -17,7 +17,7 @@ public class InventoryManager : MonoBehaviour
         {
             int index = i;
             Items[index].onClick.AddListener(()=> { 
-                OutputInventory(index);
+
             });
             Item_Images[index] = Items[index].gameObject.GetComponent<Image>();
         }
@@ -31,7 +31,14 @@ public class InventoryManager : MonoBehaviour
             Sprite image;
             try
             {
-                image=Resources.Load<Sprite>("Item/Sprite/"+GameManager.instance.UserInfo.inventoryItems[index].name);
+                if (userInfo.inventoryItems[index] == null)
+                {
+                    Item_Images[index].sprite = null;
+                    Items[index].interactable = false;
+                    userInfo.inventoryItems[index] = null;
+                    continue;
+                }
+                image=Resources.Load<Sprite>("Item/Sprite/"+ userInfo.inventoryItems[index].name);
                 //image =Resources.Load<Sprite>("Item/Sprite/"+index);
                 if (image != null)
                 {
@@ -42,14 +49,14 @@ public class InventoryManager : MonoBehaviour
                 {
                     Item_Images[index].sprite = null;
                     Items[index].interactable = false;
-                    GameManager.instance.UserInfo.inventoryItems[index] = null;
+                    userInfo.inventoryItems[index] = null;
                 }
             }
             catch
             {
                 Item_Images[index].sprite = null;
                 Items[index].interactable = false;
-                GameManager.instance.UserInfo.inventoryItems[index] = null;
+                userInfo.inventoryItems[index] = null;
                 Debug.Log(index + "-등록되지 않은 경로");
             }
         }
@@ -129,8 +136,12 @@ public class InventoryManager : MonoBehaviour
     public ItemInfo OutputInventory(int inventoryNum)
     {
         Debug.Log("Inventory " + inventoryNum + "- 아이템 선택되어 비활성화됩니다.");
-        ItemInfo outItem = GameManager.instance.UserInfo.inventoryItems[inventoryNum].DeepCopy();
-        GameManager.instance.UserInfo.inventoryItems[inventoryNum] = new ItemInfo();
+        ItemInfo outItem = null;
+        if (GameManager.instance.UserInfo.inventoryItems[inventoryNum] != null)
+        {
+            outItem = GameManager.instance.UserInfo.inventoryItems[inventoryNum].DeepCopy();
+        }
+        GameManager.instance.UserInfo.inventoryItems[inventoryNum] = null;
         Item_Images[inventoryNum].sprite = null;
         Items[inventoryNum].interactable = false;
 

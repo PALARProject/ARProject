@@ -48,11 +48,12 @@ public class DBManager : MonoBehaviour
                     if (snapshot.Exists)
                     {
                         Dictionary<string, object> itemData = snapshot.Value as Dictionary<string, object>;
-                        Debug.Log(itemName+": ItemData read successfully:");
+                        Debug.Log(itemName+": ItemData read successfully:");    
                         result.itemId = (int)(long)itemData["아이템코드"];
                         result.name = itemName;
                         result.category = itemData["아이템 카테고리"].ToString();
                         result.grade = (int)(long)itemData["아이템 희귀도"];
+                        result.description = itemData["아이템 설명"].ToString();
                         result.status = new Status((int)(long)itemData["아이템 공격력"], (int)(long)itemData["아이템 보호막"]);
                     }
                     else
@@ -99,9 +100,11 @@ public class DBManager : MonoBehaviour
     }
     public async Task<UserInfo> GetUserInfo(string userName)
     {
+        Debug.Log(userName);
         try
         {
             UserInfo result = new UserInfo();
+            Dictionary<string, object> userData = new Dictionary<string, object>();
             DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
             userRef = userRef.Child("플레이어").Child(userName).Child("인벤토리");
             await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
@@ -110,13 +113,9 @@ public class DBManager : MonoBehaviour
                     DataSnapshot snapshot = task.Result;
                     if (snapshot.Exists)
                     {
-                        Dictionary<string, object> userData = snapshot.Value as Dictionary<string, object>;
-                        Debug.Log("Data read successfully:");
-                        foreach(var pair in userData)
-                        {
-                            Debug.Log($"{pair.Key}: {pair.Value}");
-                        }
+                        userData = snapshot.Value as Dictionary<string, object>;
                         result.userName = userName;
+                        Debug.Log("Data read successfully:"+userName);
                     }
                     else
                     {
@@ -128,6 +127,11 @@ public class DBManager : MonoBehaviour
                     Debug.LogError("Error reading data: " + task.Exception);
                 }
             });
+            for (int i = 0; i < userData.Count; i++)
+            {
+                int index = i;
+                result.inventoryItems.Add(index, await GameManager.instance.DBManager.GetItemTable(userData["box_" + string.Format("{0:D3}", index + 1)].ToString()));
+            }
             return result;
         }
         catch

@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     //userInfo
-    UserInfo userInfo=new UserInfo();
+    UserInfo userInfo=null;
     public UserInfo UserInfo { get { return this.userInfo; } set { this.userInfo = value; } }
 
     //DB
@@ -26,16 +26,8 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-        Dictionary<int, ItemInfo> inven = new Dictionary<int, ItemInfo>();
-        inven.Add(0,await DBManager.GetItemTable("°¡Á×°©¿Ê"));
-        inven.Add(1,await DBManager.GetItemTable("±Ý¼Ó°©¿Ê"));
-        inven.Add(2,await DBManager.GetItemTable("³ª¹«¸ùµÕÀÌ"));
-        inven.Add(3,await DBManager.GetItemTable("¶±°¥³ª¹« ÁöÆÎÀÌ"));
-        inven.Add(4,await DBManager.GetItemTable("ºÓÀº º¸¼®ÀÇ ¸ñ°ÉÀÌ"));
-        inven.Add(5,await DBManager.GetItemTable("¾Ë¼ö¾ø´Â Æ÷¼Ç"));
-        inven.Add(6,await DBManager.GetItemTable("¿À·¡µÈ ¸¶¹ý¼­"));
-        inven.Add(7,await DBManager.GetItemTable("¿ë»çÀÇ °©¿Ê"));
-        inven.Add(8,await DBManager.GetItemTable("¿ë»çÀÇ °Ë"));
+        UserInfo = await DBManager.GetUserInfo("¹Ý½Ã");
+
         InventoryManager.Init();
         //UserInfo.inventoryItems;
     }

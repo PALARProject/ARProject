@@ -59,6 +59,7 @@ public class ItemInfo
     public string name="";
     public string category="";
     public int grade=-1;
+    public string description = "";
     public Status status=new Status();
     public ItemInfo() { }
     public ItemInfo(int _itemId,string _name, string _category, int _grade,Status _status)

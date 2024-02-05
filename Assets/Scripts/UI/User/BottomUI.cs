@@ -31,7 +31,6 @@ public class BottomUI : MonoBehaviour
             });
         }
     }
-
     public void OnlyOneBtn(int n)
     {
         for(int i = 0; i < btns.Count; i++)
