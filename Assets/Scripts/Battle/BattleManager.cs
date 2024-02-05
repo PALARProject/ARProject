@@ -26,6 +26,7 @@ public class BattleManager : MonoBehaviour
     Unit enemyUnit;
 
     public GameObject playerPrefab;
+    public AttackEffect playerEffect;
     Unit playerUnit;
 
     public BattleHUD playerHUD;
@@ -79,8 +80,9 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+        playerEffect.PlayerEffectOn();
 
+        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
         dialogueText.text = "The Attack is sucessful!";
 
@@ -215,6 +217,8 @@ public class BattleManager : MonoBehaviour
         BattleUI.SetActive(false);
         AvoidUI.SetActive(true);
     }
+
+  
 
     public void OnAttackButton()
     {

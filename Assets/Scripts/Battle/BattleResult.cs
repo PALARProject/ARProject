@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class BattleResult : MonoBehaviour
 {
@@ -57,4 +58,8 @@ public class BattleResult : MonoBehaviour
         }
     }
 
+    public void ReturnMainScene()
+    {
+        SceneManager.LoadScene("MainCameraScene");
+    }
 }

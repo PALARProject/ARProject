@@ -1670,6 +1670,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565419575}
   m_CullTransparentMesh: 1
+--- !u!1 &646974829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 646974830}
+  - component: {fileID: 646974831}
+  m_Layer: 0
+  m_Name: Effect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &646974830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646974829}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -272.92978, y: 173.5957, z: -5.949348}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1198968183}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &646974831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646974829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba558a92456a2854c9d1a280ffa6b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackEff: {fileID: 6781075990760321644, guid: 16ef1b19b0e607948b388b0e1aaffc2d, type: 3}
+  effectLoc: {fileID: 843129703}
 --- !u!1 &659919626
 GameObject:
   m_ObjectHideFlags: 0
@@ -2579,6 +2625,7 @@ RectTransform:
   - {fileID: 294219728}
   - {fileID: 1325910229}
   - {fileID: 1914049140}
+  - {fileID: 646974830}
   m_Father: {fileID: 1459050465}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5228,8 +5275,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endUI: {fileID: 769511620}
   resultUI: {fileID: 1866698386}
-  endText: {fileID: 0}
-  resultText: {fileID: 747504688}
+  endText: {fileID: 747504688}
+  resultText: {fileID: 1263096682}
   animSpeed: 2
   isResult: 0
 --- !u!1 &1960292120
@@ -5315,7 +5362,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1960292123}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1914049141}
+        m_TargetAssemblyTypeName: BattleResult, Assembly-CSharp
+        m_MethodName: ReturnMainScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1960292123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5634,6 +5693,10 @@ PrefabInstance:
       propertyPath: dialogueText
       value: 
       objectReference: {fileID: 294219730}
+    - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
+      propertyPath: playerEffect
+      value: 
+      objectReference: {fileID: 646974831}
     - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
       propertyPath: ResultManager
       value: 
