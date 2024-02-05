@@ -190,8 +190,6 @@ public class BattleManager : MonoBehaviour
             ResultManager.ActiveResultUI(false);
             dialogueText.text = "lose";
         }
-
-        Destroy(this.gameObject);
     }
 
     void PlayerTurn()
