@@ -22,6 +22,11 @@ public class UIManager : MonoBehaviour
     public GameObject QuestUI { get { return this.questUI; } set { this.questUI = value; } }
 
     private List<GameObject> UIObjs = new List<GameObject>();
+
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+    public AudioManager audioManager;
+
     private void Awake()
     {
         UIObjs.Add(InventoryUI);
@@ -29,6 +34,32 @@ public class UIManager : MonoBehaviour
         UIObjs.Add(OptionUI);
         UIObjs.Add(QuestUI);
     }
+
+    private void Start()
+    {
+        // AudioManager 오브젝트를 찾아 가져옴
+        audioManager = FindObjectOfType<AudioManager>();
+
+        // 슬라이더의 초기값을 AudioManager의 볼륨 값으로 설정
+        bgmSlider.value = audioManager.bgmVolume;
+        sfxSlider.value = audioManager.sfxVolume;
+
+        // 슬라이더 값이 변경될 때마다 AudioManager의 볼륨을 업데이트하는 이벤트 리스너 추가
+        bgmSlider.onValueChanged.AddListener(delegate { OnBgmVolumeChanged(); });
+        sfxSlider.onValueChanged.AddListener(delegate { OnSfxVolumeChanged(); });
+    }
+
+    public void OnBgmVolumeChanged()
+    {
+        audioManager.SetBgmVolume(bgmSlider.value);
+    }
+
+    // SFX 볼륨이 변경될 때 호출되는 메소드
+    public void OnSfxVolumeChanged()
+    {
+        audioManager.SetSfxVolume(sfxSlider.value);
+    }
+
     public void OpenCloseInventory()
     {
         OnlyOneUI(InventoryUI.name);
