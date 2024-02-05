@@ -1154,13 +1154,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 393278277618961338, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
+    - target: {fileID: 3319309844011141698, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 569.0827
       objectReference: {fileID: 0}
-    - target: {fileID: 2412315880262961507, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
+    - target: {fileID: 3319309844011141698, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 532.5344
       objectReference: {fileID: 0}
     - target: {fileID: 4877153775046697061, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1265,22 +1265,6 @@ PrefabInstance:
     - target: {fileID: 8359699224061974275, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
       propertyPath: m_Name
       value: GameManager_InGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 8759675144755202061, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 8786251872681356106, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8786251872681356106, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8958679571628338967, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}

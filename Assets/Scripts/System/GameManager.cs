@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     //userInfo
-    UserInfo userInfo=new UserInfo();
+    UserInfo userInfo=null;
     public UserInfo UserInfo { get { return this.userInfo; } set { this.userInfo = value; } }
 
     //DB
@@ -20,23 +20,26 @@ public class GameManager : MonoBehaviour
     public UIManager UIManager { get { return this.uiManager; } set { this.uiManager = value; } }
 
 
-    private void Awake()
+    private async void Awake()
     {
         if (instance == null)
         {
             instance = this;
         }
+        UserInfo = await DBManager.GetUserInfo("¹Ý½Ã");
+
         InventoryManager.Init();
+        //UserInfo.inventoryItems;
     }
 }
 public class UserInfo
 {
-    public int userId=-1;
+    public string userName="";
     public Dictionary<int, ItemInfo> inventoryItems=new Dictionary<int, ItemInfo>();
     public UserInfo() { }
-    public UserInfo(int _userId,Dictionary<int, ItemInfo> _inventoryItems)
+    public UserInfo(string _userName, Dictionary<int, ItemInfo> _inventoryItems)
     {
-        this.userId = _userId;
+        this.userName = _userName;
         this.inventoryItems = _inventoryItems;
     }
 }

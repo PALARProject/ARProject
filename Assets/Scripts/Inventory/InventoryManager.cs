@@ -8,7 +8,7 @@ using TMPro;
 public class InventoryManager : MonoBehaviour
 {
     public Button[] Items;
-    private Image[] Item_Images;
+    [HideInInspector]public Image[] Item_Images;
 
     private void Awake()
     {
@@ -17,7 +17,7 @@ public class InventoryManager : MonoBehaviour
         {
             int index = i;
             Items[index].onClick.AddListener(()=> { 
-                OutputInventory(index);
+
             });
             Item_Images[index] = Items[index].gameObject.GetComponent<Image>();
         }
@@ -31,41 +31,46 @@ public class InventoryManager : MonoBehaviour
             Sprite image;
             try
             {
-                //image=Resources.Load<Sprite>("Item/Sprite/"+GameManager.instance.DBManager.GetInventoryImage(GameManager.instance.UserInfo.inventoryItems[index]));
-                image =Resources.Load<Sprite>("Item/Sprite/"+index);
-                Debug.Log(image.name);
+                if (userInfo.inventoryItems[index] == null)
+                {
+                    Item_Images[index].sprite = null;
+                    Items[index].interactable = false;
+                    userInfo.inventoryItems[index] = null;
+                    continue;
+                }
+                image=Resources.Load<Sprite>("Item/Sprite/"+ userInfo.inventoryItems[index].name);
+                //image =Resources.Load<Sprite>("Item/Sprite/"+index);
                 if (image != null)
                 {
                     Item_Images[index].sprite = image;
                     Items[index].interactable = true;
-                    GameManager.instance.UserInfo.inventoryItems[index] = new ItemInfo(index, index.ToString(), 0, index, new Status());
                 }
                 else
                 {
                     Item_Images[index].sprite = null;
                     Items[index].interactable = false;
-                    GameManager.instance.UserInfo.inventoryItems[index] = new ItemInfo();
+                    userInfo.inventoryItems[index] = null;
                 }
             }
             catch
             {
                 Item_Images[index].sprite = null;
                 Items[index].interactable = false;
-                GameManager.instance.UserInfo.inventoryItems[index] = new ItemInfo();
+                userInfo.inventoryItems[index] = null;
                 Debug.Log(index + "-등록되지 않은 경로");
             }
         }
 
     }
-    public async void InputInventory(int itemId)
+    public async void InputInventory(string itemName)
     {
 
-        //ItemInfo getItemInfo = await GameManager.instance.DBManager.GetItemTable(itemId);
-        //if (getItemInfo == null)
-        //{
-        //    return;
-        //}
-        ItemInfo getItemInfo = new ItemInfo(itemId, itemId.ToString(), 0, itemId, new Status());
+        ItemInfo getItemInfo = await GameManager.instance.DBManager.GetItemTable(itemName);
+        if (getItemInfo == null)
+        {
+            return;
+        }
+        //ItemInfo getItemInfo = new ItemInfo(0, itemName, "", 0, new Status());
         int num = -1;
         int sameItem = -1;
         for (int i = 0; i < Items.Length; i++)
@@ -80,7 +85,7 @@ public class InventoryManager : MonoBehaviour
             {
                 //UI - 같은 아이템 먹었다 출력
 
-                Debug.Log(itemId + "- 이미 먹은 아이템");
+                Debug.Log(itemName + "- 이미 먹은 아이템");
                 return;
             }
             if (getItemInfo.category == haveItem.category)
@@ -117,7 +122,7 @@ public class InventoryManager : MonoBehaviour
 
                 //byte[] updateInven = System.Text.Encoding.UTF8.GetBytes(num+" "+itemId);
                 //await GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userId, updateInven);
-                Debug.Log("Inventory " + num + "- 아이템:"+ itemId+"이 들어가 활성화됩니다.");
+                Debug.Log("Inventory " + num + "- 아이템:"+ itemName + "이 들어가 활성화됩니다.");
             }
         }
         catch
@@ -131,15 +136,18 @@ public class InventoryManager : MonoBehaviour
     public ItemInfo OutputInventory(int inventoryNum)
     {
         Debug.Log("Inventory " + inventoryNum + "- 아이템 선택되어 비활성화됩니다.");
-        ItemInfo outItem = GameManager.instance.UserInfo.inventoryItems[inventoryNum].DeepCopy();
-        GameManager.instance.UserInfo.inventoryItems[inventoryNum] = new ItemInfo();
+        ItemInfo outItem = null;
+        if (GameManager.instance.UserInfo.inventoryItems[inventoryNum] != null)
+        {
+            outItem = GameManager.instance.UserInfo.inventoryItems[inventoryNum].DeepCopy();
+        }
+        GameManager.instance.UserInfo.inventoryItems[inventoryNum] = null;
         Item_Images[inventoryNum].sprite = null;
         Items[inventoryNum].interactable = false;
 
         try
         {
-            byte[] updateInven = System.Text.Encoding.UTF8.GetBytes(inventoryNum + " " + -1);
-            GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userId, updateInven);
+            //GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_00" + (inventoryNum + 1), outItem.name);
         }
         catch
         {
