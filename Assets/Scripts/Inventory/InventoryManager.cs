@@ -16,6 +16,9 @@ public class InventoryManager : MonoBehaviour
         for(int i = 0; i < Items.Length; i++)
         {
             int index = i;
+            if (Items[index] == null)
+                continue;
+
             Items[index].onClick.AddListener(()=> { 
 
             });

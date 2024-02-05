@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance;
     private Dictionary<Sfx, float> lastPlayTimeDictionary = new Dictionary<Sfx, float>();
     public float defaultCooldown = 0.5f; // 기본 간격
 
@@ -30,16 +29,6 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            Init();
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
     void Start()
@@ -47,8 +36,19 @@ public class AudioManager : MonoBehaviour
         PlayBgm(true, 1);
     }
 
-    void Init()
+    public void Init()
     {
+        //음량 초기설정
+        float loadBgm = GameManager.instance.LoadSound("BgmVolume");
+        if (loadBgm != -1)
+        {
+            bgmVolume = loadBgm;
+        }
+        float loadSfx = GameManager.instance.LoadSound("SfxVolume");
+        if (loadSfx != -1)
+        {
+            sfxVolume = loadSfx;
+        }
         // 배경음 플레이어 초기화
         GameObject bgmObject = new GameObject("BgmPlayer");
         bgmObject.transform.parent = transform;
@@ -141,6 +141,7 @@ public class AudioManager : MonoBehaviour
     // BGM 볼륨 조절 메소드
     public void SetBgmVolume(float volume)
     {
+        GameManager.instance.SaveSound("BgmVolume", volume);
         bgmVolume = volume;
         bgmPlayer.volume = volume;
     }
@@ -148,6 +149,7 @@ public class AudioManager : MonoBehaviour
     // SFX 볼륨 조절 메소드
     public void SetSfxVolume(float volume)
     {
+        GameManager.instance.SaveSound("SfxVolume", volume);
         sfxVolume = volume;
         foreach (AudioSource sfxPlayer in sfxPlayers)
         {
