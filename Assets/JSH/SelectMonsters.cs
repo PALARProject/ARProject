@@ -52,7 +52,7 @@ public class SelectMonsters : MonoBehaviour
         {
             i = 1;
             Montext.SetActive(true);
-            Debug.Log(collision.transform.position);
+           // Debug.Log(collision.transform.position);
         }
     }
     private void OnTriggerExit(Collider other)
