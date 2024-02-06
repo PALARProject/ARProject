@@ -867,7 +867,7 @@ GameObject:
   - component: {fileID: 331712288}
   - component: {fileID: 331712289}
   m_Layer: 0
-  m_Name: DodgeSystem
+  m_Name: AvoidSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -906,6 +906,7 @@ MonoBehaviour:
   angleText: {fileID: 161133607}
   faceManager: {fileID: 1712716494}
   ChangeCam: {fileID: 1434825960}
+  chamCham: {fileID: 244519530}
   playerDirection: 2
   AIDirection: 0
   isCheck: 0
