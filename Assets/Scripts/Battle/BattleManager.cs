@@ -107,7 +107,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyAfterAvoidSucess()
     {
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(4f);
         dialogueText.text = enemyUnit.unitName + "is off its guard";
 
         playerEffect.PlayerEffectOn();
@@ -135,13 +135,14 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyAfterAvoidFailed()
     {
-        yield return new WaitForSeconds(3.5f);
-        enemyAnim.SetBool("Attack", true); 
-
-        yield return new WaitForSeconds(0.5f);
-        shakeBackG.VibrationObject(0.03f, 2f);
+        yield return new WaitForSeconds(4f);
         dialogueText.text = enemyUnit.unitName + "attack!";
+
+        yield return new WaitForSeconds(1f);
+        enemyAnim.SetBool("Attack", true);
         bool isPlayerDead = playerUnit.TakeDamage(enemyUnit.damage * 2);
+        yield return new WaitForSeconds(1f);
+
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
 
@@ -165,8 +166,7 @@ public class BattleManager : MonoBehaviour
 
         enemyAnim.SetBool("Attack", true);
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
-        yield return new WaitForSeconds(0.5f);
-        shakeBackG.VibrationObject(0.03f, 0.3f);
+        yield return new WaitForSeconds(1f);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);

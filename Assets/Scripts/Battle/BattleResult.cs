@@ -12,9 +12,10 @@ public class BattleResult : MonoBehaviour
     public TextMeshProUGUI endText;
     public TextMeshProUGUI resultText;
 
-    public float animSpeed = 2f;
+    public float animSpeed;
     public bool isResult;
-    // Start is called before the first frame update
+
+    private bool isAnimating;
 
     private void Awake()
     {
@@ -24,11 +25,11 @@ public class BattleResult : MonoBehaviour
     public void ActiveResultUI(bool result)
     {
         endUI.SetActive(true);
-        if(result == true)
+        if (result)
         {
             endText.text = "Victory";
         }
-        else if(result == false)
+        else
         {
             endText.text = "Dead";
         }
@@ -40,21 +41,40 @@ public class BattleResult : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         resultUI.SetActive(true);
-        if (result == true)
+        if (result)
         {
             resultText.text = "Victory";
         }
-        else if (result == false)
+        else
         {
             resultText.text = "Dead";
         }
-        RectTransform rectTransform = resultUI.GetComponent<RectTransform>();
-        Vector3 targetPosition = Vector3.zero; 
+        isAnimating = true;
+    }
 
-        while (rectTransform.anchoredPosition.y < targetPosition.y)
+    private void Update()
+    {
+        if (isAnimating)
         {
-            rectTransform.anchoredPosition += Vector2.up * animSpeed * Time.deltaTime;
-            
+            AnimateResultUI();
+        }
+    }
+
+    private void AnimateResultUI()
+    {
+        RectTransform rectTransform = resultUI.GetComponent<RectTransform>();
+        Vector3 targetPosition = Vector3.zero;
+
+        if (rectTransform.anchoredPosition.y <= targetPosition.y)
+        {
+            rectTransform.anchoredPosition += new Vector2(0, animSpeed);
+
+            if (rectTransform.anchoredPosition.y > 0)
+                rectTransform.anchoredPosition = Vector3.zero;
+        }
+        else
+        {
+            isAnimating = false;
         }
     }
 

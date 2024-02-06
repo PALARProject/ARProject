@@ -8,12 +8,12 @@ public class ShakeObject : MonoBehaviour
     float shakeTime;
 
     Vector3 initialPosition;
-    
     public void VibrationObject(float amount, float time)
     {
         shakeAmount = amount;
         shakeTime = time;
     }
+
 
     private void Start()
     {
@@ -32,5 +32,5 @@ public class ShakeObject : MonoBehaviour
             shakeTime = 0.0f;
             transform.position = initialPosition;
         }
-    }
+    } 
 }
