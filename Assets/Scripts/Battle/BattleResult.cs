@@ -61,6 +61,6 @@ public class BattleResult : MonoBehaviour
     public void ReturnMainScene()
     {
         //SceneManager.LoadScene("MainCameraScene");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Ingame");
     }
 }

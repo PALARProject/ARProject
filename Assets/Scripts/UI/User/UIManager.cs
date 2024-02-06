@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -39,6 +40,8 @@ public class UIManager : MonoBehaviour
     {
         // AudioManager 오브젝트를 찾아 가져옴
         audioManager = GameManager.instance.AudioManager;
+        if (audioManager == null)
+            return;
 
         // 슬라이더의 초기값을 AudioManager의 볼륨 값으로 설정
         bgmSlider.value = audioManager.bgmVolume;
@@ -62,21 +65,34 @@ public class UIManager : MonoBehaviour
 
     public void OpenCloseInventory()
     {
+        if (InventoryUI == null)
+            return;
+
         OnlyOneUI(InventoryUI.name);
-        BottomUI.GetComponent<BottomUI>().ItemButton.interactable= InventoryUI.activeSelf;
+        if(BottomUI!=null)
+            BottomUI.GetComponent<BottomUI>().ItemButton.interactable= InventoryUI.activeSelf;
         InventoryUI.SetActive(!InventoryUI.activeSelf);
+
     }
     public void OpenCloseStatus()
     {
+        if (StatusUI == null)
+            return;
         OnlyOneUI(StatusUI.name);
-        BottomUI.GetComponent<BottomUI>().CharacterButton.interactable = StatusUI.activeSelf;
+        if (BottomUI != null)
+            BottomUI.GetComponent<BottomUI>().CharacterButton.interactable = StatusUI.activeSelf;
         StatusUI.SetActive(!StatusUI.activeSelf);
+
     }
     public void OpenCloseOption()
     {
+        if (OptionUI == null)
+            return;
         OnlyOneUI(OptionUI.name);
-        BottomUI.GetComponent<BottomUI>().OptionButton.interactable = OptionUI.activeSelf;
+        if (BottomUI != null)
+            BottomUI.GetComponent<BottomUI>().OptionButton.interactable = OptionUI.activeSelf;
         OptionUI.SetActive(!OptionUI.activeSelf);
+
     }
     public void OnlyOneUI(string name)
     {
@@ -89,5 +105,14 @@ public class UIManager : MonoBehaviour
                 UIObjs[i].SetActive(false);
             }
         }
+    }
+
+    public void GoToLogin()
+    {
+        SceneManager.LoadScene("LoginPage");
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
