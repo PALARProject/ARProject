@@ -60,6 +60,7 @@ public class BattleResult : MonoBehaviour
 
     public void ReturnMainScene()
     {
-        SceneManager.LoadScene("MainCameraScene");
+        //SceneManager.LoadScene("MainCameraScene");
+        SceneManager.LoadScene(1);
     }
 }

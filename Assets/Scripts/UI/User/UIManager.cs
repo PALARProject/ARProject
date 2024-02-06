@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     public Slider bgmSlider;
     public Slider sfxSlider;
-    public AudioManager audioManager;
+    private AudioManager audioManager;
 
     private void Awake()
     {
@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         // AudioManager 오브젝트를 찾아 가져옴
-        audioManager = FindObjectOfType<AudioManager>();
+        audioManager = GameManager.instance.AudioManager;
 
         // 슬라이더의 초기값을 AudioManager의 볼륨 값으로 설정
         bgmSlider.value = audioManager.bgmVolume;
