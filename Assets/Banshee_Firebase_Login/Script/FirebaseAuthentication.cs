@@ -53,15 +53,18 @@ public class FirebaseAuthentication : MonoBehaviour {
     public void SignUp_InventoryMaker(string username, string email, string password) {
         // 회원가입 로직 수행
 
+
         // 회원가입이 성공하면 데이터베이스에 플레이어 데이터를 쓰기
-        string[] playerPath = { "플레이어", username }; // 반시와 같은 이름의 사용자에 해당하는 경로 생성
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
         string uid = auth.CurrentUser.UserId;
+        string[] playerPath = { "플레이어", uid  }; // 반시와 같은 이름의 사용자에 해당하는 경로 생성
+    
+      
         Dictionary<string, object> playerData = new Dictionary<string, object>
         {
-        { username, new Dictionary<string, object>
+        { "계정정보", new Dictionary<string, object>
             {
-                { "UID", uid },
+                { "닉네임", username },
                 { "비밀번호", password },
                 { "이메일", email }
             }
@@ -136,6 +139,7 @@ public class FirebaseAuthentication : MonoBehaviour {
             return;
         }
         SignUp(email, password, Nickname);
+        JPOpen.JoinPageSetActiveChange();
     }
 
     public async void LoginButtonClick() {
