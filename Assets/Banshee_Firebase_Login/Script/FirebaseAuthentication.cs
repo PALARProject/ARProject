@@ -15,7 +15,8 @@ using System.Collections.Generic;
 //FirebaseAuthentication.SignIn(email,password);
 //FirebaseAuthentication.SignUp(email,password);
 
-public class FirebaseAuthentication : MonoBehaviour {
+public class FirebaseAuthentication : MonoBehaviour
+{
 
     public JoinPageOpen JPOpen;
     public TMP_InputField LoginEmailInput;
@@ -28,48 +29,52 @@ public class FirebaseAuthentication : MonoBehaviour {
     public TMP_Text ErrorMessage;
 
 
-  
 
 
-    private void Start() {
- 
+
+    private void Start()
+    {
+
     }
 
 
-    public void SignUp(string email, string password, string Nickname) {
-         FirebaseAuth auth;
+    public void SignUp(string email, string password, string Nickname)
+    {
+        FirebaseAuth auth;
         auth = FirebaseAuth.DefaultInstance;
         auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
-            if(task.IsCanceled || task.IsFaulted) {
+            if (task.IsCanceled || task.IsFaulted)
+            {
                 Debug.LogError($"Failed to sign up: {task.Exception}");
                 return;
             }
 
             Debug.Log("User signed up successfully!");
             SignUp_InventoryMaker(Nickname, email, password);
-            });
+        });
     }
-    //È¸¿ø°¡ÀÔ ½Ã »ı¼º±¸¹® SignUp ¸¶Áö¸· ÂüÁ¶
-    public void SignUp_InventoryMaker(string username, string email, string password) {
-        // È¸¿ø°¡ÀÔ ·ÎÁ÷ ¼öÇà
+    //íšŒì›ê°€ì… ì‹œ ìƒì„±êµ¬ë¬¸ SignUp ë§ˆì§€ë§‰ ì°¸ì¡°
+    public void SignUp_InventoryMaker(string username, string email, string password)
+    {
+        // íšŒì›ê°€ì… ë¡œì§ ìˆ˜í–‰
 
 
-        // È¸¿ø°¡ÀÔÀÌ ¼º°øÇÏ¸é µ¥ÀÌÅÍº£ÀÌ½º¿¡ ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ¸¦ ¾²±â
+        // íšŒì›ê°€ì…ì´ ì„±ê³µí•˜ë©´ ë°ì´í„°ë² ì´ìŠ¤ì— í”Œë ˆì´ì–´ ë°ì´í„°ë¥¼ ì“°ê¸°
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
         string uid = auth.CurrentUser.UserId;
-        string[] playerPath = { "ÇÃ·¹ÀÌ¾î", uid  }; // ¹İ½Ã¿Í °°Àº ÀÌ¸§ÀÇ »ç¿ëÀÚ¿¡ ÇØ´çÇÏ´Â °æ·Î »ı¼º
-    
-      
+
+        string[] playerPath = { "í”Œë ˆì´ì–´", uid }; // ë°˜ì‹œì™€ ê°™ì€ ì´ë¦„ì˜ ì‚¬ìš©ìì— í•´ë‹¹í•˜ëŠ” ê²½ë¡œ ìƒì„±
+
         Dictionary<string, object> playerData = new Dictionary<string, object>
         {
-        { "°èÁ¤Á¤º¸", new Dictionary<string, object>
+        { "ê³„ì •ì •ë³´", new Dictionary<string, object>
             {
-                { "´Ğ³×ÀÓ", username },
-                { "ºñ¹Ğ¹øÈ£", password },
-                { "ÀÌ¸ŞÀÏ", email }
+                { "ë‹‰ë„¤ì„", username },
+                { "ë¹„ë°€ë²ˆí˜¸", password },
+                { "ì´ë©”ì¼", email }
             }
         },
-        { "ÀÎº¥Åä¸®", new Dictionary<string, object>
+        { "ì¸ë²¤í† ë¦¬", new Dictionary<string, object>
             {
                 { "box_001", "null" },
                 { "box_002", "null" },
@@ -84,81 +89,95 @@ public class FirebaseAuthentication : MonoBehaviour {
         }
     };
 
-        RealtimeDatabase realtimeDatabase = new RealtimeDatabase(); // RealtimeDatabase ÀÎ½ºÅÏ½º »ı¼º
-        realtimeDatabase.WriteDataToRealtimeDatabase(playerPath, playerData); // ÀÎ½ºÅÏ½º¸¦ »ç¿ëÇÏ¿© ¸Ş¼­µå È£Ãâ
+        RealtimeDatabase realtimeDatabase = new RealtimeDatabase(); // RealtimeDatabase ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
+        realtimeDatabase.WriteDataToRealtimeDatabase(playerPath, playerData); // ì¸ìŠ¤í„´ìŠ¤ë¥¼ ì‚¬ìš©í•˜ì—¬ ë©”ì„œë“œ í˜¸ì¶œ
     }
-    public async Task<int> SignIn(string email, string password) {
+    public async Task<int> SignIn(string email, string password)
+    {
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
 
-        try {
-            // ºñµ¿±â·Î ·Î±×ÀÎ ½Ãµµ
+        try
+        {
+            // ë¹„ë™ê¸°ë¡œ ë¡œê·¸ì¸ ì‹œë„
             await auth.SignInWithEmailAndPasswordAsync(email, password);
 
-            // ·Î±×ÀÎ ¼º°ø ½Ã 1 ¹İÈ¯
+            // ë¡œê·¸ì¸ ì„±ê³µ ì‹œ 1 ë°˜í™˜
+            PlayerPrefs.SetString("UID", auth.CurrentUser.UserId);
             return 1;
-        } catch(FirebaseException e) {
-            // ·Î±×ÀÎ ½ÇÆĞ ½Ã ¿¹¿Ü Ã³¸®
+        }
+        catch (FirebaseException e)
+        {
+            // ë¡œê·¸ì¸ ì‹¤íŒ¨ ì‹œ ì˜ˆì™¸ ì²˜ë¦¬
             Debug.LogError($"Failed to sign in: {e.Message}");
-            // ·Î±×ÀÎ ½ÇÆĞ ½Ã 0 ¹İÈ¯
+            // ë¡œê·¸ì¸ ì‹¤íŒ¨ ì‹œ 0 ë°˜í™˜
             return 0;
         }
     }
-    public void JoinButtonClick(){
+    public void JoinButtonClick()
+    {
         string email = JoinEmailInput.text;
         string password = JoinPasswordInput.text;
         string Nickname = NicknameInput.text;
-        // ÀÌ¸ŞÀÏÀÌ À¯È¿ÇÑÁö È®ÀÎÇÑ´Ù
-         if(!IsValidEmail(email)) {
-            // À¯È¿ÇÏÁö ¾ÊÀº ÀÌ¸ŞÀÏÀÌ¸é ¿¡·¯ ¸Ş½ÃÁö¸¦ Ç¥½ÃÇÑ´Ù
-            ShowErrorMessage("À¯È¿ÇÏÁö ¾ÊÀº ÀÌ¸ŞÀÏÀÔ´Ï´Ù.");
-            // ÀÌÈÄÀÇ ÄÚµå´Â ½ÇÇàµÇÁö ¾Êµµ·Ï ¸®ÅÏÇÑ´Ù
+        // ì´ë©”ì¼ì´ ìœ íš¨í•œì§€ í™•ì¸í•œë‹¤
+        if (!IsValidEmail(email))
+        {
+            // ìœ íš¨í•˜ì§€ ì•Šì€ ì´ë©”ì¼ì´ë©´ ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ í‘œì‹œí•œë‹¤
+            ShowErrorMessage("ìœ íš¨í•˜ì§€ ì•Šì€ ì´ë©”ì¼ì…ë‹ˆë‹¤.");
+            // ì´í›„ì˜ ì½”ë“œëŠ” ì‹¤í–‰ë˜ì§€ ì•Šë„ë¡ ë¦¬í„´í•œë‹¤
             return;
         }
 
-        // ºñ¹Ğ¹øÈ£°¡ ÃÖ¼ÒÇÑÀÇ ¿ä±¸ »çÇ×À» ÃæÁ·ÇÏ´ÂÁö È®ÀÎÇÑ´Ù
-        if(!IsPasswordValid(password)) {
-            // À¯È¿ÇÏÁö ¾ÊÀº ºñ¹Ğ¹øÈ£¸é ¿¡·¯ ¸Ş½ÃÁö¸¦ Ç¥½ÃÇÑ´Ù
-            ShowErrorMessage("ºñ¹Ğ¹øÈ£°¡ ³Ê¹« °£´ÜÇÕ´Ï´Ù. Æ¯¼ö¹®ÀÚ¸¦ Æ÷ÇÔÇÑ ÃÖ¼ÒÇÑ 8ÀÚ ÀÌ»óÀÌ¾î¾ß ÇÕ´Ï´Ù.");
-            // ÀÌÈÄÀÇ ÄÚµå´Â ½ÇÇàµÇÁö ¾Êµµ·Ï ¸®ÅÏÇÑ´Ù
+        // ë¹„ë°€ë²ˆí˜¸ê°€ ìµœì†Œí•œì˜ ìš”êµ¬ ì‚¬í•­ì„ ì¶©ì¡±í•˜ëŠ”ì§€ í™•ì¸í•œë‹¤
+        if (!IsPasswordValid(password))
+        {
+            // ìœ íš¨í•˜ì§€ ì•Šì€ ë¹„ë°€ë²ˆí˜¸ë©´ ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ í‘œì‹œí•œë‹¤
+            ShowErrorMessage("ë¹„ë°€ë²ˆí˜¸ê°€ ë„ˆë¬´ ê°„ë‹¨í•©ë‹ˆë‹¤. íŠ¹ìˆ˜ë¬¸ìë¥¼ í¬í•¨í•œ ìµœì†Œí•œ 8ì ì´ìƒì´ì–´ì•¼ í•©ë‹ˆë‹¤.");
+            // ì´í›„ì˜ ì½”ë“œëŠ” ì‹¤í–‰ë˜ì§€ ì•Šë„ë¡ ë¦¬í„´í•œë‹¤
             return;
         }
 
-        // ºñ¹Ğ¹øÈ£ È®ÀÎÀÌ ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎÇÑ´Ù
-        if(password != PasswordConfirmInput.text) {
-            // ºñ¹Ğ¹øÈ£ È®ÀÎÀÌ ÀÏÄ¡ÇÏÁö ¾ÊÀ¸¸é ¿¡·¯ ¸Ş½ÃÁö¸¦ Ç¥½ÃÇÑ´Ù
-            ShowErrorMessage("ºñ¹Ğ¹øÈ£ È®ÀÎÀÌ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
-            // ÀÌÈÄÀÇ ÄÚµå´Â ½ÇÇàµÇÁö ¾Êµµ·Ï ¸®ÅÏÇÑ´Ù
+        // ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì´ ì¼ì¹˜í•˜ëŠ”ì§€ í™•ì¸í•œë‹¤
+        if (password != PasswordConfirmInput.text)
+        {
+            // ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì´ ì¼ì¹˜í•˜ì§€ ì•Šìœ¼ë©´ ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ í‘œì‹œí•œë‹¤
+            ShowErrorMessage("ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì´ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            // ì´í›„ì˜ ì½”ë“œëŠ” ì‹¤í–‰ë˜ì§€ ì•Šë„ë¡ ë¦¬í„´í•œë‹¤
             return;
         }
 
-        // ´Ğ³×ÀÓÀÌ À¯È¿ÇÑÁö È®ÀÎÇÑ´Ù
-        if(!IsValidNickname(Nickname)) {
-            // À¯È¿ÇÏÁö ¾ÊÀº ´Ğ³×ÀÓÀÌ¸é ¿¡·¯ ¸Ş½ÃÁö¸¦ Ç¥½ÃÇÑ´Ù
-            ShowErrorMessage("À¯È¿ÇÏÁö ¾ÊÀº ´Ğ³×ÀÓÀÔ´Ï´Ù.");
-            // ÀÌÈÄÀÇ ÄÚµå´Â ½ÇÇàµÇÁö ¾Êµµ·Ï ¸®ÅÏÇÑ´Ù
+        // ë‹‰ë„¤ì„ì´ ìœ íš¨í•œì§€ í™•ì¸í•œë‹¤
+        if (!IsValidNickname(Nickname))
+        {
+            // ìœ íš¨í•˜ì§€ ì•Šì€ ë‹‰ë„¤ì„ì´ë©´ ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ í‘œì‹œí•œë‹¤
+            ShowErrorMessage("ìœ íš¨í•˜ì§€ ì•Šì€ ë‹‰ë„¤ì„ì…ë‹ˆë‹¤.");
+            // ì´í›„ì˜ ì½”ë“œëŠ” ì‹¤í–‰ë˜ì§€ ì•Šë„ë¡ ë¦¬í„´í•œë‹¤
             return;
         }
         SignUp(email, password, Nickname);
         JPOpen.JoinPageSetActiveChange();
     }
 
-    public async void LoginButtonClick() {
+    public async void LoginButtonClick()
+    {
         string email = LoginEmailInput.text;
         string password = LoginPasswordInput.text;
 
-        // ·Î±×ÀÎ ½Ãµµ
+        // ë¡œê·¸ì¸ ì‹œë„
         int result = await SignIn(email, password);
 
-        // ·Î±×ÀÎ °á°ú¿¡ µû¶ó Ã³¸®
-        if(result == 1) {
-            // ·Î±×ÀÎ ¼º°ø
+        // ë¡œê·¸ì¸ ê²°ê³¼ì— ë”°ë¼ ì²˜ë¦¬
+        if (result == 1)
+        {
+            // ë¡œê·¸ì¸ ì„±ê³µ
             Debug.Log("Login successful!");
-            LoadScene("SampleScene");
-            // ¿©±â¿¡ ·Î±×ÀÎ ¼º°ø ÈÄÀÇ Ãß°¡ µ¿ÀÛÀ» Ãß°¡ÇÒ ¼ö ÀÖ½À´Ï´Ù.
-        } else {
-            // ·Î±×ÀÎ ½ÇÆĞ
+            LoadScene("Ingame");
+            // ì—¬ê¸°ì— ë¡œê·¸ì¸ ì„±ê³µ í›„ì˜ ì¶”ê°€ ë™ì‘ì„ ì¶”ê°€í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+        }
+        else
+        {
+            // ë¡œê·¸ì¸ ì‹¤íŒ¨
             Debug.LogError("Login failed.");
-            // ¿©±â¿¡ ·Î±×ÀÎ ½ÇÆĞ ÈÄÀÇ Ãß°¡ µ¿ÀÛÀ» Ãß°¡ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+            // ì—¬ê¸°ì— ë¡œê·¸ì¸ ì‹¤íŒ¨ í›„ì˜ ì¶”ê°€ ë™ì‘ì„ ì¶”ê°€í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
         }
     }
 
@@ -167,32 +186,37 @@ public class FirebaseAuthentication : MonoBehaviour {
 
 
 
-    // ÀÌ¸ŞÀÏÀÌ À¯È¿ÇÑÁö È®ÀÎÇÏ´Â ÇÔ¼ö
-    // ÀÌ¸ŞÀÏ À¯È¿¼º °Ë»ç
-    private bool IsValidEmail(string email) {
-        // °£´ÜÇÑ Á¤±Ô Ç¥Çö½ÄÀ» »ç¿ëÇÏ¿© ÀÌ¸ŞÀÏ Çü½ÄÀ» È®ÀÎÇÕ´Ï´Ù
+    // ì´ë©”ì¼ì´ ìœ íš¨í•œì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
+    // ì´ë©”ì¼ ìœ íš¨ì„± ê²€ì‚¬
+    private bool IsValidEmail(string email)
+    {
+        // ê°„ë‹¨í•œ ì •ê·œ í‘œí˜„ì‹ì„ ì‚¬ìš©í•˜ì—¬ ì´ë©”ì¼ í˜•ì‹ì„ í™•ì¸í•©ë‹ˆë‹¤
         string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
         return Regex.IsMatch(email, pattern);
     }
 
-    // ºñ¹Ğ¹øÈ£ À¯È¿¼º °Ë»ç
-    private bool IsPasswordValid(string password) {
-        // ºñ¹Ğ¹øÈ£°¡ ÃÖ¼Ò 8ÀÚ ÀÌ»óÀÌ¾î¾ß ÇÏ¸ç, ¼ıÀÚ¿Í Æ¯¼ö ¹®ÀÚ¸¦ Æ÷ÇÔÇØ¾ß ÇÕ´Ï´Ù
+    // ë¹„ë°€ë²ˆí˜¸ ìœ íš¨ì„± ê²€ì‚¬
+    private bool IsPasswordValid(string password)
+    {
+        // ë¹„ë°€ë²ˆí˜¸ê°€ ìµœì†Œ 8ì ì´ìƒì´ì–´ì•¼ í•˜ë©°, ìˆ«ìì™€ íŠ¹ìˆ˜ ë¬¸ìë¥¼ í¬í•¨í•´ì•¼ í•©ë‹ˆë‹¤
         return password.Length >= 8 && Regex.IsMatch(password, @"[0-9]") && Regex.IsMatch(password, @"[^a-zA-Z0-9]");
     }
 
-    // ´Ğ³×ÀÓ À¯È¿¼º °Ë»ç
-    private bool IsValidNickname(string nickname) {
-        // ´Ğ³×ÀÓÀº ÃÖ¼Ò 3ÀÚ ÀÌ»óÀÌ¾î¾ß ÇÕ´Ï´Ù
+    // ë‹‰ë„¤ì„ ìœ íš¨ì„± ê²€ì‚¬
+    private bool IsValidNickname(string nickname)
+    {
+        // ë‹‰ë„¤ì„ì€ ìµœì†Œ 3ì ì´ìƒì´ì–´ì•¼ í•©ë‹ˆë‹¤
         return nickname.Length >= 3;
     }
-    // ¿¡·¯ ¸Ş½ÃÁö¸¦ Ç¥½ÃÇÏ´Â ÇÔ¼ö
-    private void ShowErrorMessage(string message) {
+    // ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ í‘œì‹œí•˜ëŠ” í•¨ìˆ˜
+    private void ShowErrorMessage(string message)
+    {
         ErrorMessage.text = message;
-       
+
     }
-    // Æ¯Á¤ ¾ÀÀ» ·ÎµåÇÏ´Â ÇÔ¼ö
-    public void LoadScene(string sceneName) {
+    // íŠ¹ì • ì”¬ì„ ë¡œë“œí•˜ëŠ” í•¨ìˆ˜
+    public void LoadScene(string sceneName)
+    {
         SceneManager.LoadScene(sceneName);
     }
 }
