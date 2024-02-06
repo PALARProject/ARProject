@@ -15,6 +15,7 @@ public class AvoidManager : MonoBehaviour
 
     public ARFaceManager faceManager;
     public GameObject ChangeCam;
+    public GameObject chamCham;
 
     public Direction playerDirection;
     public Direction AIDirection;
@@ -31,6 +32,7 @@ public class AvoidManager : MonoBehaviour
         angleText.text = "";
         countText = countUI.GetComponent<Text>();
 
+        chamCham.transform.eulerAngles = Vector3.zero;
         faceManager.facesChanged += OnFaceChanged;
     }
 
@@ -68,12 +70,15 @@ public class AvoidManager : MonoBehaviour
         {
             case 0:
                 AIDirection = Direction.RIGHT;
+                chamCham.transform.eulerAngles -= new Vector3(0, 0, 30f);
                 break;
             case 1:
                 AIDirection = Direction.LEFT;
+                chamCham.transform.eulerAngles += new Vector3(0, 0, 30f);
                 break;
             case 2:
                 AIDirection = Direction.FORWARD;
+                chamCham.transform.eulerAngles = Vector3.zero;
                 break;
         }
     }
