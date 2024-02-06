@@ -49,14 +49,18 @@ public class BattleManager : MonoBehaviour
     public GameObject ChangeCam;
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-        state = BattleState.START;
-        StartCoroutine(SetupBattle());
-
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+
+        while (!GameManager.instance.ready)
+            yield return new WaitForFixedUpdate();
+        playerPrefab.GetComponent<Unit>().Init();
+        state = BattleState.START;
+        StartCoroutine(SetupBattle());
+
     }
 
     // Update is called once per frame
