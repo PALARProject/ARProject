@@ -22,7 +22,6 @@ public class RealtimeDatabase_test : MonoBehaviour {
             databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
             // 데이터 쓰기 호출
-            ReadDataFromRealtimeDatabase( new string[] {"플레이어","반시","인벤토리"});
         });
     }
 

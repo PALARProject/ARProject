@@ -98,15 +98,15 @@ public class DBManager : MonoBehaviour
             return null;
         }
     }
-    public async Task<UserInfo> GetUserInfo(string userName)
+    public async Task<UserInfo> GetUserInfo(string UID)
     {
-        Debug.Log(userName);
+        Debug.Log(UID);
         try
         {
             UserInfo result = new UserInfo();
             Dictionary<string, object> userData = new Dictionary<string, object>();
             DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
-            userRef = userRef.Child("플레이어").Child(userName).Child("인벤토리");
+            userRef = userRef.Child("플레이어").Child(UID).Child("인벤토리");
             await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
                 if (task.IsCompleted)
                 {
@@ -114,8 +114,8 @@ public class DBManager : MonoBehaviour
                     if (snapshot.Exists)
                     {
                         userData = snapshot.Value as Dictionary<string, object>;
-                        result.userName = userName;
-                        Debug.Log("Data read successfully:"+userName);
+                        result.userName = UID;
+                        Debug.Log("Data read successfully:"+ UID);
                     }
                     else
                     {

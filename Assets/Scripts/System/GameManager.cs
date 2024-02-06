@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
         //유저설정
         if(DBManager!=null)
-            UserInfo = await DBManager.GetUserInfo("반시");
+            UserInfo = await DBManager.GetUserInfo(PlayerPrefs.GetString("UID"));
 
         if(InventoryManager!=null)
             InventoryManager.Init();
