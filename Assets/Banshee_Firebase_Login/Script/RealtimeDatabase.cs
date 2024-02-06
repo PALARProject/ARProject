@@ -56,7 +56,7 @@ public class RealtimeDatabase : MonoBehaviour {
             }
         });
     }
-    void WriteDataToRealtimeDatabase(string[] childs, Dictionary<string, object> userData ) {
+    public void WriteDataToRealtimeDatabase(string[] childs, Dictionary<string, object> userData ) {
         DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference; 
         // string[] childs를 사용하여 경로 설정
         foreach(string child in childs) {
@@ -111,37 +111,5 @@ public class RealtimeDatabase : MonoBehaviour {
 
 
 
-    public void SignUp_InventoryMaker(string username, string email, string password) {
-        // 회원가입 로직 수행
-
-        // 회원가입이 성공하면 데이터베이스에 플레이어 데이터를 쓰기
-        string[] playerPath = { "플레이어", username }; // 반시와 같은 이름의 사용자에 해당하는 경로 생성
-        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
-        string uid = auth.CurrentUser.UserId;
-        Dictionary<string, object> playerData = new Dictionary<string, object>
-        {
-        { "계정 정보", new Dictionary<string, object>
-            {
-                { "UID", uid },
-                { "비밀번호", password },
-                { "이메일", email }
-            }
-        },
-        { "인벤토리", new Dictionary<string, object>
-            {
-                { "box_001", "null" },
-                { "box_002", "null" },
-                { "box_003", "null" },
-                { "box_004", "null" },
-                { "box_005", "null" },
-                { "box_006", "null" },
-                { "box_007", "null" },
-                { "box_008", "null" },
-                { "box_009", "null" }
-            }
-        }
-    };
-
-        WriteDataToRealtimeDatabase(playerPath, playerData);
-    }
+  
 }
