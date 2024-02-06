@@ -44,7 +44,6 @@ public class BattleManager : MonoBehaviour
 
     public BattleResult ResultManager;
     public ShakeObject shakeObject;
-    public ShakeObject shakeBackG;
 
     //AR 
     public GameObject ChangeCam;
@@ -66,7 +65,6 @@ public class BattleManager : MonoBehaviour
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
         enemyUnit = enemyGO.GetComponent<Unit>();
         enemyAnim = enemyGO.GetComponent<Animator>();
-        shakeObject = enemyGO.GetComponent<ShakeObject>();
 
         playerUnit = playerPrefab.GetComponent<Unit>();
 
@@ -142,6 +140,8 @@ public class BattleManager : MonoBehaviour
         enemyAnim.SetBool("Attack", true);
         bool isPlayerDead = playerUnit.TakeDamage(enemyUnit.damage * 2);
         yield return new WaitForSeconds(1f);
+        shakeObject.VibrationCam(10f, 0.3f);
+        yield return new WaitForSeconds(0.5f);
 
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
@@ -167,6 +167,8 @@ public class BattleManager : MonoBehaviour
         enemyAnim.SetBool("Attack", true);
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
         yield return new WaitForSeconds(1f);
+        shakeObject.VibrationCam(5f, 0.3f);
+        yield return new WaitForSeconds(0.5f);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);

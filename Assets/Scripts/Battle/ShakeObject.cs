@@ -7,30 +7,76 @@ public class ShakeObject : MonoBehaviour
     public float shakeAmount;
     float shakeTime;
 
+    public float camAmount;
+    float camTime;
+    
+    public GameObject cam;
+    public GameObject enemy;
+
     Vector3 initialPosition;
+    Vector3 initialCamPosition;
+
+    public bool isShake;
+    public bool isCamShake;
+
     public void VibrationObject(float amount, float time)
     {
+        enemy = GameObject.FindWithTag("Enemy");
+        initialPosition = enemy.transform.position;
+
         shakeAmount = amount;
         shakeTime = time;
+        isShake = true;
+    }
+
+    public void VibrationCam(float amount, float time)
+    {
+        cam = GameObject.FindWithTag("MainCamera");
+        initialCamPosition = cam.transform.position;
+
+        camAmount = amount;
+        camTime = time;
+        isCamShake = true;
     }
 
 
     private void Start()
     {
-        initialPosition = transform.position;
+        cam = GameObject.FindWithTag("MainCamera");
+        initialCamPosition = cam.transform.position;
     }
 
     private void Update()
     {
-        if(shakeTime > 0)
+        if(isShake)
         {
-            transform.position = Random.insideUnitSphere * shakeAmount + initialPosition;
-            shakeTime -= Time.deltaTime;
+            if (shakeTime > 0)
+            {
+                enemy.transform.position = Random.insideUnitSphere * shakeAmount + initialPosition;
+                shakeTime -= Time.deltaTime;
+            }
+            else
+            {
+                shakeTime = 0.0f;
+                enemy.transform.position = initialPosition;
+                isShake = false;
+            }
         }
-        else
+
+        if(isCamShake)
         {
-            shakeTime = 0.0f;
-            transform.position = initialPosition;
+            if (camTime > 0)
+            {
+                cam.transform.position = Random.insideUnitSphere * camAmount + initialCamPosition;
+                camTime -= Time.deltaTime;
+            }
+            else
+            {
+                camTime = 0.0f;
+                cam.transform.position = initialCamPosition;
+                isCamShake = false;
+            }
         }
-    } 
+
+    }
 }
