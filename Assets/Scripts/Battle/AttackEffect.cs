@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AttackEffect : MonoBehaviour
 {
+    public ChangedCam camInfo;
+    public EnemyAR enemyAR;
+
     public GameObject attackEff;
     public GameObject effectLoc;
     private Vector2 loc = new Vector3(0, 0, 0);
@@ -16,7 +19,14 @@ public class AttackEffect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        loc = effectLoc.transform.position;
+        if(!camInfo.isAR)
+        {
+            loc = effectLoc.transform.position;
+        }
+        else
+        {
+            loc = enemyAR.Enemy.transform.position;
+        }
     }
     
     public void PlayerEffectOn()

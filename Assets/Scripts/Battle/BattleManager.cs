@@ -44,6 +44,7 @@ public class BattleManager : MonoBehaviour
 
     public BattleResult ResultManager;
     public ShakeObject shakeObject;
+    public ShakeObject shakeBackG;
 
     //AR 
     public GameObject ChangeCam;
@@ -84,7 +85,7 @@ public class BattleManager : MonoBehaviour
     {
         playerEffect.PlayerEffectOn();
         yield return new WaitForSeconds(0.5f);
-        shakeObject.OnShaking();
+        shakeObject.VibrationObject(0.02f, 0.2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
         dialogueText.text = "The Attack is sucessful!";
@@ -111,7 +112,7 @@ public class BattleManager : MonoBehaviour
 
         playerEffect.PlayerEffectOn();
         yield return new WaitForSeconds(0.5f);
-        shakeObject.OnShaking();
+        shakeObject.VibrationObject(0.02f, 0.2f);
 
         yield return new WaitForSeconds(2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
@@ -135,8 +136,10 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyAfterAvoidFailed()
     {
         yield return new WaitForSeconds(3.5f);
+        enemyAnim.SetBool("Attack", true); 
 
-        enemyAnim.SetBool("Attack", true);
+        yield return new WaitForSeconds(0.5f);
+        shakeBackG.VibrationObject(0.03f, 2f);
         dialogueText.text = enemyUnit.unitName + "attack!";
         bool isPlayerDead = playerUnit.TakeDamage(enemyUnit.damage * 2);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
@@ -158,12 +161,12 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         dialogueText.text = enemyUnit.unitName + "attack!";
-
         yield return new WaitForSeconds(1f);
 
         enemyAnim.SetBool("Attack", true);
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
-
+        yield return new WaitForSeconds(0.5f);
+        shakeBackG.VibrationObject(0.03f, 0.3f);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);

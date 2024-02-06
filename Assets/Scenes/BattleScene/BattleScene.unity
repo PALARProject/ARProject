@@ -922,6 +922,7 @@ GameObject:
   m_Component:
   - component: {fileID: 354098430}
   - component: {fileID: 354098429}
+  - component: {fileID: 354098431}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -988,7 +989,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354098428}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 626, y: 880, z: 559}
   m_LocalScale: {x: 70, y: 70, z: 70}
   m_ConstrainProportionsScale: 0
@@ -996,6 +997,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &354098431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354098428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff421e0048026f74da48e156a9964a72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeAmount: 0
 --- !u!1 &371070353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1799,6 +1813,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba558a92456a2854c9d1a280ffa6b941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camInfo: {fileID: 1434825961}
+  enemyAR: {fileID: 1205714244}
   attackEff: {fileID: 6781075990760321644, guid: 16ef1b19b0e607948b388b0e1aaffc2d, type: 3}
   effectLoc: {fileID: 843129703}
 --- !u!1 &659919626
@@ -4285,6 +4301,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558574505}
   m_CullTransparentMesh: 1
+--- !u!1 &1584963484 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5196435962739547201, guid: 10caf045848a3d94a8f0767364d3efcb, type: 3}
+  m_PrefabInstance: {fileID: 5196435961149833733}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1585833974 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
@@ -4684,6 +4705,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5196435962739547202, guid: 10caf045848a3d94a8f0767364d3efcb, type: 3}
   m_PrefabInstance: {fileID: 5196435961149833733}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1665211978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584963484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff421e0048026f74da48e156a9964a72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeAmount: 0
 --- !u!1 &1668143670
 GameObject:
   m_ObjectHideFlags: 0
@@ -5762,6 +5796,14 @@ PrefabInstance:
       propertyPath: playerHUD
       value: 
       objectReference: {fileID: 514585928}
+    - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
+      propertyPath: shakeBackG
+      value: 
+      objectReference: {fileID: 1665211978}
+    - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
+      propertyPath: shakeBackg
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
       propertyPath: avoidButton
       value: 

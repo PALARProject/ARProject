@@ -4,24 +4,33 @@ using UnityEngine;
 
 public class ShakeObject : MonoBehaviour
 {
-    public void OnShaking()
+    public float shakeAmount;
+    float shakeTime;
+
+    Vector3 initialPosition;
+    
+    public void VibrationObject(float amount, float time)
     {
-        StartCoroutine(Shake());
+        shakeAmount = amount;
+        shakeTime = time;
     }
 
-    IEnumerator Shake()
+    private void Start()
     {
-        float t = 3f;
-        float shakePower = 0.02f;
-        Vector3 origin = transform.position;
+        initialPosition = transform.position;
+    }
 
-        while(t > 0f)
+    private void Update()
+    {
+        if(shakeTime > 0)
         {
-            t -= 0.05f;
-            transform.position = origin + (Vector3)Random.insideUnitCircle * shakePower * t;
-            yield return null;
+            transform.position = Random.insideUnitSphere * shakeAmount + initialPosition;
+            shakeTime -= Time.deltaTime;
         }
-
-        transform.position = origin;
+        else
+        {
+            shakeTime = 0.0f;
+            transform.position = initialPosition;
+        }
     }
 }
