@@ -85,7 +85,8 @@ public class BattleResult : MonoBehaviour
             {
                 string itemName = name;
                 int list = await GameManager.instance.InventoryManager.InputInventory(itemName);
-
+                btn.interactable = false;
+                btn.onClick.RemoveAllListeners();
             });
         }
         resultUI.SetActive(true);
