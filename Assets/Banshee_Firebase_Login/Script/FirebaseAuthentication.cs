@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 
 
@@ -35,7 +36,7 @@ public class FirebaseAuthentication : MonoBehaviour {
     }
 
 
-    public void SignUp(string email, string password) {
+    public void SignUp(string email, string password, string Nickname) {
          FirebaseAuth auth;
         auth = FirebaseAuth.DefaultInstance;
         auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
@@ -45,9 +46,44 @@ public class FirebaseAuthentication : MonoBehaviour {
             }
 
             Debug.Log("User signed up successfully!");
-        });
+            SignUp_InventoryMaker(Nickname, email, password);
+            });
     }
+    //회원가입 시 생성구문 SignUp 마지막 참조
+    public void SignUp_InventoryMaker(string username, string email, string password) {
+        // 회원가입 로직 수행
 
+        // 회원가입이 성공하면 데이터베이스에 플레이어 데이터를 쓰기
+        string[] playerPath = { "플레이어", username }; // 반시와 같은 이름의 사용자에 해당하는 경로 생성
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        string uid = auth.CurrentUser.UserId;
+        Dictionary<string, object> playerData = new Dictionary<string, object>
+        {
+        { username, new Dictionary<string, object>
+            {
+                { "UID", uid },
+                { "비밀번호", password },
+                { "이메일", email }
+            }
+        },
+        { "인벤토리", new Dictionary<string, object>
+            {
+                { "box_001", "null" },
+                { "box_002", "null" },
+                { "box_003", "null" },
+                { "box_004", "null" },
+                { "box_005", "null" },
+                { "box_006", "null" },
+                { "box_007", "null" },
+                { "box_008", "null" },
+                { "box_009", "null" }
+            }
+        }
+    };
+
+        RealtimeDatabase realtimeDatabase = new RealtimeDatabase(); // RealtimeDatabase 인스턴스 생성
+        realtimeDatabase.WriteDataToRealtimeDatabase(playerPath, playerData); // 인스턴스를 사용하여 메서드 호출
+    }
     public async Task<int> SignIn(string email, string password) {
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
 
@@ -67,8 +103,9 @@ public class FirebaseAuthentication : MonoBehaviour {
     public void JoinButtonClick(){
         string email = JoinEmailInput.text;
         string password = JoinPasswordInput.text;
+        string Nickname = NicknameInput.text;
         // 이메일이 유효한지 확인한다
-        if(!IsValidEmail(email)) {
+         if(!IsValidEmail(email)) {
             // 유효하지 않은 이메일이면 에러 메시지를 표시한다
             ShowErrorMessage("유효하지 않은 이메일입니다.");
             // 이후의 코드는 실행되지 않도록 리턴한다
@@ -92,13 +129,13 @@ public class FirebaseAuthentication : MonoBehaviour {
         }
 
         // 닉네임이 유효한지 확인한다
-        if(!IsValidNickname(NicknameInput.text)) {
+        if(!IsValidNickname(Nickname)) {
             // 유효하지 않은 닉네임이면 에러 메시지를 표시한다
             ShowErrorMessage("유효하지 않은 닉네임입니다.");
             // 이후의 코드는 실행되지 않도록 리턴한다
             return;
         }
-        SignUp(email, password);
+        SignUp(email, password, Nickname);
     }
 
     public async void LoginButtonClick() {
