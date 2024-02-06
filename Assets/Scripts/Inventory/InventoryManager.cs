@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Threading.Tasks;
 using TMPro;
 
 public class InventoryManager : MonoBehaviour
@@ -65,13 +66,13 @@ public class InventoryManager : MonoBehaviour
         }
 
     }
-    public async void InputInventory(string itemName)
+    public async Task<int> InputInventory(string itemName)
     {
 
         ItemInfo getItemInfo = await GameManager.instance.DBManager.GetItemTable(itemName);
         if (getItemInfo == null)
         {
-            return;
+            return -1;
         }
         //ItemInfo getItemInfo = new ItemInfo(0, itemName, "", 0, new Status());
         int num = -1;
@@ -89,7 +90,7 @@ public class InventoryManager : MonoBehaviour
                 //UI - 같은 아이템 먹었다 출력
 
                 Debug.Log(itemName + "- 이미 먹은 아이템");
-                return;
+                return 0;
             }
             if (getItemInfo.category == haveItem.category)
             {
@@ -116,7 +117,7 @@ public class InventoryManager : MonoBehaviour
         Sprite image;
         try
         {
-            image = Resources.Load<Sprite>("Item/Sprite/" + getItemInfo.itemId);
+            image = Resources.Load<Sprite>("Item/Sprite/" + getItemInfo.name);
             if (image != null)
             {
                 Item_Images[num].sprite = image;
@@ -131,8 +132,9 @@ public class InventoryManager : MonoBehaviour
         catch
         {
             Debug.Log("-등록되지 않은 경로");
+            return -1;
         }
-        return;
+        return 1;
     }
      
     
