@@ -157,7 +157,7 @@ public class InventoryManager : MonoBehaviour
 
         try
         {
-            //GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_00" + (inventoryNum + 1), outItem.name);
+            GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_00" + (inventoryNum + 1), "null");
         }
         catch
         {
