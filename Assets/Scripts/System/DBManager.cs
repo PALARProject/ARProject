@@ -191,7 +191,7 @@ public class DBManager : MonoBehaviour
     {
         DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
         // string[] childs를 사용하여 경로 설정
-        userRef = userRef.Child("플레이어").Child(userName).Child("인벤토리").Child(inventoryNum);
+        userRef = userRef.Child("플레이어").Child(userName).Child("인벤토리");
         // 업데이트할 데이터
         Dictionary<string, object> updates = new Dictionary<string, object>();
         updates.Add(inventoryNum, itemName);

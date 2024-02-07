@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 
 
+
 //FirebaseAuthentication.SignIn(email,password);
 //FirebaseAuthentication.SignUp(email,password);
 
@@ -28,6 +29,8 @@ public class FirebaseAuthentication : MonoBehaviour
     public RealtimeDatabase RealtimeDB;
     public TMP_Text ErrorMessage;
 
+    public TMP_Text LoginErrorMessage;
+
 
 
 
@@ -40,8 +43,8 @@ public class FirebaseAuthentication : MonoBehaviour
 
     public void SignUp(string email, string password, string Nickname)
     {
-        FirebaseAuth auth;
-        auth = FirebaseAuth.DefaultInstance;
+        Firebase.Auth.FirebaseAuth auth;
+        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
             if (task.IsCanceled || task.IsFaulted)
             {
@@ -60,7 +63,7 @@ public class FirebaseAuthentication : MonoBehaviour
 
 
         // 회원가입이 성공하면 데이터베이스에 플레이어 데이터를 쓰기
-        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         string uid = auth.CurrentUser.UserId;
 
         string[] playerPath = { "플레이어", uid }; // 반시와 같은 이름의 사용자에 해당하는 경로 생성
@@ -92,23 +95,38 @@ public class FirebaseAuthentication : MonoBehaviour
         RealtimeDatabase realtimeDatabase = new RealtimeDatabase(); // RealtimeDatabase 인스턴스 생성
         realtimeDatabase.WriteDataToRealtimeDatabase(playerPath, playerData); // 인스턴스를 사용하여 메서드 호출
     }
-    public async Task<int> SignIn(string email, string password)
-    {
-        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+    public async Task<int> SignIn(string email, string password) {
+        Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
-        try
-        {
+        try {
             // 비동기로 로그인 시도
             await auth.SignInWithEmailAndPasswordAsync(email, password);
 
             // 로그인 성공 시 1 반환
             PlayerPrefs.SetString("UID", auth.CurrentUser.UserId);
             return 1;
-        }
-        catch (FirebaseException e)
-        {
-            // 로그인 실패 시 예외 처리
-            Debug.LogError($"Failed to sign in: {e.Message}");
+        } catch(Exception e) {
+            string errorCode = e.Message;
+            if(errorCode == "auth/invalid-email") {
+                LoginErrorMessage.text = "이메일이 없습니다";
+                Debug.LogError("Failed to sign in: Invalid email.");
+            } else if(errorCode == "auth/user-disabled") {
+                LoginErrorMessage.text = "예상 못한 오류가 있습니다 관리자에게 연락하세요";
+                Debug.LogError("Failed to sign in: User account has been disabled.");
+            } else if(errorCode == "auth/user-not-found" || errorCode == "auth/wrong-password") {
+                LoginErrorMessage.text = "이메일 혹은 비밀번호가 틀립니다";
+                Debug.LogError("Failed to sign in: Invalid email or password.");
+            }else if(errorCode == "The email address is badly formatted."){
+                LoginErrorMessage.text = "올바른 이메일 형식이 아닙니다";
+            } else if(errorCode == "A password must be provided.") {
+                LoginErrorMessage.text = "비밀번호를 입력하세요";
+            } else if(errorCode == "An internal error has occurred.") {
+                LoginErrorMessage.text = "비밀번호가 틀렸습니다";
+            } else {
+                LoginErrorMessage.text = "예상 못한 오류가 있습니다 관리자에게 연락하세요";
+                Debug.LogError($"Failed to sign in: {e.Message}");
+            }
+
             // 로그인 실패 시 0 반환
             return 0;
         }

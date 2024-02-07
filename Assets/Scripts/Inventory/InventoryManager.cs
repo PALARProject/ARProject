@@ -85,26 +85,29 @@ public class InventoryManager : MonoBehaviour
                 num = index;
             }
             ItemInfo haveItem = GameManager.instance.UserInfo.inventoryItems[index];
-            if (haveItem.itemId == getItemInfo.itemId)
+            if (haveItem != null)
             {
-                //UI - 같은 아이템 먹었다 출력
-
-                Debug.Log(itemName + "- 이미 먹은 아이템");
-                return 0;
-            }
-            if (getItemInfo.category == haveItem.category)
-            {
-                if (getItemInfo.grade>= haveItem.grade)
+                if (haveItem.itemId == getItemInfo.itemId)
                 {
-                    if (sameItem == -1)
+                    //UI - 같은 아이템 먹었다 출력
+
+                    Debug.Log(itemName + "- 이미 먹은 아이템");
+                    return 0;
+                }
+                if (getItemInfo.category == haveItem.category)
+                {
+                    if (getItemInfo.grade>= haveItem.grade)
                     {
-                        sameItem = index;
-                    }
-                    else
-                    {
-                        if(haveItem.grade<GameManager.instance.UserInfo.inventoryItems[sameItem].grade)
+                        if (sameItem == -1)
                         {
                             sameItem = index;
+                        }
+                        else
+                        {
+                            if(haveItem.grade<GameManager.instance.UserInfo.inventoryItems[sameItem].grade)
+                            {
+                                sameItem = index;
+                            }
                         }
                     }
                 }
@@ -134,6 +137,8 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("-등록되지 않은 경로");
             return -1;
         }
+        Debug.Log("box_" + string.Format("{0:D3}", num + 1));
+        GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_" + string.Format("{0:D3}", num + 1), getItemInfo.name);
         return 1;
     }
      
