@@ -7,12 +7,14 @@ using UnityEngine.XR.ARSubsystems;
 public class EnemyAR : MonoBehaviour
 {
     ARRaycastManager arManager;
-    public GameObject enemy;
+    public GameObject enemy; 
+    public Animator anim;
     public GameObject PlacedObject;
     // Start is called before the first frame update
     void Start()
     {
         arManager = GetComponent<ARRaycastManager>();
+
     }
 
     // Update is called once per frame
@@ -36,6 +38,26 @@ public class EnemyAR : MonoBehaviour
             {
                 PlacedObject.transform.SetPositionAndRotation(hitInfos[0].pose.position, hitInfos[0].pose.rotation);
             }
+
+            anim = PlacedObject.GetComponent<Animator>();
+        }
+    }
+
+    public void AnimatorOn(string state)
+    {
+        switch (state)
+        {
+            case "Attack":
+                anim.SetBool("Attack", true);
+                break;
+
+            case "AttackOff":
+                 anim.SetBool("Attack", false);
+                break;
+
+            case "Dead":
+                anim.SetTrigger("Die");
+                break;
         }
     }
 }
