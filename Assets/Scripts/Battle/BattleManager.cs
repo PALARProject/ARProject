@@ -268,7 +268,7 @@ public class BattleManager : MonoBehaviour
             case "Attack":
                 if (changeCam.isAR)
                 {
-                    enemyARanim.SetBool("Attack", true);
+                    enemyARanim.Play("Attack");
                 }
                 else
                 {
