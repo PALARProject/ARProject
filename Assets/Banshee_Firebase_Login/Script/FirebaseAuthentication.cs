@@ -107,16 +107,10 @@ public class FirebaseAuthentication : MonoBehaviour
             return 1;
         } catch(Exception e) {
             string errorCode = e.Message;
-            if(errorCode == "auth/invalid-email") {
+            if(errorCode == "An email address must be provided.") {
                 LoginErrorMessage.text = "이메일이 없습니다";
                 Debug.LogError("Failed to sign in: Invalid email.");
-            } else if(errorCode == "auth/user-disabled") {
-                LoginErrorMessage.text = "예상 못한 오류가 있습니다 관리자에게 연락하세요";
-                Debug.LogError("Failed to sign in: User account has been disabled.");
-            } else if(errorCode == "auth/user-not-found" || errorCode == "auth/wrong-password") {
-                LoginErrorMessage.text = "이메일 혹은 비밀번호가 틀립니다";
-                Debug.LogError("Failed to sign in: Invalid email or password.");
-            }else if(errorCode == "The email address is badly formatted."){
+            } else if(errorCode == "The email address is badly formatted.") {
                 LoginErrorMessage.text = "올바른 이메일 형식이 아닙니다";
             } else if(errorCode == "A password must be provided.") {
                 LoginErrorMessage.text = "비밀번호를 입력하세요";
