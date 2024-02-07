@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +16,9 @@ public class BattleResult : MonoBehaviour
 
     public float animSpeed = 2f;
     public bool isResult;
+
+    public GameObject Result_Item;
+    public GameObject[] resultLocation=new GameObject[9];
     // Start is called before the first frame update
 
     private void Awake()
@@ -34,11 +39,56 @@ public class BattleResult : MonoBehaviour
         }
         StartCoroutine(AnimateUI(result));
     }
-
+    
     IEnumerator AnimateUI(bool result)
     {
-        yield return new WaitForSeconds(2f);
+        //아이템 정산
+        Task<List<ItemInfo>> list= GameManager.instance.DBManager.GetItemsTable();
+        float time = 0;
+        while (!list.IsCompletedSuccessfully && time<5)
+        {
+            time += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
 
+        List<ItemInfo> collectItem = new List<ItemInfo>();
+        if (time < 5)
+        {
+            List<ItemInfo> itemList = list.Result;
+            for (int i = 0; i < 3; i++)
+            {
+                int random = Random.Range(0, itemList.Count);
+                int n = 0;
+                foreach (ItemInfo pair in itemList)
+                {
+                    if (n == random)
+                    {
+                        ItemInfo copy = pair.DeepCopy();
+                        collectItem.Add(copy);
+                        Debug.Log(collectItem[i].name);
+                        itemList.Remove(pair);
+                        break;
+                    }
+                    n++;
+                }
+            }
+        }
+        for (int i=0;i< collectItem.Count; i++)
+        {
+            int index = i;
+            GameObject obj = Instantiate(Result_Item, resultLocation[i].transform);
+            Button btn=obj.GetComponent<Button>();
+            Image image = obj.GetComponent<Image>();
+            image.sprite = Resources.Load<Sprite>("Item/Sprite/" + collectItem[i].name);
+            string name = collectItem[index].name;
+            btn.onClick.AddListener(async () =>
+            {
+                string itemName = name;
+                int list = await GameManager.instance.InventoryManager.InputInventory(itemName);
+                btn.interactable = false;
+                btn.onClick.RemoveAllListeners();
+            });
+        }
         resultUI.SetActive(true);
         if (result == true)
         {

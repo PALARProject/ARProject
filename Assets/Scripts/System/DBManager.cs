@@ -34,6 +34,53 @@ public class DBManager : MonoBehaviour
     {
         
     }
+    public async Task<List<ItemInfo>> GetItemsTable()
+    {
+        try
+        {
+            List<ItemInfo> resultList = new List<ItemInfo>();
+            DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+            userRef = userRef.Child("아이템").Child("아이템 이름");
+            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        Dictionary<string, object> itemData = snapshot.Value as Dictionary<string, object>;
+                        Debug.Log("ItemData read successfully");
+                        foreach(var pair in itemData)
+                        {
+                            Dictionary<string, object> item = pair.Value as Dictionary<string, object>;
+                            ItemInfo result = new ItemInfo();
+                            result.itemId = (int)(long)item["아이템코드"];
+                            result.name = pair.Key;
+                            result.category = item["아이템 카테고리"].ToString();
+                            result.grade = (int)(long)item["아이템 희귀도"];
+                            result.description = item["아이템 설명"].ToString();
+                            result.status = new Status((int)(long)item["아이템 공격력"], (int)(long)item["아이템 보호막"]);
+
+                            resultList.Add(result);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No data found at the specified location.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error reading data: " + task.Exception);
+                }
+            });
+            return resultList;
+        }
+        catch
+        {
+            Debug.Log("item list Error");
+            return null;
+        }
+    }
     public async Task<ItemInfo> GetItemTable(string itemName)
     {
         try
@@ -144,7 +191,7 @@ public class DBManager : MonoBehaviour
     {
         DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
         // string[] childs를 사용하여 경로 설정
-        userRef = userRef.Child("플레이어").Child(userName).Child("인벤토리").Child(inventoryNum);
+        userRef = userRef.Child("플레이어").Child(userName).Child("인벤토리");
         // 업데이트할 데이터
         Dictionary<string, object> updates = new Dictionary<string, object>();
         updates.Add(inventoryNum, itemName);

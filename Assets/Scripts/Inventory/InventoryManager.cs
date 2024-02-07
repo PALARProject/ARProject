@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Threading.Tasks;
 using TMPro;
 
 public class InventoryManager : MonoBehaviour
@@ -65,13 +66,13 @@ public class InventoryManager : MonoBehaviour
         }
 
     }
-    public async void InputInventory(string itemName)
+    public async Task<int> InputInventory(string itemName)
     {
 
         ItemInfo getItemInfo = await GameManager.instance.DBManager.GetItemTable(itemName);
         if (getItemInfo == null)
         {
-            return;
+            return -1;
         }
         //ItemInfo getItemInfo = new ItemInfo(0, itemName, "", 0, new Status());
         int num = -1;
@@ -84,26 +85,29 @@ public class InventoryManager : MonoBehaviour
                 num = index;
             }
             ItemInfo haveItem = GameManager.instance.UserInfo.inventoryItems[index];
-            if (haveItem.itemId == getItemInfo.itemId)
+            if (haveItem != null)
             {
-                //UI - 같은 아이템 먹었다 출력
-
-                Debug.Log(itemName + "- 이미 먹은 아이템");
-                return;
-            }
-            if (getItemInfo.category == haveItem.category)
-            {
-                if (getItemInfo.grade>= haveItem.grade)
+                if (haveItem.itemId == getItemInfo.itemId)
                 {
-                    if (sameItem == -1)
+                    //UI - 같은 아이템 먹었다 출력
+
+                    Debug.Log(itemName + "- 이미 먹은 아이템");
+                    return 0;
+                }
+                if (getItemInfo.category == haveItem.category)
+                {
+                    if (getItemInfo.grade>= haveItem.grade)
                     {
-                        sameItem = index;
-                    }
-                    else
-                    {
-                        if(haveItem.grade<GameManager.instance.UserInfo.inventoryItems[sameItem].grade)
+                        if (sameItem == -1)
                         {
                             sameItem = index;
+                        }
+                        else
+                        {
+                            if(haveItem.grade<GameManager.instance.UserInfo.inventoryItems[sameItem].grade)
+                            {
+                                sameItem = index;
+                            }
                         }
                     }
                 }
@@ -116,7 +120,7 @@ public class InventoryManager : MonoBehaviour
         Sprite image;
         try
         {
-            image = Resources.Load<Sprite>("Item/Sprite/" + getItemInfo.itemId);
+            image = Resources.Load<Sprite>("Item/Sprite/" + getItemInfo.name);
             if (image != null)
             {
                 Item_Images[num].sprite = image;
@@ -131,8 +135,11 @@ public class InventoryManager : MonoBehaviour
         catch
         {
             Debug.Log("-등록되지 않은 경로");
+            return -1;
         }
-        return;
+        Debug.Log("box_" + string.Format("{0:D3}", num + 1));
+        GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_" + string.Format("{0:D3}", num + 1), getItemInfo.name);
+        return 1;
     }
      
     
@@ -150,7 +157,7 @@ public class InventoryManager : MonoBehaviour
 
         try
         {
-            //GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_00" + (inventoryNum + 1), outItem.name);
+            GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_00" + (inventoryNum + 1), "null");
         }
         catch
         {
