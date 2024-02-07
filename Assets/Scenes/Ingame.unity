@@ -630,7 +630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _map: {fileID: 467812310}
   _locationStrings:
-  - 35.1595,129.0625
+  - 35.1596,129.0606
   _spawnScale: 2
   _markerPrefab: {fileID: 8153866531458291278, guid: 5a71785cca3fd334ca7b71e7cc714247, type: 3}
 --- !u!114 &467812312
@@ -640,13 +640,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467812309}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f0d6b15633bfd844b87282a3caca8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _map: {fileID: 467812310}
-  _locationStrings: []
+  _locationStrings:
+  - 
+  - 
+  - 
+  - 
+  - 
   _spawnScale: 2
   _markerPrefab: {fileID: 566529766319493404, guid: ccc5a97a80c4a72469862341167de4e3, type: 3}
 --- !u!61 &467812313
@@ -987,7 +992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &494974605
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1969,7 +1974,7 @@ Transform:
   m_GameObject: {fileID: 1814610431}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 55.792923, y: -173.87, z: 86.15486}
-  m_LocalScale: {x: 18, y: 0.2, z: 18}
+  m_LocalScale: {x: 22, y: 0.2, z: 22}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1091014014}
