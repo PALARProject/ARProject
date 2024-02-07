@@ -46,7 +46,9 @@ public class BattleManager : MonoBehaviour
     public ShakeObject shakeObject;
 
     //AR 
-    public GameObject ChangeCam;
+    public ChangedCam changeCam;
+    public EnemyAR enemyAR;
+    public Animator enemyARanim;
 
     // Start is called before the first frame update
     void Start()
@@ -58,8 +60,16 @@ public class BattleManager : MonoBehaviour
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
     }
-
     // Update is called once per frame
+    private void Update()
+    {
+        if(changeCam.isAR)
+        {
+            enemyAR = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>();
+            enemyARanim = enemyAR.enemy.GetComponent<Animator>();
+        }
+    }
+
     IEnumerator SetupBattle()
     {
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
@@ -94,6 +104,7 @@ public class BattleManager : MonoBehaviour
         {
             state = BattleState.WON;
             enemyAnim.SetTrigger("Die");
+            enemyARanim.SetTrigger("Die");
             StartCoroutine(EndBattle());
         }
         else
@@ -121,7 +132,7 @@ public class BattleManager : MonoBehaviour
         if (isDead)
         {
             state = BattleState.WON;
-            enemyAnim.SetTrigger("Die");
+            EnemyAnimator("Dead");
             StartCoroutine(EndBattle());
         }
         else
@@ -137,7 +148,7 @@ public class BattleManager : MonoBehaviour
         dialogueText.text = enemyUnit.unitName + "attack!";
 
         yield return new WaitForSeconds(1f);
-        enemyAnim.SetBool("Attack", true);
+        EnemyAnimator("Attack");
         bool isPlayerDead = playerUnit.TakeDamage(enemyUnit.damage * 2);
         yield return new WaitForSeconds(1f);
         shakeObject.VibrationCam(10f, 0.3f);
@@ -146,7 +157,7 @@ public class BattleManager : MonoBehaviour
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
         yield return new WaitForSeconds(2f);
 
-        enemyAnim.SetBool("Attack", false);
+        EnemyAnimator("AttackOff");
         if (isPlayerDead)
         {
             state = BattleState.LOST;
@@ -164,16 +175,16 @@ public class BattleManager : MonoBehaviour
         dialogueText.text = enemyUnit.unitName + "attack!";
         yield return new WaitForSeconds(1f);
 
-        enemyAnim.SetBool("Attack", true);
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
+        EnemyAnimator("Attack");
         yield return new WaitForSeconds(1f);
         shakeObject.VibrationCam(5f, 0.3f);
         yield return new WaitForSeconds(0.5f);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);
 
         yield return new WaitForSeconds(1f);
+        EnemyAnimator("AttackOff");
 
-        enemyAnim.SetBool("Attack", false);
         if (isEnemyDead)
         {
             state = BattleState.LOST;
@@ -192,6 +203,7 @@ public class BattleManager : MonoBehaviour
         if (state == BattleState.WON)
         {
             ResultManager.ActiveResultUI(true);
+            EnemyAnimator("Dead");
             dialogueText.text = "win!";
         }
         else if (state == BattleState.LOST)
@@ -215,20 +227,18 @@ public class BattleManager : MonoBehaviour
         if (state != BattleState.PLAYERTURN)
             return;
 
-        if(ChangeCam.GetComponent<ChangedCam>().isAR == false)
+        if(changeCam.GetComponent<ChangedCam>().isAR == false)
         {
-            ChangeCam.GetComponent<ChangedCam>().AvoidStateCam();
+            changeCam.GetComponent<ChangedCam>().AvoidStateCam();
         }
         else
         {
-            ChangeCam.GetComponent<ChangedCam>().OffSessionOrigin();
+            changeCam.GetComponent<ChangedCam>().OffSessionOrigin();
         }
 
         BattleUI.SetActive(false);
         AvoidUI.SetActive(true);
     }
-
-  
 
     public void OnAttackButton()
     {
@@ -250,5 +260,44 @@ public class BattleManager : MonoBehaviour
     public void AvoidFailed()
     {
         StartCoroutine(EnemyAfterAvoidFailed());
+    }
+
+    public void EnemyAnimator(string state)
+    {
+        switch(state)
+        {
+            case "Attack":
+                if (changeCam.isAR)
+                {
+                    enemyARanim.SetBool("Attack", true);
+                }
+                else
+                {
+                    enemyAnim.SetBool("Attack", true);
+                }
+                break;
+
+            case "AttackOff":
+                if (changeCam.isAR)
+                {
+                    enemyARanim.SetBool("Attack", false);
+                }
+                else
+                {
+                    enemyAnim.SetBool("Attack", false);
+                }
+                break;
+
+            case "Dead":
+                if (changeCam.isAR)
+                {
+                    enemyARanim.SetTrigger("Die");
+                }
+                else
+                {
+                    enemyAnim.SetTrigger("Die");
+                }
+                break;
+        }
     }
 }

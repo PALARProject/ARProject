@@ -7,8 +7,8 @@ using UnityEngine.XR.ARSubsystems;
 public class EnemyAR : MonoBehaviour
 {
     ARRaycastManager arManager;
-    public GameObject Enemy;
-    GameObject PlacedObject;
+    public GameObject enemy;
+    public GameObject PlacedObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +30,7 @@ public class EnemyAR : MonoBehaviour
         {
             if (PlacedObject == null)
             {
-                PlacedObject = Instantiate(Enemy, hitInfos[0].pose.position, hitInfos[0].pose.rotation);
+                PlacedObject = Instantiate(enemy, hitInfos[0].pose.position, hitInfos[0].pose.rotation);
             }
             else
             {

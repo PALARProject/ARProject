@@ -19,10 +19,20 @@ public class ShakeObject : MonoBehaviour
     public bool isShake;
     public bool isCamShake;
 
+    public ChangedCam changeCam;
+
     public void VibrationObject(float amount, float time)
     {
-        enemy = GameObject.FindWithTag("Enemy");
-        initialPosition = enemy.transform.position;
+        if (changeCam.isAR)
+        {
+            enemy = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>().enemy;
+            initialPosition = enemy.transform.position;
+        }
+        else
+        {
+            enemy = GameObject.FindWithTag("Enemy");
+            initialPosition = enemy.transform.position;
+        }
 
         shakeAmount = amount;
         shakeTime = time;

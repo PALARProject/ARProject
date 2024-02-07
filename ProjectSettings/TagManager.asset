@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Person
   - Enemy
+  - ARSession
   layers:
   - Default
   - TransparentFX
