@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
+<<<<<<<< Updated upstream:Assets/Plugins/Android/FirebaseApp.androidlib.meta
 guid: 1ffc3f847e863cc4ba1e2c0b18e664fa
+========
+guid: 96337bdfb3180d442ae97e09af46868e
+>>>>>>>> Stashed changes:Assets/Mapbox/Core/Plugins/Android/support-vector-drawable-25.1.0.aar.meta
+=======
+guid: 51fb36fa30a5743458d594d27ab69c1c
+>>>>>>> Stashed changes
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2

@@ -431,7 +431,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'PassWord '
+  m_text: abcd1234!(password)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2ba66df88808a248b0a55e7a8b8307f, type: 2}
   m_sharedMaterial: {fileID: -3851827508141264713, guid: a2ba66df88808a248b0a55e7a8b8307f, type: 2}
@@ -458,7 +458,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60.05
+  m_fontSize: 90
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1908,7 +1908,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: NickName
+  m_text: Mr.abc (NickName)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2ba66df88808a248b0a55e7a8b8307f, type: 2}
   m_sharedMaterial: {fileID: -3851827508141264713, guid: a2ba66df88808a248b0a55e7a8b8307f, type: 2}
@@ -1935,7 +1935,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60.05
+  m_fontSize: 90
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2811,7 +2811,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Enter Email '
+  m_text: abc@abc.abc (email)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2ba66df88808a248b0a55e7a8b8307f, type: 2}
   m_sharedMaterial: {fileID: -3851827508141264713, guid: a2ba66df88808a248b0a55e7a8b8307f, type: 2}
@@ -2838,7 +2838,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60.05
+  m_fontSize: 90
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3548,10 +3548,10 @@ RectTransform:
   m_Father: {fileID: 535646640}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 80}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1233316626
 MonoBehaviour:
@@ -3574,11 +3574,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 49234ee3cff3c1f488527b3473d1939d, type: 3}
-    m_FontSize: 14
+    m_Font: {fileID: 12800000, guid: a3d4469d0797f2346a71cf9edd36fc32, type: 3}
+    m_FontSize: 28
     m_FontStyle: 1
     m_BestFit: 1
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 300
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -3586,7 +3586,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join
+  m_Text: "Sign In (\uD68C\uC6D0 \uAC00\uC785)"
 --- !u!222 &1233316627
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4968,7 +4968,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Confirm Password
+  m_text: abcd1234!(password confirm)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2ba66df88808a248b0a55e7a8b8307f, type: 2}
   m_sharedMaterial: {fileID: -3851827508141264713, guid: a2ba66df88808a248b0a55e7a8b8307f, type: 2}
@@ -4995,7 +4995,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60.05
+  m_fontSize: 69.8
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -74,7 +74,8 @@ public class FirebaseAuthentication : MonoBehaviour
             {
                 { "닉네임", username },
                 { "비밀번호", password },
-                { "이메일", email }
+                { "이메일", email },
+                { "튜토리얼학습", false}
             }
         },
         { "인벤토리", new Dictionary<string, object>
@@ -167,6 +168,8 @@ public class FirebaseAuthentication : MonoBehaviour
         }
         SignUp(email, password, Nickname);
         JPOpen.JoinPageSetActiveChange();
+        LoginEmailInput.text = JoinEmailInput.text;
+        LoginPasswordInput.text = JoinPasswordInput.text;
     }
 
     public async void LoginButtonClick()
