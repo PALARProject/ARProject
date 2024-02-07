@@ -103,8 +103,7 @@ public class BattleManager : MonoBehaviour
         if (isDead)
         {
             state = BattleState.WON;
-            enemyAnim.SetTrigger("Die");
-            enemyARanim.SetTrigger("Die");
+            EnemyAnimator("Dead");
             StartCoroutine(EndBattle());
         }
         else
