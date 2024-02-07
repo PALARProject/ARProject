@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:974363321058:android:f734f053d7fa746c8334bb",
+        "mobilesdk_app_id": "1:974363321058:android:5c29f1eab91d60db8334bb",
         "android_client_info": {
-          "package_name": "com.fantasy.VilChron"
+          "package_name": "com.DefaultCompany.ARProject"
         }
       },
       "oauth_client": [
