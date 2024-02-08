@@ -27,13 +27,7 @@ public class AvoidManager : MonoBehaviour
 
     private void OnEnable()
     {
-        countdown = 7;
-        isCheck = false;
-        angleText.text = "";
-        countText = countUI.GetComponent<Text>();
-
-        chamCham.transform.eulerAngles = Vector3.zero;
-        faceManager.facesChanged += OnFaceChanged;
+        AvoidStart();
     }
 
     // Update is called once per frame
@@ -61,6 +55,22 @@ public class AvoidManager : MonoBehaviour
             isCheck = true;
             faceManager.facesChanged -= OnFaceChanged;
         }
+    }
+
+    IEnumerator WaitRetryAvoid()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
+    void AvoidStart()
+    {
+        countdown = 7;
+        isCheck = false;
+        angleText.text = "";
+        countText = countUI.GetComponent<Text>();
+
+        chamCham.transform.eulerAngles = Vector3.zero;
+        faceManager.facesChanged += OnFaceChanged;
     }
 
     void ControlAvoidValue()
@@ -127,6 +137,7 @@ public class AvoidManager : MonoBehaviour
         else
         {
             angleText.text = "얼굴을 찾을 수 없습니다.";
+
         }
     }
 
