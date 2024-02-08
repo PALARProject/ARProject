@@ -48,6 +48,7 @@ public class BattleManager : MonoBehaviour
     //AR 
     public ChangedCam changeCam;
     public EnemyAR enemyAR;
+    public Animator enemyARanim;
 
     // Start is called before the first frame update
     IEnumerator Start()
@@ -69,6 +70,7 @@ public class BattleManager : MonoBehaviour
         if(changeCam.isAR)
         {
             enemyAR = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>();
+            enemyARanim = enemyAR.enemy.GetComponent<Animator>();
         }
     }
 
@@ -270,7 +272,7 @@ public class BattleManager : MonoBehaviour
             case "Attack":
                 if (changeCam.isAR)
                 {
-                    enemyAR.AnimatorOn(state);
+                    enemyARanim.Play("Attack");
                 }
                 else
                 {
@@ -281,7 +283,7 @@ public class BattleManager : MonoBehaviour
             case "AttackOff":
                 if (changeCam.isAR)
                 {
-                    enemyAR.AnimatorOn(state);
+                    enemyARanim.SetBool("Attack", false);
                 }
                 else
                 {
@@ -292,7 +294,7 @@ public class BattleManager : MonoBehaviour
             case "Dead":
                 if (changeCam.isAR)
                 {
-                    enemyAR.AnimatorOn(state);
+                    enemyARanim.SetTrigger("Die");
                 }
                 else
                 {
