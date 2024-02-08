@@ -26,6 +26,7 @@ public class BattleManager : MonoBehaviour
     Unit enemyUnit;
 
     public GameObject playerPrefab;
+    public AttackEffect playerEffect;
     Unit playerUnit;
 
     public BattleHUD playerHUD;
@@ -41,18 +42,25 @@ public class BattleManager : MonoBehaviour
     public GameObject AvoidUI;
     public GameObject BattleUI;
 
+    public BattleResult ResultManager;
+    public ShakeObject shakeObject;
+
     //AR 
     public GameObject ChangeCam;
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-        state = BattleState.START;
-        StartCoroutine(SetupBattle());
-
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+
+        while (!GameManager.instance.ready)
+            yield return new WaitForFixedUpdate();
+        playerPrefab.GetComponent<Unit>().Init();
+        state = BattleState.START;
+        StartCoroutine(SetupBattle());
+
     }
 
     // Update is called once per frame
@@ -61,6 +69,7 @@ public class BattleManager : MonoBehaviour
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
         enemyUnit = enemyGO.GetComponent<Unit>();
         enemyAnim = enemyGO.GetComponent<Animator>();
+        shakeObject = enemyGO.GetComponent<ShakeObject>();
 
         playerUnit = playerPrefab.GetComponent<Unit>();
 
@@ -77,8 +86,10 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
+        playerEffect.PlayerEffectOn();
+        yield return new WaitForSeconds(0.5f);
+        shakeObject.OnShaking();
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
         dialogueText.text = "The Attack is sucessful!";
 
@@ -88,7 +99,7 @@ public class BattleManager : MonoBehaviour
         {
             state = BattleState.WON;
             enemyAnim.SetTrigger("Die");
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -112,7 +123,7 @@ public class BattleManager : MonoBehaviour
         {
             state = BattleState.WON;
             enemyAnim.SetTrigger("Die");
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -135,7 +146,7 @@ public class BattleManager : MonoBehaviour
         if (isPlayerDead)
         {
             state = BattleState.LOST;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -161,7 +172,7 @@ public class BattleManager : MonoBehaviour
         if (isEnemyDead)
         {
             state = BattleState.LOST;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -170,14 +181,17 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    void EndBattle()
+    IEnumerator EndBattle()
     {
+        yield return new WaitForSeconds(2f);
         if (state == BattleState.WON)
         {
+            ResultManager.ActiveResultUI(true);
             dialogueText.text = "win!";
         }
         else if (state == BattleState.LOST)
         {
+            ResultManager.ActiveResultUI(false);
             dialogueText.text = "lose";
         }
 
@@ -210,6 +224,8 @@ public class BattleManager : MonoBehaviour
         BattleUI.SetActive(false);
         AvoidUI.SetActive(true);
     }
+
+  
 
     public void OnAttackButton()
     {
