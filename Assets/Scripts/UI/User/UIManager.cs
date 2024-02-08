@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
     public GameObject OptionUI { get { return this.optionUI; } set { this.optionUI = value; } }
     [SerializeField] protected GameObject questUI;
     public GameObject QuestUI { get { return this.questUI; } set { this.questUI = value; } }
+    [SerializeField] protected GameObject resultUI;
+    public GameObject ResultUI { get { return this.resultUI; } set { this.resultUI = value; } }
 
     private List<GameObject> UIObjs = new List<GameObject>();
 
@@ -92,6 +94,16 @@ public class UIManager : MonoBehaviour
         if (BottomUI != null)
             BottomUI.GetComponent<BottomUI>().OptionButton.interactable = OptionUI.activeSelf;
         OptionUI.SetActive(!OptionUI.activeSelf);
+
+    }
+    public void OpenCloseQuest()
+    {
+        if (QuestUI == null)
+            return;
+        OnlyOneUI(QuestUI.name);
+        if (BottomUI != null)
+            BottomUI.GetComponent<BottomUI>().QuestButton.interactable = QuestUI.activeSelf;
+        QuestUI.SetActive(!QuestUI.activeSelf);
 
     }
     public void OnlyOneUI(string name)

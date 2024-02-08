@@ -53,6 +53,7 @@ MonoBehaviour:
   inventoryManager: {fileID: 8359699225235894645}
   uiManager: {fileID: 7695252493299179686}
   audioManager: {fileID: 8759675144221502933}
+  ready: 0
 --- !u!1001 &270139061809653192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -210,10 +211,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5994031121013124132, guid: 9a7ee35ca0a1c344e8b4d2d8caf46872, type: 3}
-      propertyPath: audioManager
-      value: 
-      objectReference: {fileID: 8759675144221502933}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a7ee35ca0a1c344e8b4d2d8caf46872, type: 3}
 --- !u!114 &436583491362697228 stripped
