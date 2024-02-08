@@ -8,7 +8,7 @@ public class SelectMonsters : MonoBehaviour
 {
     GameObject obj;
     public GameObject Montext;
-    private RaycastHit Hit2;
+    public RaycastHit Hit2;
     private int i;
     // Start is called before the first frame update
     void Start()
@@ -40,9 +40,10 @@ public class SelectMonsters : MonoBehaviour
                 Debug.Log(hit.collider);
                 Debug.DrawRay(Camera.main.transform.position, rayvec, Color.red, 1f);
             }
-            if (Hit2.collider != null && Hit2.collider.tag == "Enemy"&& i == 1 )
+            if (Hit2.collider != null && Hit2.collider.tag == "Enemy"&& i == 1)
             {
-                SceneManager.LoadScene("BattleScene");
+                //SceneManager.LoadScene("BattleScene");
+                Hit2.collider.gameObject.SetActive(false);
             }
         }
     }
