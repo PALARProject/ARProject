@@ -145,7 +145,7 @@ public class DBManager : MonoBehaviour
             return null;
         }
     }
-    public async Task<UserInfo> GetUserInfo(string UID)
+    public async Task<UserInfo> GetUserInvenInfo(string UID)
     {
         Debug.Log(UID);
         try
@@ -186,7 +186,108 @@ public class DBManager : MonoBehaviour
             return new UserInfo();
         }
     }
-
+    public async Task<QuestInfo> GetQuestInfo(int questId)
+    {
+        try
+        {
+            QuestInfo result = new QuestInfo();
+            DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+            userRef = userRef.Child("Äù½ºÆ®").Child(questId.ToString());
+            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        Dictionary<string, object> questData = snapshot.Value as Dictionary<string, object>;
+                        Debug.Log(questId + ": ItemData read successfully:");
+                        result.questId = questId;
+                        result.title = questData["Äù½ºÆ® Á¦¸ñ"].ToString();
+                        result.desc = questData["Äù½ºÆ® ³»¿ë"].ToString();
+                        foreach (var pair in questData)
+                        {
+                            Debug.Log(pair.Value);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No data found at the specified location.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error reading data: " + task.Exception);
+                }
+            });
+            userRef = userRef.Child("Äù½ºÆ®").Child(questId.ToString()).Child("Äù½ºÆ® º¸»ó");
+            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        Dictionary<string, object> questData = snapshot.Value as Dictionary<string, object>;
+                        Debug.Log(questId + ": ItemData read successfully:");
+                        string[] compenItem = new string[questData.Count];
+                        int n = 0;
+                        foreach (var pair in questData)
+                        {
+                            compenItem[n] = pair.Value.ToString();
+                            n++;
+                        }
+                        result.compen = compenItem;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No data found at the specified location.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error reading data: " + task.Exception);
+                }
+            });
+            return result;
+        }
+        catch
+        {
+            Debug.Log(questId + ": Error");
+            return new QuestInfo();
+        }
+    }
+    public async Task<Dictionary<string, object>> GetUserQuestInfo(string UID)
+    {
+        try
+        {
+            Dictionary<string, object> userData = new Dictionary<string, object>();
+            DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+            userRef = userRef.Child("ÇÃ·¹ÀÌ¾î").Child(UID).Child("Äù½ºÆ®");
+            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        userData = snapshot.Value as Dictionary<string, object>;
+                        Debug.Log("Data read successfully:" + UID);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No data found at the specified location.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error reading data: " + task.Exception);
+                }
+            });
+            return userData;
+        }
+        catch
+        {
+            return null;
+        }
+    }
     public async void UpdateUserInfo(string userName, string inventoryNum,string itemName)
     {
         DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
