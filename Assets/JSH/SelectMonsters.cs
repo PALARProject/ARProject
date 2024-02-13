@@ -27,9 +27,6 @@ public class SelectMonsters : MonoBehaviour
             {
                 Vector3 screen = new Vector3(touch.position.x, touch.position.y, 0);
                 Vector3 touchPos = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 120));
-                Debug.Log("P" + touch.position);
-                Debug.Log("M" + Input.mousePosition);
-                Debug.Log(touchPos);
                 //Vector3 touchPos = Camera.main.transform.position + new Vector3(touch.position.x,0,touch.position.y);
 
                 Vector3 rayvec = touchPos - Camera.main.transform.position;
@@ -37,8 +34,6 @@ public class SelectMonsters : MonoBehaviour
                 RaycastHit hit;
                 Physics.Raycast(Camera.main.transform.position, rayvec,out hit);
                 Hit2 = hit;
-                Debug.Log(hit.collider);
-                Debug.DrawRay(Camera.main.transform.position, rayvec, Color.red, 1f);
             }
             if (Hit2.collider != null && Hit2.collider.tag == "Enemy"&& i == 1 )
             {

@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     //Inventory
     [SerializeField] protected InventoryManager inventoryManager;
     public InventoryManager InventoryManager { get { return this.inventoryManager; } set { this.inventoryManager = value; } }
+    //Inventory
+    [SerializeField] protected QuestManager questManager;
+    public QuestManager QuestManager { get { return this.questManager; } set { this.questManager = value; } }
     //UI
     [SerializeField] protected UIManager uiManager;
     public UIManager UIManager { get { return this.uiManager; } set { this.uiManager = value; } }
@@ -37,11 +40,13 @@ public class GameManager : MonoBehaviour
 
         //유저설정
         if(DBManager!=null)
-            UserInfo = await DBManager.GetUserInfo(PlayerPrefs.GetString("UID"));
+            UserInfo = await DBManager.GetUserInvenInfo(PlayerPrefs.GetString("UID"));
 
         if(InventoryManager!=null)
             InventoryManager.Init();
 
+        if (QuestManager != null)
+            //QuestManager.UserQuest();
         ready = true;
         //UserInfo.inventoryItems;
     }
