@@ -24,6 +24,7 @@ public class AvoidManager : MonoBehaviour
 
     public GameObject AvoidUI;
     public GameObject BattleUI;
+    public GameObject ResultUI;
 
     private void OnEnable()
     {
@@ -136,8 +137,7 @@ public class AvoidManager : MonoBehaviour
         }
         else
         {
-            angleText.text = "얼굴을 찾을 수 없습니다.";
-
+            ResultUI.SetActive(true);
         }
     }
 
