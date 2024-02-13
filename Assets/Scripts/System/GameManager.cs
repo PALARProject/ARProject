@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,12 +33,12 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-        //¸Å´ÏÀú ÃÊ±âÈ­
+        //ë§¤ë‹ˆì € ì´ˆê¸°í™”
         if (AudioManager != null)
             AudioManager.Init();
 
 
-        //À¯Àú¼³Á¤
+        //ìœ ì €ì„¤ì •
         if (DBManager != null)
         {
             UserInfo = await DBManager.GetUserInfo(PlayerPrefs.GetString("UID"));
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
             InventoryManager.Init();
 
         if (QuestManager != null)
-            QuestManager.Init();
+            //QuestManager.Init();
         ready = true;
         //UserInfo.inventoryItems;
     }
@@ -63,8 +63,8 @@ public class GameManager : MonoBehaviour
         {
             return "";
         }
-        //³ªÁß¿¡ ¾ÏÈ£È­ ¿¹Á¤
-        //prefs´Â ÄÄÇ»ÅÍ ³»ºÎ ÀúÀå¼Ò¸¦ »ç¿ëÇÏ±â ¶§¹®¿¡ º¸¾È»óÀÇ ¹®Á¦°¡ »ı±æ ¼ö ÀÖ´Ù.
+        //ë‚˜ì¤‘ì— ì•”í˜¸í™” ì˜ˆì •
+        //prefsëŠ” ì»´í“¨í„° ë‚´ë¶€ ì €ì¥ì†Œë¥¼ ì‚¬ìš©í•˜ê¸° ë•Œë¬¸ì— ë³´ì•ˆìƒì˜ ë¬¸ì œê°€ ìƒê¸¸ ìˆ˜ ìˆë‹¤.
         string userName = PlayerPrefs.GetString(key);
         return userName;
     }

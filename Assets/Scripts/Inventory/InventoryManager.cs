@@ -138,12 +138,12 @@ public class InventoryManager : MonoBehaviour
             return -1;
         }
         Debug.Log("box_" + string.Format("{0:D3}", num + 1));
-        GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_" + string.Format("{0:D3}", num + 1), getItemInfo.name);
+        await GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName,  num , getItemInfo.name);
         return 1;
     }
      
     
-    public ItemInfo OutputInventory(int inventoryNum)
+    public async Task<ItemInfo> OutputInventory(int inventoryNum)
     {
         Debug.Log("Inventory " + inventoryNum + "- 아이템 선택되어 비활성화됩니다.");
         ItemInfo outItem = null;
@@ -157,7 +157,7 @@ public class InventoryManager : MonoBehaviour
 
         try
         {
-            GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, "box_00" + (inventoryNum + 1), "null");
+            await GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, inventoryNum, "null");
         }
         catch
         {
