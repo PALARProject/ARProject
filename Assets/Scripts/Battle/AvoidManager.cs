@@ -11,7 +11,9 @@ public class AvoidManager : MonoBehaviour
     public float countdown;
     public GameObject countUI;
     public Text countText;
-    public Text angleText;
+    public Text playerText;
+    public Text enemyText;
+    public Text resultText;
 
     public ARFaceManager faceManager;
     public GameObject ChangeCam;
@@ -24,6 +26,7 @@ public class AvoidManager : MonoBehaviour
 
     public GameObject AvoidUI;
     public GameObject BattleUI;
+    public GameObject AwareUI;
     public GameObject ResultUI;
 
     private void OnEnable()
@@ -58,16 +61,22 @@ public class AvoidManager : MonoBehaviour
         }
     }
 
-    IEnumerator WaitRetryAvoid()
+    public void RetryAvoid()
     {
-        yield return new WaitForSeconds(1f);
+        AvoidStart();
+        AwareUI.SetActive(false);
+    }
+
+    public void CancelAvoid()
+    {
+        StartCoroutine(ShowResultReturn(false));
+        AwareUI.SetActive(false);
     }
 
     void AvoidStart()
     {
         countdown = 7;
         isCheck = false;
-        angleText.text = "";
         countText = countUI.GetComponent<Text>();
 
         chamCham.transform.eulerAngles = Vector3.zero;
@@ -96,16 +105,17 @@ public class AvoidManager : MonoBehaviour
 
     void CheckAvoid()
     {
+        countText.text = "";
+        ResultUI.SetActive(true);
+        playerText.text = playerDirection.ToString();
+        enemyText.text = AIDirection.ToString();
         if (playerDirection == AIDirection)
         {
-            Debug.Log("게임 오버!");
-            ShowResult(false);
-
+            resultText.text = "회피 실패!";
         }
         else
         {
-            Debug.Log("회피 성공!");
-            ShowResult(true);
+            resultText.text = "회피 성공!";
         }
     }
 
@@ -117,7 +127,6 @@ public class AvoidManager : MonoBehaviour
             Quaternion faceRotation = face.transform.rotation;
 
             float yAngle = Quaternion.Euler(0, faceRotation.eulerAngles.y, 0).eulerAngles.y;
-            angleText.text = "";
 
             if (yAngle > 14f && yAngle < 30f)
             {
@@ -137,13 +146,20 @@ public class AvoidManager : MonoBehaviour
         }
         else
         {
-            ResultUI.SetActive(true);
+            AwareUI.SetActive(true);
         }
     }
 
-    void ShowResult(bool success)
+    public void ShowResult()
     {
-        StartCoroutine(ShowResultReturn(success));
+        if(playerDirection != AIDirection)
+        {
+            StartCoroutine(ShowResultReturn(true));
+        }
+        else
+        {
+            StartCoroutine(ShowResultReturn(false));
+        }
     }
 
     IEnumerator ShowResultReturn(bool success)
@@ -159,11 +175,11 @@ public class AvoidManager : MonoBehaviour
             BattleManager.instance.AvoidFailed();
         }
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
-        countText.text = "";
-        BattleUI.SetActive(true);
         AvoidUI.SetActive(false);
+        ResultUI.SetActive(false);
+        BattleUI.SetActive(true);
         ChangeCam.GetComponent<ChangedCam>().ChangeBattleStateCam();
 
     }
