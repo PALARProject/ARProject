@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ItemInfoUI : MonoBehaviour
 {
     public Image image;
+    public Text Name;
     public Text DP;
     public Text AP;
     public Text Description;
@@ -19,6 +20,7 @@ public class ItemInfoUI : MonoBehaviour
         Trash.onClick.RemoveAllListeners();
         Exit.onClick.RemoveAllListeners();
         image.sprite = GameManager.instance.InventoryManager.Item_Images[i].sprite;
+        Name.text = GameManager.instance.UserInfo.inventoryItems[i].name;
         DP.text = GameManager.instance.UserInfo.inventoryItems[i].status.dp.ToString();
         AP.text = GameManager.instance.UserInfo.inventoryItems[i].status.ap.ToString();
         Description.text= GameManager.instance.UserInfo.inventoryItems[i].description.ToString();
