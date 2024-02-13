@@ -14,6 +14,7 @@ public class AvoidManager : MonoBehaviour
     public Text playerText;
     public Text enemyText;
     public Text resultText;
+    public Text stateText;
 
     public ARFaceManager faceManager;
     public GameObject ChangeCam;
@@ -28,6 +29,7 @@ public class AvoidManager : MonoBehaviour
     public GameObject BattleUI;
     public GameObject AwareUI;
     public GameObject ResultUI;
+    public GameObject StateUI;
 
     private void OnEnable()
     {
@@ -77,6 +79,7 @@ public class AvoidManager : MonoBehaviour
     {
         countdown = 7;
         isCheck = false;
+        StateUI.SetActive(true);
         countText = countUI.GetComponent<Text>();
 
         chamCham.transform.eulerAngles = Vector3.zero;
@@ -106,6 +109,7 @@ public class AvoidManager : MonoBehaviour
     void CheckAvoid()
     {
         countText.text = "";
+        StateUI.SetActive(false);
         ResultUI.SetActive(true);
         playerText.text = playerDirection.ToString();
         enemyText.text = AIDirection.ToString();
@@ -131,17 +135,17 @@ public class AvoidManager : MonoBehaviour
             if (yAngle > 14f && yAngle < 30f)
             {
                 playerDirection = Direction.RIGHT;
-                Debug.Log("사용자가 오른쪽을 향하고 있습니다");
+                stateText.text = "오른쪽";
             }
             else if (yAngle > 330f && yAngle < 355f)
             {
                 playerDirection = Direction.LEFT;
-                Debug.Log("사용자가 왼쪽을 향하고 있습니다");
+                stateText.text = "왼쪽";
             }
             else
             {
                 playerDirection = Direction.FORWARD;
-                Debug.Log("사용자가 정면을 향하고 있습니다.");
+                stateText.text = "정면";
             }
         }
         else

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
+public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST, DRAW }
 
 public class BattleManager : MonoBehaviour
 {
@@ -100,7 +99,7 @@ public class BattleManager : MonoBehaviour
         shakeObject.VibrationObject(0.02f, 0.2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
-        dialogueText.text = "The Attack is sucessful!";
+        dialogueText.text = "공격이 성공했다!";
 
         yield return new WaitForSeconds(2f);
 
@@ -120,7 +119,7 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyAfterAvoidSucess()
     {
         yield return new WaitForSeconds(4f);
-        dialogueText.text = enemyUnit.unitName + "is off its guard";
+        dialogueText.text = enemyUnit.unitName + "가 빈틈을 보였다!";
 
         playerEffect.PlayerEffectOn();
         yield return new WaitForSeconds(0.5f);
@@ -128,7 +127,7 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-        dialogueText.text = "The Attack is sucessful!";
+        dialogueText.text = "추가 공격에 성공했다!";
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
 
         yield return new WaitForSeconds(2f);
@@ -148,7 +147,7 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyAfterAvoidFailed()
     {
         yield return new WaitForSeconds(4f);
-        dialogueText.text = enemyUnit.unitName + "attack!";
+        dialogueText.text = enemyUnit.unitName + "가 공격했다!";
 
         yield return new WaitForSeconds(1f);
         EnemyAnimator("Attack");
@@ -175,7 +174,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        dialogueText.text = enemyUnit.unitName + "attack!";
+        dialogueText.text = enemyUnit.unitName + "가 공격했다!";
         yield return new WaitForSeconds(1f);
 
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
@@ -205,14 +204,49 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if (state == BattleState.WON)
         {
-            ResultManager.ActiveResultUI(true);
+            ResultManager.ActiveResultUI(1);
             EnemyAnimator("Dead");
-            dialogueText.text = "win!";
+            dialogueText.text = "승리했다!";
         }
         else if (state == BattleState.LOST)
         {
-            ResultManager.ActiveResultUI(false);
-            dialogueText.text = "lose";
+            ResultManager.ActiveResultUI(2);
+            dialogueText.text = "패배했다….";
+        }
+        else if(state == BattleState.DRAW)
+        {
+            ResultManager.ActiveResultUI(3);
+            dialogueText.text = "도주에 성공했다!";
+        }
+    }
+
+    IEnumerator TryEscaping()
+    {
+        yield return new WaitForSeconds(1f);
+        dialogueText.text = "도주를 시도했다…!";
+
+        int num = Random.Range(0, 3);
+        bool trying;
+        if(num == 1)
+        {
+            trying = true;
+        }
+        else
+        {
+            trying = false;
+        }
+
+        yield return new WaitForSeconds(2f);
+        if(trying == true)
+        {
+            dialogueText.text = "도주에 성공했다!";
+            state = BattleState.DRAW;
+            EndBattle();
+        }
+        else
+        {
+            dialogueText.text = "도주에 실패했다….";
+            EnemyTurn();
         }
     }
 
@@ -222,7 +256,7 @@ public class BattleManager : MonoBehaviour
         avoidButton.interactable = true;
         EscapeButton.interactable = true;
 
-        dialogueText.text = "Action :";
+        dialogueText.text = "어떻게 할까?";
     }
 
     public void OnAvoidButton()
@@ -302,5 +336,17 @@ public class BattleManager : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void OnEscapeButton()
+    {
+        if (state != BattleState.PLAYERTURN)
+            return;
+
+        attackButton.interactable = false;
+        avoidButton.interactable = false;
+        EscapeButton.interactable = false;
+
+
     }
 }
