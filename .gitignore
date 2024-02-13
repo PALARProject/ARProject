@@ -75,4 +75,3 @@ Assets/Firebase/
 Assets/google-services.*
 Assets/StreamingAssets/google-services.*
 */Firebase/*
-/Assets/Plugins/Android/*
