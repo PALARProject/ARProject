@@ -61,7 +61,7 @@ public class InventoryManager : MonoBehaviour
                 Item_Images[index].sprite = null;
                 Items[index].interactable = false;
                 userInfo.inventoryItems[index] = null;
-                Debug.Log(index + "-µî·ÏµÇÁö ¾ÊÀº °æ·Î");
+                Debug.Log(index + "-ë“±ë¡ë˜ì§€ ì•Šì€ ê²½ë¡œ");
             }
         }
 
@@ -89,9 +89,9 @@ public class InventoryManager : MonoBehaviour
             {
                 if (haveItem.itemId == getItemInfo.itemId)
                 {
-                    //UI - °°Àº ¾ÆÀÌÅÛ ¸Ô¾ú´Ù Ãâ·Â
+                    //UI - ê°™ì€ ì•„ì´í…œ ë¨¹ì—ˆë‹¤ ì¶œë ¥
 
-                    Debug.Log(itemName + "- ÀÌ¹Ì ¸ÔÀº ¾ÆÀÌÅÛ");
+                    Debug.Log(itemName + "- ì´ë¯¸ ë¨¹ì€ ì•„ì´í…œ");
                     return 0;
                 }
                 if (getItemInfo.category == haveItem.category)
@@ -129,12 +129,12 @@ public class InventoryManager : MonoBehaviour
 
                 //byte[] updateInven = System.Text.Encoding.UTF8.GetBytes(num+" "+itemId);
                 //await GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userId, updateInven);
-                Debug.Log("Inventory " + num + "- ¾ÆÀÌÅÛ:"+ itemName + "ÀÌ µé¾î°¡ È°¼ºÈ­µË´Ï´Ù.");
+                Debug.Log("Inventory " + num + "- ì•„ì´í…œ:"+ itemName + "ì´ ë“¤ì–´ê°€ í™œì„±í™”ë©ë‹ˆë‹¤.");
             }
         }
         catch
         {
-            Debug.Log("-µî·ÏµÇÁö ¾ÊÀº °æ·Î");
+            Debug.Log("-ë“±ë¡ë˜ì§€ ì•Šì€ ê²½ë¡œ");
             return -1;
         }
         Debug.Log("box_" + string.Format("{0:D3}", num + 1));
@@ -145,7 +145,7 @@ public class InventoryManager : MonoBehaviour
     
     public async Task<ItemInfo> OutputInventory(int inventoryNum)
     {
-        Debug.Log("Inventory " + inventoryNum + "- ¾ÆÀÌÅÛ ¼±ÅÃµÇ¾î ºñÈ°¼ºÈ­µË´Ï´Ù.");
+        Debug.Log("Inventory " + inventoryNum + "- ì•„ì´í…œ ì„ íƒë˜ì–´ ë¹„í™œì„±í™”ë©ë‹ˆë‹¤.");
         ItemInfo outItem = null;
         if (GameManager.instance.UserInfo.inventoryItems[inventoryNum] != null)
         {
@@ -165,6 +165,6 @@ public class InventoryManager : MonoBehaviour
         }
         return outItem;
         
-        //¾ÆÀÌÅÛ ±â´É »ç¿ë or ¹ö¸®±â ±â´É Ãß°¡
+        //ì•„ì´í…œ ê¸°ëŠ¥ ì‚¬ìš© or ë²„ë¦¬ê¸° ê¸°ëŠ¥ ì¶”ê°€
     }
 }
