@@ -58,6 +58,7 @@ public class BattleManager : MonoBehaviour
 
         while (!GameManager.instance.ready)
             yield return new WaitForFixedUpdate();
+
         playerPrefab.GetComponent<Unit>().Init();
         state = BattleState.START;
         StartCoroutine(SetupBattle());

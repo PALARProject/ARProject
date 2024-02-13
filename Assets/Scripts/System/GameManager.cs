@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
         if (QuestManager != null)
             //QuestManager.UserQuest();
+
         ready = true;
         //UserInfo.inventoryItems;
     }

@@ -148,9 +148,11 @@ public class DBManager : MonoBehaviour
     public async Task<UserInfo> GetUserInvenInfo(string UID)
     {
         Debug.Log(UID);
+
+        UserInfo result = new UserInfo();
+        result.userName = UID;
         try
         {
-            UserInfo result = new UserInfo();
             Dictionary<string, object> userData = new Dictionary<string, object>();
             DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
             userRef = userRef.Child("플레이어").Child(UID).Child("인벤토리");
@@ -161,7 +163,6 @@ public class DBManager : MonoBehaviour
                     if (snapshot.Exists)
                     {
                         userData = snapshot.Value as Dictionary<string, object>;
-                        result.userName = UID;
                         Debug.Log("Data read successfully:"+ UID);
                     }
                     else
