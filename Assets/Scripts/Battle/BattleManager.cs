@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -111,7 +111,7 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyAfterAvoidSucess()
     {
         yield return new WaitForSeconds(2f);
-        dialogueText.text = enemyUnit.unitName + "°¡ ºóÆ´À» º¸¿´´Ù!";
+        dialogueText.text = enemyUnit.unitName + "ê°€ ë¹ˆí‹ˆì„ ë³´ì˜€ë‹¤!";
 
         yield return new WaitForSeconds(2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
