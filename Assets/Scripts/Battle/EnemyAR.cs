@@ -16,7 +16,7 @@ public class EnemyAR : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
         DeleteGround();
     }
