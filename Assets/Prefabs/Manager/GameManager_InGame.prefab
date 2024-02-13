@@ -52,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dbManager: {fileID: 8359699225026880167}
   inventoryManager: {fileID: 8359699225235894645}
-  questManager: {fileID: 0}
+  questManager: {fileID: 4848595717626237471}
   uiManager: {fileID: 7695252493299179686}
   audioManager: {fileID: 8759675144221502933}
   ready: 0
@@ -396,6 +396,17 @@ PrefabInstance:
       objectReference: {fileID: 8759675146016681128}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40f3ce001d4fa12459bd2cfc662c1cdf, type: 3}
+--- !u!114 &4848595717626237471 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8947828425788032019, guid: 40f3ce001d4fa12459bd2cfc662c1cdf, type: 3}
+  m_PrefabInstance: {fileID: 4567985475371570700}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f9dedd73dc71ba4fa8b21cc679ab69b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4929574294720039452 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8866992991899081744, guid: 40f3ce001d4fa12459bd2cfc662c1cdf, type: 3}

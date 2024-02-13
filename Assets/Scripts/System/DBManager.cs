@@ -145,9 +145,8 @@ public class DBManager : MonoBehaviour
             return null;
         }
     }
-    public async Task<UserInfo> GetUserInvenInfo(string UID)
+    public async Task<UserInfo> GetUserInfo(string UID)
     {
-        Debug.Log(UID);
         try
         {
             UserInfo result = new UserInfo();
@@ -162,16 +161,16 @@ public class DBManager : MonoBehaviour
                     {
                         userData = snapshot.Value as Dictionary<string, object>;
                         result.userName = UID;
-                        Debug.Log("Data read successfully:"+ UID);
+                        Debug.Log("Item Data read successfully:" + UID);
                     }
                     else
                     {
-                        Debug.LogWarning("No data found at the specified location.");
+                        Debug.LogWarning("No Item data found at the specified location.");
                     }
                 }
                 else
                 {
-                    Debug.LogError("Error reading data: " + task.Exception);
+                    Debug.LogError("Error reading Item data: " + task.Exception);
                 }
             });
             for (int i = 0; i < userData.Count; i++)
@@ -179,6 +178,7 @@ public class DBManager : MonoBehaviour
                 int index = i;
                 result.inventoryItems.Add(index, await GameManager.instance.DBManager.GetItemTable(userData["box_" + string.Format("{0:D3}", index + 1)].ToString()));
             }
+
             return result;
         }
         catch
@@ -186,13 +186,48 @@ public class DBManager : MonoBehaviour
             return new UserInfo();
         }
     }
+    public async Task<int> GetUserQuestInfo()
+    {
+        string UID = PlayerPrefs.GetString("UID");
+        Dictionary<string, object> questData = new Dictionary<string, object>();
+        DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+        userRef = userRef.Child("플레이어").Child(UID).Child("퀘스트");
+        await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                if (snapshot.Exists)
+                {
+                    questData = snapshot.Value as Dictionary<string, object>;
+                    Debug.Log("Data read Quest successfully:" + UID);
+                }
+                else
+                {
+                    Debug.LogWarning("No Quest data found at the specified location.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Error reading Quest data: " + task.Exception);
+            }
+        });
+        int n = 0;
+        foreach (var pair in questData)
+        {
+            if ((bool)pair.Value == false)
+                GameManager.instance.UserInfo.haveQuest.Add(n, int.Parse(pair.Key.Split("_")[1]));
+            n++;
+        }
+        return 1;
+    }
     public async Task<QuestInfo> GetQuestInfo(int questId)
     {
         try
         {
+            
             QuestInfo result = new QuestInfo();
             DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
-            userRef = userRef.Child("퀘스트").Child(questId.ToString());
+            userRef = userRef.Child("퀘스트").Child("퀘스트 번호").Child(questId.ToString());
             await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
                 if (task.IsCompleted)
                 {
@@ -200,14 +235,10 @@ public class DBManager : MonoBehaviour
                     if (snapshot.Exists)
                     {
                         Dictionary<string, object> questData = snapshot.Value as Dictionary<string, object>;
-                        Debug.Log(questId + ": ItemData read successfully:");
+                        Debug.Log(questId + ": Quest Data read successfully");
                         result.questId = questId;
-                        result.title = questData["퀘스트 제목"].ToString();
-                        result.desc = questData["퀘스트 내용"].ToString();
-                        foreach (var pair in questData)
-                        {
-                            Debug.Log(pair.Value);
-                        }
+                        result.title = questData["이름"].ToString();
+                        result.desc = questData["설명"].ToString();
                     }
                     else
                     {
@@ -217,34 +248,7 @@ public class DBManager : MonoBehaviour
                 else
                 {
                     Debug.LogError("Error reading data: " + task.Exception);
-                }
-            });
-            userRef = userRef.Child("퀘스트").Child(questId.ToString()).Child("퀘스트 보상");
-            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
-                if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
-                    if (snapshot.Exists)
-                    {
-                        Dictionary<string, object> questData = snapshot.Value as Dictionary<string, object>;
-                        Debug.Log(questId + ": ItemData read successfully:");
-                        string[] compenItem = new string[questData.Count];
-                        int n = 0;
-                        foreach (var pair in questData)
-                        {
-                            compenItem[n] = pair.Value.ToString();
-                            n++;
-                        }
-                        result.compen = compenItem;
-                    }
-                    else
-                    {
-                        Debug.LogWarning("No data found at the specified location.");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Error reading data: " + task.Exception);
+                    result.questId=-1;
                 }
             });
             return result;
@@ -253,6 +257,48 @@ public class DBManager : MonoBehaviour
         {
             Debug.Log(questId + ": Error");
             return new QuestInfo();
+        }
+    }
+
+    public async Task<string[]> GetQuestCompenInfo(int questId)
+    {
+        try
+        {
+            string[] compenItem = new string[0];
+            DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+            userRef = userRef.Child("퀘스트").Child("퀘스트 번호").Child(questId.ToString()).Child("보상");
+            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        Dictionary<string, object> questData = snapshot.Value as Dictionary<string, object>;
+                        Debug.Log(questId + ": Quest Compen Data read successfully");
+                        compenItem = new string[questData.Count];
+                        int n = 0;
+                        foreach (var pair in questData)
+                        {
+                            compenItem[n] = pair.Key.ToString();
+                            n++;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No data found at the specified location.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error reading data: " + task.Exception);
+                }
+            });
+            return compenItem;
+        }
+        catch
+        {
+            Debug.Log(questId + ": Error");
+            return null;
         }
     }
     public async Task<Dictionary<string, object>> GetUserQuestInfo(string UID)
@@ -288,14 +334,14 @@ public class DBManager : MonoBehaviour
             return null;
         }
     }
-    public async void UpdateUserInfo(string userName, string inventoryNum,string itemName)
+    public async Task<int> UpdateUserInfo(string userName, int inventoryNum,string itemName)
     {
         DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
         // string[] childs를 사용하여 경로 설정
         userRef = userRef.Child("플레이어").Child(userName).Child("인벤토리");
         // 업데이트할 데이터
         Dictionary<string, object> updates = new Dictionary<string, object>();
-        updates.Add(inventoryNum, itemName);
+        updates.Add("box_" + string.Format("{0:D3}", inventoryNum + 1), itemName);
 
         await userRef.UpdateChildrenAsync(updates).ContinueWithOnMainThread(task => {
             if (task.IsCompleted)
@@ -307,5 +353,27 @@ public class DBManager : MonoBehaviour
                 Debug.LogError("Error updating data: " + task.Exception);
             }
         });
+        return 1;
+    }
+    public async Task<int> UpdateQuestInfo(string userName, int questId)
+    {
+        DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+        // string[] childs를 사용하여 경로 설정
+        userRef = userRef.Child("플레이어").Child(userName).Child("퀘스트");
+        // 업데이트할 데이터
+        Dictionary<string, object> updates = new Dictionary<string, object>();
+        updates.Add("q_"+questId, true);
+
+        await userRef.UpdateChildrenAsync(updates).ContinueWithOnMainThread(task => {
+            if (task.IsCompleted)
+            {
+                Debug.Log("Data updated successfully.");
+            }
+            else
+            {
+                Debug.LogError("Error updating data: " + task.Exception);
+            }
+        });
+        return 1;
     }
 }

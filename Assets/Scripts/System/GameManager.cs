@@ -39,14 +39,17 @@ public class GameManager : MonoBehaviour
 
 
         //유저설정
-        if(DBManager!=null)
-            UserInfo = await DBManager.GetUserInvenInfo(PlayerPrefs.GetString("UID"));
+        if (DBManager != null)
+        {
+            UserInfo = await DBManager.GetUserInfo(PlayerPrefs.GetString("UID"));
+            await DBManager.GetUserQuestInfo();
+        }
 
         if(InventoryManager!=null)
             InventoryManager.Init();
 
         if (QuestManager != null)
-            //QuestManager.UserQuest();
+            QuestManager.Init();
         ready = true;
         //UserInfo.inventoryItems;
     }
@@ -83,10 +86,12 @@ public class UserInfo
 {
     public string userName="";
     public Dictionary<int, ItemInfo> inventoryItems=new Dictionary<int, ItemInfo>();
+    public Dictionary<int, int> haveQuest = new Dictionary<int, int>();
     public UserInfo() { }
-    public UserInfo(string _userName, Dictionary<int, ItemInfo> _inventoryItems)
+    public UserInfo(string _userName, Dictionary<int, ItemInfo> _inventoryItems,Dictionary<int,int> _haveQuest)
     {
         this.userName = _userName;
         this.inventoryItems = _inventoryItems;
+        this.haveQuest = _haveQuest;
     }
 }
