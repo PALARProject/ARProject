@@ -5062,7 +5062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1cb77fd3f534b949a1d213d586675b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyManager: {fileID: 0}
+  EnemyManager: {fileID: 1640727345}
   enemy: {fileID: 0}
   PlacedObject: {fileID: 0}
 --- !u!1 &1242511304
@@ -9324,6 +9324,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5196435962279460667, guid: 10caf045848a3d94a8f0767364d3efcb, type: 3}
+      propertyPath: m_TagString
+      value: ARSession
+      objectReference: {fileID: 0}
     - target: {fileID: 5196435962279460676, guid: 10caf045848a3d94a8f0767364d3efcb, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -9378,6 +9382,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 536250182}
     - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
+      propertyPath: enemyAR
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
       propertyPath: BattleUI
       value: 
       objectReference: {fileID: 1198968182}
@@ -9389,6 +9397,10 @@ PrefabInstance:
       propertyPath: ChangeCam
       value: 
       objectReference: {fileID: 1434825960}
+    - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
+      propertyPath: camButton
+      value: 
+      objectReference: {fileID: 1325910230}
     - target: {fileID: 7170975550319299372, guid: 29d3593d4e3375243956aeb27defb148, type: 3}
       propertyPath: changeCam
       value: 

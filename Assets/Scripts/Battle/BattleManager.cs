@@ -37,6 +37,7 @@ public class BattleManager : MonoBehaviour
     public Button attackButton;
     public Button avoidButton;
     public Button EscapeButton;
+    public Button camButton;
 
     public GameObject AvoidUI;
     public GameObject BattleUI;
@@ -55,6 +56,7 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+        camButton.interactable = false;
 
         while (!GameManager.instance.ready)
             yield return new WaitForFixedUpdate();
@@ -70,7 +72,7 @@ public class BattleManager : MonoBehaviour
         if(changeCam.isAR)
         {
             enemyAR = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>();
-            enemyARanim = enemyAR.enemy.GetComponent<Animator>();
+            enemyARanim = enemyAR.PlacedObject.GetComponent<Animator>();
         }
     }
 
@@ -259,6 +261,7 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = true;
         avoidButton.interactable = true;
         EscapeButton.interactable = true;
+        camButton.interactable = true;
 
         dialogueText.text = "어떻게 할까?";
     }
@@ -271,6 +274,7 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+        camButton.interactable = false;
 
         dialogueText.text = enemyUnit.unitName + "가 공격하려고 한다!";
 
@@ -295,6 +299,7 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+        camButton.interactable = false;
 
         StartCoroutine(PlayerAttack());
     }
@@ -356,6 +361,7 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+        camButton.interactable = false;
 
         StartCoroutine(TryEscaping());
     }

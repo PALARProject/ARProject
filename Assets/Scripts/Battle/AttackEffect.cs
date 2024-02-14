@@ -25,7 +25,7 @@ public class AttackEffect : MonoBehaviour
         }
         else
         {
-            loc = enemyAR.enemy.transform.position;
+            loc = enemyAR.PlacedObject.transform.position;
         }
     }
     
