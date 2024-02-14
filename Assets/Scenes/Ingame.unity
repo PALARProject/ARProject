@@ -1387,8 +1387,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1040000926144895403, guid: 3a3b268316782314986a97b1fe817889, type: 3}
+      propertyPath: _imagery._layerProperty.sourceType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1040000926144895403, guid: 3a3b268316782314986a97b1fe817889, type: 3}
       propertyPath: _terrain._layerProperty.sourceType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1040000926144895403, guid: 3a3b268316782314986a97b1fe817889, type: 3}
+      propertyPath: _imagery._layerProperty.sourceOptions.layerSource.Id
+      value: mapbox://styles/mapbox/dark-v9
       objectReference: {fileID: 0}
     - target: {fileID: 1040000926144895403, guid: 3a3b268316782314986a97b1fe817889, type: 3}
       propertyPath: _options.extentOptions.defaultExtents.cameraBoundsOptions.camera
