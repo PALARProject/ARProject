@@ -179,8 +179,7 @@ public class AvoidManager : MonoBehaviour
             BattleManager.instance.AvoidFailed();
         }
 
-        yield return new WaitForSeconds(1f);
-
+        yield return new WaitForSeconds(0.5f);
         AvoidUI.SetActive(false);
         ResultUI.SetActive(false);
         BattleUI.SetActive(true);

@@ -206,8 +206,8 @@ public class BattleManager : MonoBehaviour
         if (state == BattleState.WON)
         {
             ResultManager.ActiveResultUI(1);
-            EnemyAnimator("Dead");
             dialogueText.text = "승리했다!";
+            PlayerPrefs.SetInt("CatchMob", 1);
         }
         else if (state == BattleState.LOST)
         {
@@ -223,7 +223,6 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator TryEscaping()
     {
-        yield return new WaitForSeconds(1f);
         dialogueText.text = "도주를 시도했다…!";
 
         int num = Random.Range(0, 3);
@@ -241,13 +240,15 @@ public class BattleManager : MonoBehaviour
         if(trying == true)
         {
             dialogueText.text = "도주에 성공했다!";
+            yield return new WaitForSeconds(2f);
             state = BattleState.DRAW;
             EndBattle();
         }
         else
         {
             dialogueText.text = "도주에 실패했다….";
-            EnemyTurn();
+            yield return new WaitForSeconds(2f);
+            StartCoroutine(EnemyTurn());
         }
     }
 
@@ -265,7 +266,11 @@ public class BattleManager : MonoBehaviour
         if (state != BattleState.PLAYERTURN)
             return;
 
-        if(changeCam.GetComponent<ChangedCam>().isAR == false)
+        attackButton.interactable = false;
+        avoidButton.interactable = false;
+        EscapeButton.interactable = false;
+
+        if (changeCam.GetComponent<ChangedCam>().isAR == false)
         {
             changeCam.GetComponent<ChangedCam>().AvoidStateCam();
         }
@@ -348,6 +353,6 @@ public class BattleManager : MonoBehaviour
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
 
-
+        StartCoroutine(TryEscaping());
     }
 }
