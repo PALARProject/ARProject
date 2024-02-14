@@ -1,4 +1,4 @@
-﻿namespace Mapbox.Examples
+namespace Mapbox.Examples
 {
 	using UnityEngine;
 	using Mapbox.Utils;
@@ -9,6 +9,7 @@
 
 	public class SpawnOnMap : MonoBehaviour
 	{
+		Vector3 v3 = new Vector3(0, 1, 0);
 		[SerializeField]
 		AbstractMap _map;
 
@@ -43,7 +44,7 @@
 
 				var instance = Instantiate(_markerPrefab);
 				instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
-				instance.transform.localScale = new Vector3(_spawnScale, 0.01f, _spawnScale);
+				instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
 				_spawnedObjects.Add(instance);
 			}
 			/*	_locations = new Vector2d[_locationStrings.Length];
@@ -66,7 +67,7 @@
 			{
 				var spawnedObject = _spawnedObjects[i];
 				var location = _locations[i];
-				spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, true);
+				spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, true) + v3;
 				spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
 			}
 		}

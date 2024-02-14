@@ -1,4 +1,4 @@
-﻿namespace Mapbox.Examples
+namespace Mapbox.Examples
 {
 	using UnityEngine;
 	using Mapbox.Utils;
@@ -48,7 +48,7 @@
 				_locations[i] = Conversions.StringToLatLon(locationString);
 				var instance = Instantiate(_markerPrefab);
 				instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
-				instance.transform.localScale = new Vector3(_spawnScale, 0.01f, _spawnScale);
+				instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
 				_spawnedObjects.Add(instance);
 				/*if (PlayerPrefs.GetString(Hit2.collider.gameObject.transform.position.ToString()) == "1") ;
 				{
@@ -82,7 +82,7 @@
 				var spawnedObject = _spawnedObjects[i];
 				var location = _locations[i];
 				spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, true) + v3;
-				spawnedObject.transform.localScale = new Vector3(_spawnScale, 0.01f, _spawnScale);
+				spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
 			}
 			if (Input.touchCount > 0)
 			{
