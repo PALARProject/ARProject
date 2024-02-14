@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2097,10 +2097,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 399384149300594115, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8359699224061974273, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2149,21 +2145,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager_InGame
       objectReference: {fileID: 0}
-    - target: {fileID: 8759675144755202059, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_Enabled
+    - target: {fileID: 8759675144755202061, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
+      propertyPath: m_SortingOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8759675144755202059, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_BlockingObjects
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8759675144755202059, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_BlockingMask.m_Bits
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 8759675144755202059, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
-      propertyPath: m_IgnoreReversedGraphics
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2a8f5d129e268e4982b1b82f3824c72, type: 3}
