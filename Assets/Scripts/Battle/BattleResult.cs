@@ -47,53 +47,56 @@ public class BattleResult : MonoBehaviour
     
     IEnumerator AnimateUI(int result)
     {
-        //아이템 정산
-        Task<List<ItemInfo>> list= GameManager.instance.DBManager.GetItemsTable();
-        float time = 0;
-        while (!list.IsCompletedSuccessfully && time<5)
+        if (result==1)
         {
-            time += Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
-        }
-
-        List<ItemInfo> collectItem = new List<ItemInfo>();
-        if (time < 5)
-        {
-            List<ItemInfo> itemList = list.Result;
-            for (int i = 0; i < 3; i++)
+            //아이템 정산
+            Task<List<ItemInfo>> list= GameManager.instance.DBManager.GetItemsTable();
+            float time = 0;
+            while (!list.IsCompletedSuccessfully && time<5)
             {
-                int random = Random.Range(0, itemList.Count);
-                int n = 0;
-                foreach (ItemInfo pair in itemList)
+                time += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+
+            List<ItemInfo> collectItem = new List<ItemInfo>();
+            if (time < 5)
+            {
+                List<ItemInfo> itemList = list.Result;
+                for (int i = 0; i < 3; i++)
                 {
-                    if (n == random)
+                    int random = Random.Range(0, itemList.Count);
+                    int n = 0;
+                    foreach (ItemInfo pair in itemList)
                     {
-                        ItemInfo copy = pair.DeepCopy();
-                        collectItem.Add(copy);
-                        Debug.Log(collectItem[i].name);
-                        itemList.Remove(pair);
-                        break;
+                        if (n == random)
+                        {
+                            ItemInfo copy = pair.DeepCopy();
+                            collectItem.Add(copy);
+                            Debug.Log(collectItem[i].name);
+                            itemList.Remove(pair);
+                            break;
+                        }
+                        n++;
                     }
-                    n++;
                 }
             }
-        }
-        for (int i=0;i< collectItem.Count; i++)
-        {
-            int index = i;
-            GameObject obj = Instantiate(Result_Item, resultLocation[i].transform);
-            Button btn=obj.GetComponent<Button>();
-            Image image = obj.GetComponent<Image>();
-            image.sprite = Resources.Load<Sprite>("Item/Sprite/" + collectItem[i].name);
-            string name = collectItem[index].name;
-            btn.onClick.AddListener(async () =>
+            for (int i=0;i< collectItem.Count; i++)
             {
-                if (info != null)
+                int index = i;
+                GameObject obj = Instantiate(Result_Item, resultLocation[i].transform);
+                Button btn=obj.GetComponent<Button>();
+                Image image = obj.GetComponent<Image>();
+                image.sprite = Resources.Load<Sprite>("Item/Sprite/" + collectItem[i].name);
+                string name = collectItem[index].name;
+                btn.onClick.AddListener(async () =>
                 {
-                    info.gameObject.GetComponent<ItemInfoUI>().Result_Init(obj, collectItem[index]);
-                    info.gameObject.SetActive(true);
-                }
-            });
+                    if (info != null)
+                    {
+                        info.gameObject.GetComponent<ItemInfoUI>().Result_Init(obj, collectItem[index]);
+                        info.gameObject.SetActive(true);
+                    }
+                });
+            }
         }
         resultUI.SetActive(true);
         if (result == 1)
