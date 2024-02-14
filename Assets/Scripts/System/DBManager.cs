@@ -95,7 +95,7 @@ public class DBManager : MonoBehaviour
                     if (snapshot.Exists)
                     {
                         Dictionary<string, object> itemData = snapshot.Value as Dictionary<string, object>;
-                        Debug.Log(itemName + ": ItemData read successfully:");
+                        Debug.Log(itemName+": ItemData read successfully:");    
                         result.itemId = (int)(long)itemData["아이템코드"];
                         result.name = itemName;
                         result.category = itemData["아이템 카테고리"].ToString();
@@ -224,7 +224,7 @@ public class DBManager : MonoBehaviour
     {
         try
         {
-
+            
             QuestInfo result = new QuestInfo();
             DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
             userRef = userRef.Child("퀘스트").Child("퀘스트 번호").Child(questId.ToString());
@@ -248,7 +248,7 @@ public class DBManager : MonoBehaviour
                 else
                 {
                     Debug.LogError("Error reading data: " + task.Exception);
-                    result.questId = -1;
+                    result.questId=-1;
                 }
             });
             return result;
@@ -334,7 +334,7 @@ public class DBManager : MonoBehaviour
             return null;
         }
     }
-    public async Task<int> UpdateUserInfo(string userName, int inventoryNum, string itemName)
+    public async Task<int> UpdateUserInfo(string userName, int inventoryNum,string itemName)
     {
         DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
         // string[] childs를 사용하여 경로 설정
@@ -362,7 +362,7 @@ public class DBManager : MonoBehaviour
         userRef = userRef.Child("플레이어").Child(userName).Child("퀘스트");
         // 업데이트할 데이터
         Dictionary<string, object> updates = new Dictionary<string, object>();
-        updates.Add("q_" + questId, true);
+        updates.Add("q_"+questId, true);
 
         await userRef.UpdateChildrenAsync(updates).ContinueWithOnMainThread(task => {
             if (task.IsCompleted)

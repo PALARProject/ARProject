@@ -24,7 +24,7 @@ public class ItemInfoUI : MonoBehaviour
         DP.text = GameManager.instance.UserInfo.inventoryItems[i].status.dp.ToString();
         AP.text = GameManager.instance.UserInfo.inventoryItems[i].status.ap.ToString();
         Description.text= GameManager.instance.UserInfo.inventoryItems[i].description.ToString();
-        Trash.onClick.AddListener(async() =>
+        Trash.onClick.AddListener(async () =>
         {
             await GameManager.instance.InventoryManager.OutputInventory(i);
             gameObject.SetActive(false);

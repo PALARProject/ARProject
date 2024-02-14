@@ -127,8 +127,7 @@ public class InventoryManager : MonoBehaviour
                 Items[num].interactable = true;
                 GameManager.instance.UserInfo.inventoryItems[num] = getItemInfo;
 
-                //byte[] updateInven = System.Text.Encoding.UTF8.GetBytes(num+" "+itemId);
-                //await GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userId, updateInven);
+                await GameManager.instance.DBManager.UpdateUserInfo(GameManager.instance.UserInfo.userName, num, getItemInfo.name);
                 Debug.Log("Inventory " + num + "- 아이템:"+ itemName + "이 들어가 활성화됩니다.");
             }
         }

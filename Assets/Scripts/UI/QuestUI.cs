@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public class QuestUI : MonoBehaviour
 {
+    QuestInfo quest;
     public int questId;
     public string[] completeItem;
-    Text title;
-    Text desc;
+    public Text title;
+    public Text desc;
     Button btn;
     public bool condition = false;
+
     private void Start()
     {
         btn = GetComponent<Button>();
@@ -28,26 +30,50 @@ public class QuestUI : MonoBehaviour
     {
         this.questId = questId;
         this.condition = false;
-        QuestInfo quest = await GameManager.instance.DBManager.GetQuestInfo(questId);
-        title.text = quest.title;
-        desc.text = quest.desc;
+        quest = await GameManager.instance.DBManager.GetQuestInfo(questId);
+        quest.compen = await GameManager.instance.DBManager.GetQuestCompenInfo(questId);
+        this.title.text = quest.title;
+        this.desc.text = quest.desc;
         completeItem = quest.compen;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        
+        switch (questId)
+        {
+            case 1:
+                //»óÀÚ ¿©´Â ÄÚµå
+                if (PlayerPrefs.HasKey("OpenBox"))
+                {
+                    if (PlayerPrefs.GetInt("OpenBox") == 1)
+                    {
+                        condition = true;
+                    }
+                }
+                PlayerPrefs.SetInt("OpenBox", 0);
+                break;
+            case 2:
+                if (PlayerPrefs.HasKey("CatchMob"))
+                {
+                    if(PlayerPrefs.GetInt("CatchMob") == 1)
+                    {
+                        condition = true;
+                    }
+                }
+                PlayerPrefs.SetInt("CatchMob", 0);
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
     }
 
-    public void CompleteQuest()
+    public async void CompleteQuest()
     {
         string[] list
-            = new string[2];
-            //= completeItem;
-        
-        list[0] = "°¡Á×°©¿Ê";
-        list[1] = "±Ý¼Ó°©¿Ê";
+            = completeItem;
         GameManager.instance.UIManager.ResultUI.GetComponent<ResulUI_Ingame>().EatItem(list);
+        await GameManager.instance.DBManager.UpdateQuestInfo(GameManager.instance.UserInfo.userName,questId);
     }
 }

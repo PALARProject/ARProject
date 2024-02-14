@@ -136,8 +136,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 129e8cb76f0e57542ab2b8027f2765f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questID: 0
+  questId: 0
   completeItem: []
+  title: {fileID: 5349481058407651732}
+  desc: {fileID: 974720562706137189}
   condition: 0
 --- !u!1 &974720562706137211
 GameObject:
@@ -174,8 +176,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.9266052, y: -19.8779}
-  m_SizeDelta: {x: -37.0691, y: -78.775}
+  m_AnchoredPosition: {x: -2.9266052, y: -42.536}
+  m_SizeDelta: {x: -37.0691, y: -124.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &974720562706137188
 CanvasRenderer:
@@ -207,7 +209,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_FontSize: 60
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -255,7 +257,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 15.608, y: 0}
-  m_SizeDelta: {x: 214.63, y: 59.2654}
+  m_SizeDelta: {x: 732.93, y: 104.5802}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7629827802780842759
 CanvasRenderer:
@@ -287,7 +289,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_FontSize: 70
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2

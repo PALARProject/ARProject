@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         //매니저 초기화
-        if (AudioManager != null)
+        if(AudioManager!=null)
             AudioManager.Init();
 
 
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
             InventoryManager.Init();
 
         if (QuestManager != null)
-            //QuestManager.Init();
+            QuestManager.Init();
         ready = true;
         //UserInfo.inventoryItems;
     }
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         }
         //나중에 암호화 예정
         //prefs는 컴퓨터 내부 저장소를 사용하기 때문에 보안상의 문제가 생길 수 있다.
-        string userName = PlayerPrefs.GetString(key);
+        string userName=PlayerPrefs.GetString(key);
         return userName;
     }
     public void SaveSound(string key, float volume)
@@ -84,11 +84,11 @@ public class GameManager : MonoBehaviour
 }
 public class UserInfo
 {
-    public string userName = "";
-    public Dictionary<int, ItemInfo> inventoryItems = new Dictionary<int, ItemInfo>();
+    public string userName="";
+    public Dictionary<int, ItemInfo> inventoryItems=new Dictionary<int, ItemInfo>();
     public Dictionary<int, int> haveQuest = new Dictionary<int, int>();
     public UserInfo() { }
-    public UserInfo(string _userName, Dictionary<int, ItemInfo> _inventoryItems, Dictionary<int, int> _haveQuest)
+    public UserInfo(string _userName, Dictionary<int, ItemInfo> _inventoryItems,Dictionary<int,int> _haveQuest)
     {
         this.userName = _userName;
         this.inventoryItems = _inventoryItems;
