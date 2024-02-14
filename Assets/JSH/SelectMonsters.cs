@@ -37,11 +37,12 @@ public class SelectMonsters : MonoBehaviour
                 Physics.Raycast(Camera.main.transform.position, rayvec,out hit);
                 Hit2 = hit;
             }
-            if (Hit2.collider != null && Hit2.collider.tag == "Enemy"&& i == 1 && Hit2.collider.gameObject == Target )
+            if (Hit2.collider != null && Hit2.collider.gameObject.tag == "Enemy"&& i == 1 && Hit2.collider.gameObject == Target )
             {
-                    Hit2.collider.gameObject.SetActive(false);
-                   // SceneManager.LoadScene("BattleScene");
-                 SceneManager.LoadScene("BattleScene");
+                //    Hit2.collider.gameObject.SetActive(false);
+                   //  PlayerPrefs.SetString(, "1");
+                   SceneManager.LoadScene("BattleScene");
+                // SceneManager.LoadScene("BattleScene");
 
                 //      Hit2.collider.gameObject.SetActive(false);
 
