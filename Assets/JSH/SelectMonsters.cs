@@ -42,11 +42,12 @@ public class SelectMonsters : MonoBehaviour
                 Debug.Log(hit.collider);
                 Debug.DrawRay(Camera.main.transform.position, rayvec, Color.red, 1f);
             }
-            if (Hit2.collider != null && Hit2.collider.tag == "Enemy"&& i == 1 && Hit2.collider.gameObject == Target )
+            if (Hit2.collider != null && Hit2.collider.gameObject.tag == "Enemy"&& i == 1 && Hit2.collider.gameObject == Target )
             {
-                    Hit2.collider.gameObject.SetActive(false);
-                   // SceneManager.LoadScene("BattleScene");
-                 SceneManager.LoadScene("BattleScene");
+                //    Hit2.collider.gameObject.SetActive(false);
+                   //  PlayerPrefs.SetString(, "1");
+                   SceneManager.LoadScene("BattleScene");
+                // SceneManager.LoadScene("BattleScene");
 
                 //      Hit2.collider.gameObject.SetActive(false);
 

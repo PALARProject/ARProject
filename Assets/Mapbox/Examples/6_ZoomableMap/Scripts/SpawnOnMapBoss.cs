@@ -7,6 +7,8 @@
 	using Mapbox.Unity.Utilities;
 	using System.Collections.Generic;
 	using UnityEngine.SceneManagement;
+	using UnityEngine.UI;
+	using UnityEngine.EventSystems;
 
 
 	public class SpawnOnMapBoss : MonoBehaviour
@@ -30,14 +32,14 @@
 		Vector3 v3 = new Vector3(0, 1, 0);
 		public RaycastHit Hit2;
 		public int i;
+		int r;
 		string location;
 		public GameObject Montext;
 		public GameObject Target;
+
 		void Start()
 		{
-			/*PlayerPrefs.SetInt("Object_0", 1);
-			PlayerPrefs.SetInt("Object_1", 1);
-			PlayerPrefs.SetInt("Object_2", 1);*/
+		//	PlayerPrefs.DeleteKey(Hit2.collider.gameObject.transform.position.ToString());
 			_locations = new Vector2d[_locationStrings.Length];
 			_spawnedObjects = new List<GameObject>();
 			for (int i = 0; i < _locationStrings.Length; i++)
@@ -48,12 +50,11 @@
 				instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
 				instance.transform.localScale = new Vector3(_spawnScale, 0.01f, _spawnScale);
 				_spawnedObjects.Add(instance);
-			}
-			
-			for (int i = 0; i < _spawnedObjects.Count; i++)
-			{
-				bool isActive = PlayerPrefs.GetInt("Object_" + i.ToString(), 1) == 1;
-				_spawnedObjects[i].SetActive(isActive);
+				/*if (PlayerPrefs.GetString(Hit2.collider.gameObject.transform.position.ToString()) == "1") ;
+				{
+					//_spawnedObjects.Remove(_spawnedObjects[i]);
+					//	_locationStrings[i] = null;
+				}*/
 			}
 		}
 		public void FindLocationFromObject()
@@ -74,6 +75,7 @@
 
 		public void Update()
 		{
+			
 			int count = _spawnedObjects.Count;
 			for (int i = 0; i < count; i++)
 			{
@@ -100,20 +102,15 @@
 					RaycastHit hit;
 					Physics.Raycast(Camera.main.transform.position, rayvec, out hit);
 					Hit2 = hit;
-					FindLocationFromObject();
 					Debug.Log("d" + hit.collider);
 					Debug.Log("z" + Hit2.collider.name);
 					Debug.Log(location);
 					Debug.DrawRay(Camera.main.transform.position, rayvec, Color.red, 1f);
-
-						if (Hit2.collider != null && Hit2.collider.tag == "Enemy" && i == 1 && Hit2.collider.gameObject == Target)
+				/*		if (Hit2.collider != null && Hit2.collider.tag == "Enemy" )
 						{
-							Hit2.collider.gameObject.SetActive(false);
-							for (int i = 0; i < _spawnedObjects.Count; i++)
-							{
-								PlayerPrefs.SetInt("Object_" + i.ToString(), _spawnedObjects[i].activeSelf ? 1 : 0);
-							}
-						}
+						_spawnedObjects.Remove(Hit2.collider.gameObject);
+						Hit2.collider.gameObject.SetActive(false);
+						}*/
 					
 				}
 				//PlayerPrefs.Save();
