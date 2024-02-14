@@ -41,20 +41,30 @@ public class FirebaseAuthentication : MonoBehaviour
     }
 
 
-    public void SignUp(string email, string password, string Nickname)
-    {
+    public async Task SignUp(string email, string password, string Nickname) {
+      
         Firebase.Auth.FirebaseAuth auth;
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError($"Failed to sign up: {task.Exception}");
-                return;
-            }
-
+        try {
+            var task = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
             Debug.Log("User signed up successfully!");
             SignUp_InventoryMaker(Nickname, email, password);
-        });
+            LoginEmailInput.text = JoinEmailInput.text;
+            LoginPasswordInput.text = JoinPasswordInput.text;
+            JPOpen.JoinPageSetActiveChange();
+        } catch(Firebase.FirebaseException e) {
+            // 예외 처리를 수행하고 오류 메시지를 출력합니다.
+            Debug.LogError($"Failed to sign up: {e.Message}");
+            ShowErrorMessage("회원가입되지 않았습니다, 관리자에게 문의하세요");
+        }
+        
+
+        Debug.Log("User signed up successfully!");
+
+        SignUp_InventoryMaker(Nickname, email, password);
+
+       
+
     }
     //회원가입 시 생성구문 SignUp 마지막 참조
     public void SignUp_InventoryMaker(string username, string email, string password)
@@ -74,7 +84,8 @@ public class FirebaseAuthentication : MonoBehaviour
             {
                 { "닉네임", username },
                 { "비밀번호", password },
-                { "이메일", email }
+                { "이메일", email },
+                { "튜토리얼학습", false}
             }
         },
         { "인벤토리", new Dictionary<string, object>
@@ -88,6 +99,14 @@ public class FirebaseAuthentication : MonoBehaviour
                 { "box_007", "null" },
                 { "box_008", "null" },
                 { "box_009", "null" }
+            }
+        },
+        { 
+            "퀘스트", new Dictionary<string, object>
+            {
+                {"q_1",false},
+                {"q_2",false},
+                {"q_3",false}
             }
         }
     };
@@ -125,8 +144,7 @@ public class FirebaseAuthentication : MonoBehaviour
             return 0;
         }
     }
-    public void JoinButtonClick()
-    {
+    public async void JoinButtonClick() {
         string email = JoinEmailInput.text;
         string password = JoinPasswordInput.text;
         string Nickname = NicknameInput.text;
@@ -165,8 +183,11 @@ public class FirebaseAuthentication : MonoBehaviour
             // 이후의 코드는 실행되지 않도록 리턴한다
             return;
         }
-        SignUp(email, password, Nickname);
-        JPOpen.JoinPageSetActiveChange();
+
+
+        await SignUp(email, password, Nickname);
+
+        
     }
 
     public async void LoginButtonClick()

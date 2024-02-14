@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     //userInfo
-    UserInfo userInfo=null;
+    UserInfo userInfo = null;
     public UserInfo UserInfo { get { return this.userInfo; } set { this.userInfo = value; } }
 
     //DB
     [SerializeField] protected DBManager dbManager;
-    public DBManager DBManager{get{return this.dbManager;} set { this.dbManager = value; } }
+    public DBManager DBManager { get { return this.dbManager; } set { this.dbManager = value; } }
     //Inventory
     [SerializeField] protected InventoryManager inventoryManager;
     public InventoryManager InventoryManager { get { return this.inventoryManager; } set { this.inventoryManager = value; } }
+    //Inventory
+    [SerializeField] protected QuestManager questManager;
+    public QuestManager QuestManager { get { return this.questManager; } set { this.questManager = value; } }
     //UI
     [SerializeField] protected UIManager uiManager;
     public UIManager UIManager { get { return this.uiManager; } set { this.uiManager = value; } }
@@ -29,19 +33,38 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 1)
+            {
+                SceneManager.sceneLoaded += OnSceneLoaded;
+            }
         }
-        //¸Å´ÏÀú ÃÊ±âÈ­
-        if(AudioManager!=null)
+        else {
+            gameObject.Destroy();
+        }
+        //ë§¤ë‹ˆì € ì´ˆê¸°í™”
+        if (AudioManager != null)
+        {
             AudioManager.Init();
+        }
 
 
-        //À¯Àú¼³Á¤
-        if(DBManager!=null)
+        //ìœ ì €ì„¤ì •
+        if (DBManager != null)
+        {
             UserInfo = await DBManager.GetUserInfo(PlayerPrefs.GetString("UID"));
+            await DBManager.GetUserQuestInfo();
+        }
 
-        if(InventoryManager!=null)
+        if (InventoryManager != null)
+        {
             InventoryManager.Init();
+        }
 
+        if (QuestManager != null)
+        {
+            QuestManager.Init();
+        }
+        
         ready = true;
         //UserInfo.inventoryItems;
     }
@@ -55,8 +78,8 @@ public class GameManager : MonoBehaviour
         {
             return "";
         }
-        //³ªÁß¿¡ ¾ÏÈ£È­ ¿¹Á¤
-        //prefs´Â ÄÄÇ»ÅÍ ³»ºÎ ÀúÀå¼Ò¸¦ »ç¿ëÇÏ±â ¶§¹®¿¡ º¸¾È»óÀÇ ¹®Á¦°¡ »ı±æ ¼ö ÀÖ´Ù.
+        //ë‚˜ì¤‘ì— ì•”í˜¸í™” ì˜ˆì •
+        //prefsëŠ” ì»´í“¨í„° ë‚´ë¶€ ì €ì¥ì†Œë¥¼ ì‚¬ìš©í•˜ê¸° ë•Œë¬¸ì— ë³´ì•ˆìƒì˜ ë¬¸ì œê°€ ìƒê¸¸ ìˆ˜ ìˆë‹¤.
         string userName=PlayerPrefs.GetString(key);
         return userName;
     }
@@ -70,18 +93,44 @@ public class GameManager : MonoBehaviour
         {
             return -1;
         }
-        float sound=PlayerPrefs.GetFloat(key);
+        float sound = PlayerPrefs.GetFloat(key);
         return sound;
+    }
+
+    private void LateUpdate()
+    {
+    }
+    // ì²´ì¸ì„ ê±¸ì–´ì„œ ì´ í•¨ìˆ˜ëŠ” ë§¤ ì”¬ë§ˆë‹¤ í˜¸ì¶œëœë‹¤.
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        try
+        {
+            if (SceneManager.GetActiveScene().buildIndex == 2)
+            {
+                AudioManager.PlayBgm(true, 0);
+            }
+            else if (SceneManager.GetActiveScene().buildIndex == 3)
+            {
+                int random = Random.Range(0, 3);
+                AudioManager.PlayBgm(true, random + 1);
+            }
+        }
+        catch
+        {
+            return;
+        }
     }
 }
 public class UserInfo
 {
     public string userName="";
     public Dictionary<int, ItemInfo> inventoryItems=new Dictionary<int, ItemInfo>();
+    public Dictionary<int, int> haveQuest = new Dictionary<int, int>();
     public UserInfo() { }
-    public UserInfo(string _userName, Dictionary<int, ItemInfo> _inventoryItems)
+    public UserInfo(string _userName, Dictionary<int, ItemInfo> _inventoryItems,Dictionary<int,int> _haveQuest)
     {
         this.userName = _userName;
         this.inventoryItems = _inventoryItems;
+        this.haveQuest = _haveQuest;
     }
 }

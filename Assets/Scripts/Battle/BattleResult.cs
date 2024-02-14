@@ -19,6 +19,7 @@ public class BattleResult : MonoBehaviour
 
     public GameObject Result_Item;
     public GameObject[] resultLocation=new GameObject[9];
+    public GameObject info;
     // Start is called before the first frame update
 
     private void Awake()
@@ -26,77 +27,89 @@ public class BattleResult : MonoBehaviour
         isResult = false;
     }
 
-    public void ActiveResultUI(bool result)
+    public void ActiveResultUI(int result)
     {
         endUI.SetActive(true);
-        if(result == true)
+        if(result == 1)
         {
             endText.text = "Victory";
         }
-        else if(result == false)
+        else if(result == 2)
         {
             endText.text = "Dead";
+        }
+        else if(result == 3)
+        {
+            endText.text = "Escape";
         }
         StartCoroutine(AnimateUI(result));
     }
     
-    IEnumerator AnimateUI(bool result)
+    IEnumerator AnimateUI(int result)
     {
-        //æ∆¿Ã≈€ ¡§ªÍ
-        Task<List<ItemInfo>> list= GameManager.instance.DBManager.GetItemsTable();
-        float time = 0;
-        while (!list.IsCompletedSuccessfully && time<5)
+        if (result==1)
         {
-            time += Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
-        }
-
-        List<ItemInfo> collectItem = new List<ItemInfo>();
-        if (time < 5)
-        {
-            List<ItemInfo> itemList = list.Result;
-            for (int i = 0; i < 3; i++)
+            //ÏïÑÏù¥ÌÖú Ï†ïÏÇ∞
+            Task<List<ItemInfo>> list= GameManager.instance.DBManager.GetItemsTable();
+            float time = 0;
+            while (!list.IsCompletedSuccessfully && time<5)
             {
-                int random = Random.Range(0, itemList.Count);
-                int n = 0;
-                foreach (ItemInfo pair in itemList)
+                time += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+
+            List<ItemInfo> collectItem = new List<ItemInfo>();
+            if (time < 5)
+            {
+                List<ItemInfo> itemList = list.Result;
+                for (int i = 0; i < 3; i++)
                 {
-                    if (n == random)
+                    int random = Random.Range(0, itemList.Count);
+                    int n = 0;
+                    foreach (ItemInfo pair in itemList)
                     {
-                        ItemInfo copy = pair.DeepCopy();
-                        collectItem.Add(copy);
-                        Debug.Log(collectItem[i].name);
-                        itemList.Remove(pair);
-                        break;
+                        if (n == random)
+                        {
+                            ItemInfo copy = pair.DeepCopy();
+                            collectItem.Add(copy);
+                            Debug.Log(collectItem[i].name);
+                            itemList.Remove(pair);
+                            break;
+                        }
+                        n++;
                     }
-                    n++;
                 }
             }
-        }
-        for (int i=0;i< collectItem.Count; i++)
-        {
-            int index = i;
-            GameObject obj = Instantiate(Result_Item, resultLocation[i].transform);
-            Button btn=obj.GetComponent<Button>();
-            Image image = obj.GetComponent<Image>();
-            image.sprite = Resources.Load<Sprite>("Item/Sprite/" + collectItem[i].name);
-            string name = collectItem[index].name;
-            btn.onClick.AddListener(async () =>
+            for (int i=0;i< collectItem.Count; i++)
             {
-                string itemName = name;
-                int list = await GameManager.instance.InventoryManager.InputInventory(itemName);
-                btn.interactable = false;
-                btn.onClick.RemoveAllListeners();
-            });
+                int index = i;
+                GameObject obj = Instantiate(Result_Item, resultLocation[i].transform);
+                Button btn=obj.GetComponent<Button>();
+                Image image = obj.GetComponent<Image>();
+                image.sprite = Resources.Load<Sprite>("Item/Sprite/" + collectItem[i].name);
+                string name = collectItem[index].name;
+                btn.onClick.AddListener(async () =>
+                {
+                    if (info != null)
+                    {
+                        info.gameObject.GetComponent<ItemInfoUI>().Result_Init(obj, collectItem[index]);
+                        info.gameObject.SetActive(true);
+                    }
+                });
+            }
         }
         resultUI.SetActive(true);
-        if (result == true)
+        if (result == 1)
         {
             resultText.text = "Victory";
         }
-        else if (result == false)
+        else if (result == 2)
         {
             resultText.text = "Dead";
+        }
+        else if (result == 3)
+        {
+            resultText.text = "Escape";
         }
         RectTransform rectTransform = resultUI.GetComponent<RectTransform>();
         Vector3 targetPosition = Vector3.zero; 
@@ -104,7 +117,6 @@ public class BattleResult : MonoBehaviour
         while (rectTransform.anchoredPosition.y < targetPosition.y)
         {
             rectTransform.anchoredPosition += Vector2.up * animSpeed * Time.deltaTime;
-            
         }
     }
 

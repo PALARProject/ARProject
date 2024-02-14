@@ -4,10 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Folder
   - Person
   - Enemy
-  - Boss
+  - ARSession
   layers:
   - Default
   - TransparentFX

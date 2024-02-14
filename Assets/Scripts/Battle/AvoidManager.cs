@@ -11,27 +11,31 @@ public class AvoidManager : MonoBehaviour
     public float countdown;
     public GameObject countUI;
     public Text countText;
-    public Text angleText;
+    public Text playerText;
+    public Text enemyText;
+    public Text resultText;
+    public Text stateText;
 
     public ARFaceManager faceManager;
     public GameObject ChangeCam;
+    public GameObject chamCham;
 
     public Direction playerDirection;
+    public Direction playerResult;
     public Direction AIDirection;
 
     public bool isCheck;
+    public bool isAware;
 
     public GameObject AvoidUI;
     public GameObject BattleUI;
+    public GameObject AwareUI;
+    public GameObject ResultUI;
+    public GameObject StateUI;
 
     private void OnEnable()
     {
-        countdown = 7;
-        isCheck = false;
-        angleText.text = "";
-        countText = countUI.GetComponent<Text>();
-
-        faceManager.facesChanged += OnFaceChanged;
+        AvoidStart();
     }
 
     // Update is called once per frame
@@ -40,56 +44,91 @@ public class AvoidManager : MonoBehaviour
         if (isCheck) return;
 
         countdown -= Time.deltaTime;
-        if(countdown <=4f && countdown > 1f)
+        if (countdown <= 4f && countdown > 1f)
         {
             countUI.SetActive(true);
             countText.text = Mathf.FloorToInt(countdown).ToString();
         }
-        else if(countdown <= 1)
+        else if (countdown <= 1)
         {
-            countText.text = "È¸ÇÇ!";
+            countText.text = "íšŒí”¼!";
         }
 
-        if(countdown <= 0)
+        if (countdown <= 0)
         {
             countdown = 0f;
             ControlAvoidValue();
-            CheckAvoid();
+            StartCoroutine(CheckAvoid());
 
-            isCheck = true;
             faceManager.facesChanged -= OnFaceChanged;
+            isCheck = true;
         }
     }
 
+    public void RetryAvoid()
+    {
+        AvoidStart();
+        AwareUI.SetActive(false);
+    }
+
+    public void CancelAvoid()
+    {
+        StartCoroutine(ShowResultReturn(false));
+        AwareUI.SetActive(false);
+    }
+
+    void AvoidStart()
+    {
+        countdown = 7;
+        isCheck = false;
+        StateUI.SetActive(true);
+        countText = countUI.GetComponent<Text>();
+
+        chamCham.transform.eulerAngles = Vector3.zero;
+        faceManager.facesChanged += OnFaceChanged;
+    }
     void ControlAvoidValue()
     {
         int randValue = Random.Range(0, 3);
-        switch(randValue)
+        switch (randValue)
         {
             case 0:
                 AIDirection = Direction.RIGHT;
+                chamCham.transform.eulerAngles -= new Vector3(0, 0, 30f);
                 break;
             case 1:
                 AIDirection = Direction.LEFT;
+                chamCham.transform.eulerAngles += new Vector3(0, 0, 30f);
                 break;
             case 2:
                 AIDirection = Direction.FORWARD;
+                chamCham.transform.eulerAngles = Vector3.zero;
                 break;
         }
+        playerResult = playerDirection;
     }
-
-    void CheckAvoid()
+    IEnumerator CheckAvoid()
     {
-        if (playerDirection == AIDirection)
+        countText.text = "";
+        yield return new WaitForSeconds(1.5f);
+        if (isAware == true)
         {
-            Debug.Log("°ÔÀÓ ¿À¹ö!");
-            ShowResult(false);
-
+            StateUI.SetActive(false);
+            ResultUI.SetActive(true);
+            playerText.text = playerResult.ToString();
+            enemyText.text = AIDirection.ToString();
+            if (playerResult == AIDirection)
+            {
+                resultText.text = "íšŒí”¼ ì‹¤íŒ¨!";
+            }
+            else
+            {
+                resultText.text = "íšŒí”¼ ì„±ê³µ!";
+            }
         }
         else
         {
-            Debug.Log("È¸ÇÇ ¼º°ø!");
-            ShowResult(true);
+            AwareUI.SetActive(true);
         }
     }
 
@@ -101,53 +140,58 @@ public class AvoidManager : MonoBehaviour
             Quaternion faceRotation = face.transform.rotation;
 
             float yAngle = Quaternion.Euler(0, faceRotation.eulerAngles.y, 0).eulerAngles.y;
-            angleText.text = "";
+            isAware = true;
 
             if (yAngle > 14f && yAngle < 30f)
             {
                 playerDirection = Direction.RIGHT;
-                Debug.Log("»ç¿ëÀÚ°¡ ¿À¸¥ÂÊÀ» ÇâÇÏ°í ÀÖ½À´Ï´Ù");
+                stateText.text = "ì˜¤ë¥¸ìª½";
             }
             else if (yAngle > 330f && yAngle < 355f)
             {
                 playerDirection = Direction.LEFT;
-                Debug.Log("»ç¿ëÀÚ°¡ ¿ÞÂÊÀ» ÇâÇÏ°í ÀÖ½À´Ï´Ù");
+                stateText.text = "ì™¼ìª½";
             }
             else
             {
                 playerDirection = Direction.FORWARD;
-                Debug.Log("»ç¿ëÀÚ°¡ Á¤¸éÀ» ÇâÇÏ°í ÀÖ½À´Ï´Ù.");
+                stateText.text = "ì •ë©´";
             }
         }
         else
         {
-            angleText.text = "¾ó±¼À» Ã£À» ¼ö ¾ø½À´Ï´Ù.";
+            isAware = false;
+            stateText.text = "ì¸ì§€ ë¶ˆê°€";
         }
     }
 
-    void ShowResult(bool success)
+    public void ShowResult()
     {
-        StartCoroutine(ShowResultReturn(success));
+        if (playerDirection != AIDirection)
+        {
+            StartCoroutine(ShowResultReturn(true));
+        }
+        else
+        {
+            StartCoroutine(ShowResultReturn(false));
+        }
     }
 
     IEnumerator ShowResultReturn(bool success)
     {
         if (success)
         {
-            countText.text = AIDirection.ToString() + playerDirection.ToString() +"¼º°ø!";
             BattleManager.instance.AvoidSuccess();
         }
         else
-        { 
-            countText.text = AIDirection.ToString() + playerDirection.ToString() + "½ÇÆÐ!";
+        {
             BattleManager.instance.AvoidFailed();
         }
 
-        yield return new WaitForSeconds(3f);
-
-        countText.text = "";
-        BattleUI.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
         AvoidUI.SetActive(false);
+        ResultUI.SetActive(false);
+        BattleUI.SetActive(true);
         ChangeCam.GetComponent<ChangedCam>().ChangeBattleStateCam();
 
     }

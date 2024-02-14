@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ItemInfoUI : MonoBehaviour
 {
     public Image image;
+    public Text Name;
     public Text DP;
     public Text AP;
     public Text Description;
@@ -19,17 +20,47 @@ public class ItemInfoUI : MonoBehaviour
         Trash.onClick.RemoveAllListeners();
         Exit.onClick.RemoveAllListeners();
         image.sprite = GameManager.instance.InventoryManager.Item_Images[i].sprite;
+        Name.text = GameManager.instance.UserInfo.inventoryItems[i].name;
         DP.text = GameManager.instance.UserInfo.inventoryItems[i].status.dp.ToString();
         AP.text = GameManager.instance.UserInfo.inventoryItems[i].status.ap.ToString();
         Description.text= GameManager.instance.UserInfo.inventoryItems[i].description.ToString();
-        Trash.onClick.AddListener(() =>
+        Trash.onClick.AddListener(async () =>
         {
-            GameManager.instance.InventoryManager.OutputInventory(i);
+            await GameManager.instance.InventoryManager.OutputInventory(i);
             gameObject.SetActive(false);
         });
         Exit.onClick.AddListener(() =>
         {
             gameObject.SetActive(false);
+        });
+    }
+    public void Result_Init(GameObject obj, ItemInfo item)
+    {
+
+        Trash.onClick.RemoveAllListeners();
+        Exit.onClick.RemoveAllListeners();
+        image.sprite = Resources.Load<Sprite>("Item/Sprite/" + item.name);
+        Name.text = item.name;
+        DP.text = item.status.dp.ToString();
+        AP.text = item.status.ap.ToString();
+        Description.text = item.description;
+        Trash.interactable = true;
+        Trash.onClick.AddListener(async () =>
+        {
+            Trash.interactable = false;
+            string itemName = item.name;
+            int list = await GameManager.instance.InventoryManager.InputInventory(itemName);
+            Trash.interactable = false;
+            Trash.onClick.RemoveAllListeners();
+            Exit.onClick.RemoveAllListeners();
+            obj.GetComponent<Button>().interactable = false;
+            gameObject.SetActive(false);
+        });
+        Exit.onClick.AddListener(() =>
+        {
+            gameObject.SetActive(false);
+            Trash.onClick.RemoveAllListeners();
+            Exit.onClick.RemoveAllListeners();
         });
     }
     // Start is called before the first frame update

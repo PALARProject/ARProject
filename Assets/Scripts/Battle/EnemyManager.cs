@@ -6,14 +6,4 @@ public class EnemyManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public List<GameObject> EnemyPrefabs;
-    void Start()
-    {
-        EnemyPrefabs = new List<GameObject>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
