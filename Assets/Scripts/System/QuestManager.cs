@@ -9,15 +9,11 @@ public class QuestManager : MonoBehaviour
     public List<GameObject> Quests;
     public Transform questLocation;
     public GameObject quest;
-    public async void UserQuest()
+    public void Init()
     {
-        Dictionary<string,object> qusetList=await GameManager.instance.DBManager.GetUserQuestInfo(GameManager.instance.UserInfo.userName);
-        List<int> list = qusetList.Select(kvp => ((int)(long)kvp.Value)).ToList();
-        list.Sort();
-        for(int i = 0; i < list.Count; i++)
+        foreach(var pair in GameManager.instance.UserInfo.haveQuest)
         {
-            int index = i;
-            CreateQuest(index);
+            CreateQuest(pair.Value);
         }
     }
     public void CreateQuest(int questId)

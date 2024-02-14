@@ -67,7 +67,7 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(changeCam.isAR)
+        if (changeCam.isAR)
         {
             enemyAR = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>();
             enemyARanim = enemyAR.enemy.GetComponent<Animator>();
@@ -100,7 +100,7 @@ public class BattleManager : MonoBehaviour
         shakeObject.VibrationObject(0.02f, 0.2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
-        dialogueText.text = "°ø°İÀÌ ¼º°øÇß´Ù!";
+        dialogueText.text = "ê³µê²©ì´ ì„±ê³µí–ˆë‹¤!";
 
         yield return new WaitForSeconds(2f);
 
@@ -120,7 +120,7 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyAfterAvoidSucess()
     {
         yield return new WaitForSeconds(4f);
-        dialogueText.text = enemyUnit.unitName + "°¡ ºóÆ´À» º¸¿´´Ù!";
+        dialogueText.text = enemyUnit.unitName + "ê°€ ë¹ˆí‹ˆì„ ë³´ì˜€ë‹¤!";
 
         playerEffect.PlayerEffectOn();
         yield return new WaitForSeconds(0.5f);
@@ -128,7 +128,7 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-        dialogueText.text = "Ãß°¡ °ø°İ¿¡ ¼º°øÇß´Ù!";
+        dialogueText.text = "ì¶”ê°€ ê³µê²©ì— ì„±ê³µí–ˆë‹¤!";
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
 
         yield return new WaitForSeconds(2f);
@@ -148,7 +148,7 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyAfterAvoidFailed()
     {
         yield return new WaitForSeconds(4f);
-        dialogueText.text = enemyUnit.unitName + "°¡ °ø°İÇß´Ù!";
+        dialogueText.text = enemyUnit.unitName + "ê°€ ê³µê²©í–ˆë‹¤!";
 
         yield return new WaitForSeconds(1f);
         EnemyAnimator("Attack");
@@ -175,7 +175,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        dialogueText.text = enemyUnit.unitName + "°¡ °ø°İÇß´Ù!";
+        dialogueText.text = enemyUnit.unitName + "ê°€ ê³µê²©í–ˆë‹¤!";
         yield return new WaitForSeconds(1f);
 
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
@@ -206,29 +206,29 @@ public class BattleManager : MonoBehaviour
         if (state == BattleState.WON)
         {
             ResultManager.ActiveResultUI(1);
-            EnemyAnimator("Dead");
-            dialogueText.text = "½Â¸®Çß´Ù!";
+            dialogueText.text = "ìŠ¹ë¦¬í–ˆë‹¤!";
+            PlayerPrefs.SetInt("CatchMob", 1);
         }
         else if (state == BattleState.LOST)
         {
             ResultManager.ActiveResultUI(2);
-            dialogueText.text = "ÆĞ¹èÇß´Ù¡¦.";
+            dialogueText.text = "íŒ¨ë°°í–ˆë‹¤â€¦.";
         }
-        else if(state == BattleState.DRAW)
+        else if (state == BattleState.DRAW)
         {
             ResultManager.ActiveResultUI(3);
-            dialogueText.text = "µµÁÖ¿¡ ¼º°øÇß´Ù!";
+            dialogueText.text = "ë„ì£¼ì— ì„±ê³µí–ˆë‹¤!";
         }
     }
 
     IEnumerator TryEscaping()
     {
         yield return new WaitForSeconds(1f);
-        dialogueText.text = "µµÁÖ¸¦ ½ÃµµÇß´Ù¡¦!";
+        dialogueText.text = "ë„ì£¼ë¥¼ ì‹œë„í–ˆë‹¤â€¦!";
 
         int num = Random.Range(0, 3);
         bool trying;
-        if(num == 1)
+        if (num == 1)
         {
             trying = true;
         }
@@ -238,15 +238,15 @@ public class BattleManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2f);
-        if(trying == true)
+        if (trying == true)
         {
-            dialogueText.text = "µµÁÖ¿¡ ¼º°øÇß´Ù!";
+            dialogueText.text = "ë„ì£¼ì— ì„±ê³µí–ˆë‹¤!";
             state = BattleState.DRAW;
             EndBattle();
         }
         else
         {
-            dialogueText.text = "µµÁÖ¿¡ ½ÇÆĞÇß´Ù¡¦.";
+            dialogueText.text = "ë„ì£¼ì— ì‹¤íŒ¨í–ˆë‹¤â€¦.";
             EnemyTurn();
         }
     }
@@ -257,7 +257,7 @@ public class BattleManager : MonoBehaviour
         avoidButton.interactable = true;
         EscapeButton.interactable = true;
 
-        dialogueText.text = "¾î¶»°Ô ÇÒ±î?";
+        dialogueText.text = "ì–´ë–»ê²Œ í• ê¹Œ?";
     }
 
     public void OnAvoidButton()
@@ -265,7 +265,7 @@ public class BattleManager : MonoBehaviour
         if (state != BattleState.PLAYERTURN)
             return;
 
-        if(changeCam.GetComponent<ChangedCam>().isAR == false)
+        if (changeCam.GetComponent<ChangedCam>().isAR == false)
         {
             changeCam.GetComponent<ChangedCam>().AvoidStateCam();
         }
@@ -302,7 +302,7 @@ public class BattleManager : MonoBehaviour
 
     public void EnemyAnimator(string state)
     {
-        switch(state)
+        switch (state)
         {
             case "Attack":
                 if (changeCam.isAR)
@@ -348,6 +348,6 @@ public class BattleManager : MonoBehaviour
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
 
-
+        TryEscaping();
     }
 }
