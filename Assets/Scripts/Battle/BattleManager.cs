@@ -103,6 +103,8 @@ public class BattleManager : MonoBehaviour
         shakeObject.VibrationObject(0.02f, 0.2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
+        if (GameManager.instance != null)
+            GameManager.instance.AudioManager.Playsfx(AudioManager.Sfx.attack);
         dialogueText.text = "공격이 성공했다!";
 
         yield return new WaitForSeconds(2f);
@@ -185,6 +187,8 @@ public class BattleManager : MonoBehaviour
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
         EnemyAnimator("Attack");
         yield return new WaitForSeconds(1f);
+        if (GameManager.instance != null)
+            GameManager.instance.AudioManager.Playsfx(AudioManager.Sfx.hit);
         shakeObject.VibrationCam(5f, 0.3f);
         yield return new WaitForSeconds(0.5f);
         playerHUD.SetHP(playerUnit, playerUnit.currentHP);

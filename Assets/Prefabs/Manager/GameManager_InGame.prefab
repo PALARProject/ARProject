@@ -576,26 +576,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1818936150379497423, guid: 39075c2d413ae1e4a86f692a7b81919b, type: 3}
-      propertyPath: bgmClip.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1818936150379497423, guid: 39075c2d413ae1e4a86f692a7b81919b, type: 3}
-      propertyPath: bgmClip.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 4a7f6871156c97149993871b15d13079, type: 3}
-    - target: {fileID: 1818936150379497423, guid: 39075c2d413ae1e4a86f692a7b81919b, type: 3}
-      propertyPath: bgmClip.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 476a59e0be99aae429a57ef1473121d7, type: 3}
-    - target: {fileID: 1818936150379497423, guid: 39075c2d413ae1e4a86f692a7b81919b, type: 3}
-      propertyPath: bgmClip.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: e0b8c868a4c6f014b9f0529fb2c50b13, type: 3}
-    - target: {fileID: 1818936150379497423, guid: 39075c2d413ae1e4a86f692a7b81919b, type: 3}
-      propertyPath: bgmClip.Array.data[3]
-      value: 
-      objectReference: {fileID: 8300000, guid: 0bf1f679e97aa7841a226cf15020fa2b, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39075c2d413ae1e4a86f692a7b81919b, type: 3}
 --- !u!4 &8759675144221502932 stripped

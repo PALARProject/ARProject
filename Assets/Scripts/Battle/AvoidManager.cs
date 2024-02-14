@@ -21,6 +21,7 @@ public class AvoidManager : MonoBehaviour
     public GameObject chamCham;
 
     public Direction playerDirection;
+    public Direction playerResult;
     public Direction AIDirection;
 
     public bool isCheck;
@@ -43,24 +44,24 @@ public class AvoidManager : MonoBehaviour
         if (isCheck) return;
 
         countdown -= Time.deltaTime;
-        if(countdown <=4f && countdown > 1f)
+        if (countdown <= 4f && countdown > 1f)
         {
             countUI.SetActive(true);
             countText.text = Mathf.FloorToInt(countdown).ToString();
         }
-        else if(countdown <= 1)
+        else if (countdown <= 1)
         {
             countText.text = "회피!";
         }
 
-        if(countdown <= 0)
+        if (countdown <= 0)
         {
             countdown = 0f;
             ControlAvoidValue();
-            CheckAvoid();
+            StartCoroutine(CheckAvoid());
 
-            isCheck = true;
             faceManager.facesChanged -= OnFaceChanged;
+            isCheck = true;
         }
     }
 
@@ -86,11 +87,10 @@ public class AvoidManager : MonoBehaviour
         chamCham.transform.eulerAngles = Vector3.zero;
         faceManager.facesChanged += OnFaceChanged;
     }
-
     void ControlAvoidValue()
     {
         int randValue = Random.Range(0, 3);
-        switch(randValue)
+        switch (randValue)
         {
             case 0:
                 AIDirection = Direction.RIGHT;
@@ -105,18 +105,19 @@ public class AvoidManager : MonoBehaviour
                 chamCham.transform.eulerAngles = Vector3.zero;
                 break;
         }
+        playerResult = playerDirection;
     }
-
-    void CheckAvoid()
+    IEnumerator CheckAvoid()
     {
         countText.text = "";
+        yield return new WaitForSeconds(1.5f);
         if (isAware == true)
         {
             StateUI.SetActive(false);
             ResultUI.SetActive(true);
-            playerText.text = playerDirection.ToString();
+            playerText.text = playerResult.ToString();
             enemyText.text = AIDirection.ToString();
-            if (playerDirection == AIDirection)
+            if (playerResult == AIDirection)
             {
                 resultText.text = "회피 실패!";
             }
@@ -166,7 +167,7 @@ public class AvoidManager : MonoBehaviour
 
     public void ShowResult()
     {
-        if(playerDirection != AIDirection)
+        if (playerDirection != AIDirection)
         {
             StartCoroutine(ShowResultReturn(true));
         }
@@ -180,12 +181,10 @@ public class AvoidManager : MonoBehaviour
     {
         if (success)
         {
-            countText.text = AIDirection.ToString() + playerDirection.ToString() +"성공!";
             BattleManager.instance.AvoidSuccess();
         }
         else
-        { 
-            countText.text = AIDirection.ToString() + playerDirection.ToString() + "실패!";
+        {
             BattleManager.instance.AvoidFailed();
         }
 
