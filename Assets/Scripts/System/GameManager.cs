@@ -108,15 +108,11 @@ public class GameManager : MonoBehaviour
             if (SceneManager.GetActiveScene().buildIndex == 2)
             {
                 AudioManager.PlayBgm(true, 0);
-                UIManager.BottomUI.SetActive(true);
-                QuestManager.gameObject.SetActive(true);
             }
             else if (SceneManager.GetActiveScene().buildIndex == 3)
             {
                 int random = Random.Range(0, 3);
                 AudioManager.PlayBgm(true, random + 1);
-                UIManager.BottomUI.SetActive(false);
-                QuestManager.gameObject.SetActive(false);
             }
         }
         catch
