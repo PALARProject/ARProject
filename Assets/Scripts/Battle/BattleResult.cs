@@ -112,7 +112,6 @@ public class BattleResult : MonoBehaviour
         while (rectTransform.anchoredPosition.y < targetPosition.y)
         {
             rectTransform.anchoredPosition += Vector2.up * animSpeed * Time.deltaTime;
-            
         }
     }
 
