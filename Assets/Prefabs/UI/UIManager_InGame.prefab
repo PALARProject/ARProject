@@ -126,6 +126,7 @@ MonoBehaviour:
   optionUI: {fileID: 3755967701943489293}
   questUI: {fileID: 4644489909015139605}
   resultUI: {fileID: 3553603857443148118}
+  logoutUI: {fileID: 0}
   bgmSlider: {fileID: 975962876022347695}
   sfxSlider: {fileID: 6411914996325879280}
 --- !u!1 &6071464001805657222
@@ -891,10 +892,6 @@ PrefabInstance:
     - target: {fileID: 8167396029648928942, guid: 6d48fd5427392db4cbf1aaf791a912ac, type: 3}
       propertyPath: m_Name
       value: Result_Ingame
-      objectReference: {fileID: 0}
-    - target: {fileID: 8167396029648928942, guid: 6d48fd5427392db4cbf1aaf791a912ac, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d48fd5427392db4cbf1aaf791a912ac, type: 3}

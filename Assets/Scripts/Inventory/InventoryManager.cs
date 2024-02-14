@@ -11,7 +11,7 @@ public class InventoryManager : MonoBehaviour
     public Sprite baseIMG;
     public Button[] Items;
     [HideInInspector]public Image[] Item_Images;
-
+    public GameObject ErrorUI;
     private void Awake()
     {
         Item_Images = new Image[Items.Length];
@@ -93,6 +93,7 @@ public class InventoryManager : MonoBehaviour
                     //UI - 같은 아이템 먹었다 출력
 
                     Debug.Log(itemName + "- 이미 먹은 아이템");
+                    ErrorUI.SetActive(true);
                     return 0;
                 }
                 if (getItemInfo.category == haveItem.category)
