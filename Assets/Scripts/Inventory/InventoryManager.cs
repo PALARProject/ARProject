@@ -8,6 +8,7 @@ using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
+    public Sprite baseIMG;
     public Button[] Items;
     [HideInInspector]public Image[] Item_Images;
 
@@ -37,7 +38,7 @@ public class InventoryManager : MonoBehaviour
             {
                 if (userInfo.inventoryItems[index] == null)
                 {
-                    Item_Images[index].sprite = null;
+                    Item_Images[index].sprite = baseIMG;
                     Items[index].interactable = false;
                     userInfo.inventoryItems[index] = null;
                     continue;
@@ -51,14 +52,14 @@ public class InventoryManager : MonoBehaviour
                 }
                 else
                 {
-                    Item_Images[index].sprite = null;
+                    Item_Images[index].sprite = baseIMG;
                     Items[index].interactable = false;
                     userInfo.inventoryItems[index] = null;
                 }
             }
             catch
             {
-                Item_Images[index].sprite = null;
+                Item_Images[index].sprite = baseIMG;
                 Items[index].interactable = false;
                 userInfo.inventoryItems[index] = null;
                 Debug.Log(index + "-등록되지 않은 경로");
@@ -151,7 +152,7 @@ public class InventoryManager : MonoBehaviour
             outItem = GameManager.instance.UserInfo.inventoryItems[inventoryNum].DeepCopy();
         }
         GameManager.instance.UserInfo.inventoryItems[inventoryNum] = null;
-        Item_Images[inventoryNum].sprite = null;
+        Item_Images[inventoryNum].sprite = baseIMG;
         Items[inventoryNum].interactable = false;
 
         try
