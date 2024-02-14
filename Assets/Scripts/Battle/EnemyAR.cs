@@ -7,35 +7,46 @@ using UnityEngine.XR.ARSubsystems;
 public class EnemyAR : MonoBehaviour
 {
     ARRaycastManager arManager;
+    public EnemyManager EnemyManager;
     public GameObject enemy;
     public GameObject PlacedObject;
-    // Start is called before the first frame update
+
     void Start()
     {
         arManager = GetComponent<ARRaycastManager>();
+        enemy = EnemyManager.EnemyPrefabs[0];
     }
 
-    // Update is called once per frame
-    private void OnEnable()
+    void Update()
     {
         DeleteGround();
     }
 
     void DeleteGround()
     {
-        Vector2 screenSize = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+        Vector2 screenCenter = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
         List<ARRaycastHit> hitInfos = new List<ARRaycastHit>();
 
-        if(arManager.Raycast(screenSize, hitInfos, TrackableType.Planes))
+
+        Vector3 cameraForward = Camera.main.transform.forward;
+        Vector3 spawnPosition = cameraForward * 2f;
+
+        if (PlacedObject == null)
         {
-            if (PlacedObject == null)
-            {
-                PlacedObject = Instantiate(enemy, hitInfos[0].pose.position, hitInfos[0].pose.rotation);
-            }
-            else
-            {
-                PlacedObject.transform.SetPositionAndRotation(hitInfos[0].pose.position, hitInfos[0].pose.rotation);
-            }
+            PlacedObject = Instantiate(enemy, spawnPosition, Quaternion.identity);
+        }
+        /*if (arManager.Raycast(screenCenter, hitInfos, TrackableType.AllTypes))
+        {
+            Vector3 cameraForward = Camera.main.transform.forward;
+        }*/
+    }
+
+
+    private void OnDisable()
+    {
+        if(PlacedObject != null)
+        {
+            PlacedObject.Destroy();
         }
     }
 }

@@ -24,6 +24,7 @@ public class AvoidManager : MonoBehaviour
     public Direction AIDirection;
 
     public bool isCheck;
+    public bool isAware;
 
     public GameObject AvoidUI;
     public GameObject BattleUI;
@@ -49,7 +50,7 @@ public class AvoidManager : MonoBehaviour
         }
         else if(countdown <= 1)
         {
-            countText.text = "È¸ÇÇ!";
+            countText.text = "íšŒí”¼!";
         }
 
         if(countdown <= 0)
@@ -109,17 +110,24 @@ public class AvoidManager : MonoBehaviour
     void CheckAvoid()
     {
         countText.text = "";
-        StateUI.SetActive(false);
-        ResultUI.SetActive(true);
-        playerText.text = playerDirection.ToString();
-        enemyText.text = AIDirection.ToString();
-        if (playerDirection == AIDirection)
+        if (isAware == true)
         {
-            resultText.text = "È¸ÇÇ ½ÇÆÐ!";
+            StateUI.SetActive(false);
+            ResultUI.SetActive(true);
+            playerText.text = playerDirection.ToString();
+            enemyText.text = AIDirection.ToString();
+            if (playerDirection == AIDirection)
+            {
+                resultText.text = "íšŒí”¼ ì‹¤íŒ¨!";
+            }
+            else
+            {
+                resultText.text = "íšŒí”¼ ì„±ê³µ!";
+            }
         }
         else
         {
-            resultText.text = "È¸ÇÇ ¼º°ø!";
+            AwareUI.SetActive(true);
         }
     }
 
@@ -131,26 +139,28 @@ public class AvoidManager : MonoBehaviour
             Quaternion faceRotation = face.transform.rotation;
 
             float yAngle = Quaternion.Euler(0, faceRotation.eulerAngles.y, 0).eulerAngles.y;
+            isAware = true;
 
             if (yAngle > 14f && yAngle < 30f)
             {
                 playerDirection = Direction.RIGHT;
-                stateText.text = "¿À¸¥ÂÊ";
+                stateText.text = "ì˜¤ë¥¸ìª½";
             }
             else if (yAngle > 330f && yAngle < 355f)
             {
                 playerDirection = Direction.LEFT;
-                stateText.text = "¿ÞÂÊ";
+                stateText.text = "ì™¼ìª½";
             }
             else
             {
                 playerDirection = Direction.FORWARD;
-                stateText.text = "Á¤¸é";
+                stateText.text = "ì •ë©´";
             }
         }
         else
         {
-            AwareUI.SetActive(true);
+            isAware = false;
+            stateText.text = "ì¸ì§€ ë¶ˆê°€";
         }
     }
 
@@ -170,17 +180,16 @@ public class AvoidManager : MonoBehaviour
     {
         if (success)
         {
-            countText.text = AIDirection.ToString() + playerDirection.ToString() +"¼º°ø!";
+            countText.text = AIDirection.ToString() + playerDirection.ToString() +"ì„±ê³µ!";
             BattleManager.instance.AvoidSuccess();
         }
         else
         { 
-            countText.text = AIDirection.ToString() + playerDirection.ToString() + "½ÇÆÐ!";
+            countText.text = AIDirection.ToString() + playerDirection.ToString() + "ì‹¤íŒ¨!";
             BattleManager.instance.AvoidFailed();
         }
 
-        yield return new WaitForSeconds(1f);
-
+        yield return new WaitForSeconds(0.5f);
         AvoidUI.SetActive(false);
         ResultUI.SetActive(false);
         BattleUI.SetActive(true);

@@ -46,7 +46,7 @@ public class BattleResult : MonoBehaviour
     
     IEnumerator AnimateUI(int result)
     {
-        //¾ÆÀÌÅÛ Á¤»ê
+        //ì•„ì´í…œ ì •ì‚°
         Task<List<ItemInfo>> list= GameManager.instance.DBManager.GetItemsTable();
         float time = 0;
         while (!list.IsCompletedSuccessfully && time<5)
@@ -112,7 +112,6 @@ public class BattleResult : MonoBehaviour
         while (rectTransform.anchoredPosition.y < targetPosition.y)
         {
             rectTransform.anchoredPosition += Vector2.up * animSpeed * Time.deltaTime;
-            
         }
     }
 
