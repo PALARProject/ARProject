@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Firebase.Auth;
 
 public class UIManager : MonoBehaviour
 {
@@ -140,5 +141,9 @@ public class UIManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public void Logout() {
+        FirebaseAuth.DefaultInstance.SignOut();
+        SceneManager.LoadScene("LoginPage");
     }
 }

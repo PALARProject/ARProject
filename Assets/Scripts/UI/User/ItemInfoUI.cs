@@ -47,6 +47,7 @@ public class ItemInfoUI : MonoBehaviour
         Trash.interactable = true;
         Trash.onClick.AddListener(async () =>
         {
+            Trash.interactable = false;
             string itemName = item.name;
             int list = await GameManager.instance.InventoryManager.InputInventory(itemName);
             Trash.interactable = false;
