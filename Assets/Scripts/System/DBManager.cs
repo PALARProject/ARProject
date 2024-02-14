@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -14,7 +14,7 @@ public class DBManager : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
-        // Firebase ÃÊ±âÈ­
+        // Firebase ì´ˆê¸°í™”
         await FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
             if (task.Exception != null)
             {
@@ -22,17 +22,17 @@ public class DBManager : MonoBehaviour
                 return;
             }
 
-            // Firebase ½Ç½Ã°£ µ¥ÀÌÅÍº£ÀÌ½º ÃÊ±âÈ­
+            // Firebase ì‹¤ì‹œê°„ ë°ì´í„°ë² ì´ìŠ¤ ì´ˆê¸°í™”
             databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
-            // µ¥ÀÌÅÍ ¾²±â È£Ãâ
+            // ë°ì´í„° ì“°ê¸° í˜¸ì¶œ
         });
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public async Task<List<ItemInfo>> GetItemsTable()
     {
@@ -40,7 +40,7 @@ public class DBManager : MonoBehaviour
         {
             List<ItemInfo> resultList = new List<ItemInfo>();
             DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
-            userRef = userRef.Child("¾ÆÀÌÅÛ").Child("¾ÆÀÌÅÛ ÀÌ¸§");
+            userRef = userRef.Child("ì•„ì´í…œ").Child("ì•„ì´í…œ ì´ë¦„");
             await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
                 if (task.IsCompleted)
                 {
@@ -49,16 +49,16 @@ public class DBManager : MonoBehaviour
                     {
                         Dictionary<string, object> itemData = snapshot.Value as Dictionary<string, object>;
                         Debug.Log("ItemData read successfully");
-                        foreach(var pair in itemData)
+                        foreach (var pair in itemData)
                         {
                             Dictionary<string, object> item = pair.Value as Dictionary<string, object>;
                             ItemInfo result = new ItemInfo();
-                            result.itemId = (int)(long)item["¾ÆÀÌÅÛÄÚµå"];
+                            result.itemId = (int)(long)item["ì•„ì´í…œì½”ë“œ"];
                             result.name = pair.Key;
-                            result.category = item["¾ÆÀÌÅÛ Ä«Å×°í¸®"].ToString();
-                            result.grade = (int)(long)item["¾ÆÀÌÅÛ Èñ±Íµµ"];
-                            result.description = item["¾ÆÀÌÅÛ ¼³¸í"].ToString();
-                            result.status = new Status((int)(long)item["¾ÆÀÌÅÛ °ø°İ·Â"], (int)(long)item["¾ÆÀÌÅÛ º¸È£¸·"]);
+                            result.category = item["ì•„ì´í…œ ì¹´í…Œê³ ë¦¬"].ToString();
+                            result.grade = (int)(long)item["ì•„ì´í…œ í¬ê·€ë„"];
+                            result.description = item["ì•„ì´í…œ ì„¤ëª…"].ToString();
+                            result.status = new Status((int)(long)item["ì•„ì´í…œ ê³µê²©ë ¥"], (int)(long)item["ì•„ì´í…œ ë³´í˜¸ë§‰"]);
 
                             resultList.Add(result);
                         }
@@ -87,7 +87,7 @@ public class DBManager : MonoBehaviour
         {
             ItemInfo result = new ItemInfo();
             DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
-            userRef = userRef.Child("¾ÆÀÌÅÛ").Child("¾ÆÀÌÅÛ ÀÌ¸§").Child(itemName);
+            userRef = userRef.Child("ì•„ì´í…œ").Child("ì•„ì´í…œ ì´ë¦„").Child(itemName);
             await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
                 if (task.IsCompleted)
                 {
@@ -96,12 +96,12 @@ public class DBManager : MonoBehaviour
                     {
                         Dictionary<string, object> itemData = snapshot.Value as Dictionary<string, object>;
                         Debug.Log(itemName+": ItemData read successfully:");    
-                        result.itemId = (int)(long)itemData["¾ÆÀÌÅÛÄÚµå"];
+                        result.itemId = (int)(long)itemData["ì•„ì´í…œì½”ë“œ"];
                         result.name = itemName;
-                        result.category = itemData["¾ÆÀÌÅÛ Ä«Å×°í¸®"].ToString();
-                        result.grade = (int)(long)itemData["¾ÆÀÌÅÛ Èñ±Íµµ"];
-                        result.description = itemData["¾ÆÀÌÅÛ ¼³¸í"].ToString();
-                        result.status = new Status((int)(long)itemData["¾ÆÀÌÅÛ °ø°İ·Â"], (int)(long)itemData["¾ÆÀÌÅÛ º¸È£¸·"]);
+                        result.category = itemData["ì•„ì´í…œ ì¹´í…Œê³ ë¦¬"].ToString();
+                        result.grade = (int)(long)itemData["ì•„ì´í…œ í¬ê·€ë„"];
+                        result.description = itemData["ì•„ì´í…œ ì„¤ëª…"].ToString();
+                        result.status = new Status((int)(long)itemData["ì•„ì´í…œ ê³µê²©ë ¥"], (int)(long)itemData["ì•„ì´í…œ ë³´í˜¸ë§‰"]);
                     }
                     else
                     {
@@ -117,7 +117,7 @@ public class DBManager : MonoBehaviour
         }
         catch
         {
-            Debug.Log(itemName+": Error");
+            Debug.Log(itemName + ": Error");
             return new ItemInfo();
         }
     }
@@ -130,8 +130,8 @@ public class DBManager : MonoBehaviour
             await ao;
             if (ao.isDone)
             {
-                Dictionary<int, float> list=new Dictionary<int, float>();
-                //Å×½ºÆ® ÄÚµå
+                Dictionary<int, float> list = new Dictionary<int, float>();
+                //í…ŒìŠ¤íŠ¸ ì½”ë“œ
                 list.Add(1, 20);
                 return new DropTable(1, list);
             }
@@ -147,13 +147,12 @@ public class DBManager : MonoBehaviour
     }
     public async Task<UserInfo> GetUserInfo(string UID)
     {
-        Debug.Log(UID);
         try
         {
             UserInfo result = new UserInfo();
             Dictionary<string, object> userData = new Dictionary<string, object>();
             DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
-            userRef = userRef.Child("ÇÃ·¹ÀÌ¾î").Child(UID).Child("ÀÎº¥Åä¸®");
+            userRef = userRef.Child("í”Œë ˆì´ì–´").Child(UID).Child("ì¸ë²¤í† ë¦¬");
             await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
                 if (task.IsCompleted)
                 {
@@ -162,7 +161,127 @@ public class DBManager : MonoBehaviour
                     {
                         userData = snapshot.Value as Dictionary<string, object>;
                         result.userName = UID;
-                        Debug.Log("Data read successfully:"+ UID);
+                        Debug.Log("Item Data read successfully:" + UID);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No Item data found at the specified location.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error reading Item data: " + task.Exception);
+                }
+            });
+            for (int i = 0; i < userData.Count; i++)
+            {
+                int index = i;
+                result.inventoryItems.Add(index, await GameManager.instance.DBManager.GetItemTable(userData["box_" + string.Format("{0:D3}", index + 1)].ToString()));
+            }
+
+            return result;
+        }
+        catch
+        {
+            return new UserInfo();
+        }
+    }
+    public async Task<int> GetUserQuestInfo()
+    {
+        string UID = PlayerPrefs.GetString("UID");
+        Dictionary<string, object> questData = new Dictionary<string, object>();
+        DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+        userRef = userRef.Child("í”Œë ˆì´ì–´").Child(UID).Child("í€˜ìŠ¤íŠ¸");
+        await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                if (snapshot.Exists)
+                {
+                    questData = snapshot.Value as Dictionary<string, object>;
+                    Debug.Log("Data read Quest successfully:" + UID);
+                }
+                else
+                {
+                    Debug.LogWarning("No Quest data found at the specified location.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Error reading Quest data: " + task.Exception);
+            }
+        });
+        int n = 0;
+        foreach (var pair in questData)
+        {
+            if ((bool)pair.Value == false)
+                GameManager.instance.UserInfo.haveQuest.Add(n, int.Parse(pair.Key.Split("_")[1]));
+            n++;
+        }
+        return 1;
+    }
+    public async Task<QuestInfo> GetQuestInfo(int questId)
+    {
+        try
+        {
+            
+            QuestInfo result = new QuestInfo();
+            DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+            userRef = userRef.Child("í€˜ìŠ¤íŠ¸").Child("í€˜ìŠ¤íŠ¸ ë²ˆí˜¸").Child(questId.ToString());
+            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        Dictionary<string, object> questData = snapshot.Value as Dictionary<string, object>;
+                        Debug.Log(questId + ": Quest Data read successfully");
+                        result.questId = questId;
+                        result.title = questData["ì´ë¦„"].ToString();
+                        result.desc = questData["ì„¤ëª…"].ToString();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No data found at the specified location.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error reading data: " + task.Exception);
+                    result.questId=-1;
+                }
+            });
+            return result;
+        }
+        catch
+        {
+            Debug.Log(questId + ": Error");
+            return new QuestInfo();
+        }
+    }
+
+    public async Task<string[]> GetQuestCompenInfo(int questId)
+    {
+        try
+        {
+            string[] compenItem = new string[0];
+            DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+            userRef = userRef.Child("í€˜ìŠ¤íŠ¸").Child("í€˜ìŠ¤íŠ¸ ë²ˆí˜¸").Child(questId.ToString()).Child("ë³´ìƒ");
+            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        Dictionary<string, object> questData = snapshot.Value as Dictionary<string, object>;
+                        Debug.Log(questId + ": Quest Compen Data read successfully");
+                        compenItem = new string[questData.Count];
+                        int n = 0;
+                        foreach (var pair in questData)
+                        {
+                            compenItem[n] = pair.Key.ToString();
+                            n++;
+                        }
                     }
                     else
                     {
@@ -174,27 +293,55 @@ public class DBManager : MonoBehaviour
                     Debug.LogError("Error reading data: " + task.Exception);
                 }
             });
-            for (int i = 0; i < userData.Count; i++)
-            {
-                int index = i;
-                result.inventoryItems.Add(index, await GameManager.instance.DBManager.GetItemTable(userData["box_" + string.Format("{0:D3}", index + 1)].ToString()));
-            }
-            return result;
+            return compenItem;
         }
         catch
         {
-            return new UserInfo();
+            Debug.Log(questId + ": Error");
+            return null;
         }
     }
-
-    public async void UpdateUserInfo(string userName, string inventoryNum,string itemName)
+    public async Task<Dictionary<string, object>> GetUserQuestInfo(string UID)
+    {
+        try
+        {
+            Dictionary<string, object> userData = new Dictionary<string, object>();
+            DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+            userRef = userRef.Child("í”Œë ˆì´ì–´").Child(UID).Child("í€˜ìŠ¤íŠ¸");
+            await userRef.GetValueAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        userData = snapshot.Value as Dictionary<string, object>;
+                        Debug.Log("Data read successfully:" + UID);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No data found at the specified location.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error reading data: " + task.Exception);
+                }
+            });
+            return userData;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+    public async Task<int> UpdateUserInfo(string userName, int inventoryNum,string itemName)
     {
         DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
-        // string[] childs¸¦ »ç¿ëÇÏ¿© °æ·Î ¼³Á¤
-        userRef = userRef.Child("ÇÃ·¹ÀÌ¾î").Child(userName).Child("ÀÎº¥Åä¸®");
-        // ¾÷µ¥ÀÌÆ®ÇÒ µ¥ÀÌÅÍ
+        // string[] childsë¥¼ ì‚¬ìš©í•˜ì—¬ ê²½ë¡œ ì„¤ì •
+        userRef = userRef.Child("í”Œë ˆì´ì–´").Child(userName).Child("ì¸ë²¤í† ë¦¬");
+        // ì—…ë°ì´íŠ¸í•  ë°ì´í„°
         Dictionary<string, object> updates = new Dictionary<string, object>();
-        updates.Add(inventoryNum, itemName);
+        updates.Add("box_" + string.Format("{0:D3}", inventoryNum + 1), itemName);
 
         await userRef.UpdateChildrenAsync(updates).ContinueWithOnMainThread(task => {
             if (task.IsCompleted)
@@ -206,5 +353,27 @@ public class DBManager : MonoBehaviour
                 Debug.LogError("Error updating data: " + task.Exception);
             }
         });
+        return 1;
+    }
+    public async Task<int> UpdateQuestInfo(string userName, int questId)
+    {
+        DatabaseReference userRef = FirebaseDatabase.DefaultInstance.RootReference;
+        // string[] childsë¥¼ ì‚¬ìš©í•˜ì—¬ ê²½ë¡œ ì„¤ì •
+        userRef = userRef.Child("í”Œë ˆì´ì–´").Child(userName).Child("í€˜ìŠ¤íŠ¸");
+        // ì—…ë°ì´íŠ¸í•  ë°ì´í„°
+        Dictionary<string, object> updates = new Dictionary<string, object>();
+        updates.Add("q_"+questId, true);
+
+        await userRef.UpdateChildrenAsync(updates).ContinueWithOnMainThread(task => {
+            if (task.IsCompleted)
+            {
+                Debug.Log("Data updated successfully.");
+            }
+            else
+            {
+                Debug.LogError("Error updating data: " + task.Exception);
+            }
+        });
+        return 1;
     }
 }

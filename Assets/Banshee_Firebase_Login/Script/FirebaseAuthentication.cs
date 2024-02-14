@@ -89,6 +89,14 @@ public class FirebaseAuthentication : MonoBehaviour
                 { "box_008", "null" },
                 { "box_009", "null" }
             }
+        },
+        { 
+            "퀘스트", new Dictionary<string, object>
+            {
+                {"q_1",false},
+                {"q_2",false},
+                {"q_3",false}
+            }
         }
     };
 

@@ -50,6 +50,10 @@ public class Unit : MonoBehaviour
         currentHP -= dmg;
         if (currentHP <= 0)
         {
+            if(currentHP < 0)
+            {
+                currentHP = 0;
+            }
             return true;
         }
         else

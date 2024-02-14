@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
     private Dictionary<Sfx, float> lastPlayTimeDictionary = new Dictionary<Sfx, float>();
-    public float defaultCooldown = 0.5f; // ±âº» °£°İ
+    public float defaultCooldown = 0.5f; // ê¸°ë³¸ ê°„ê²©
 
     [Header("#BGM")]
-    public AudioClip bgmClip1;
-    public AudioClip bgmClip2;
+    public AudioClip[] bgmClip;
     public float bgmVolume;
     AudioSource bgmPlayer;
     AudioHighPassFilter bgmEffect;
@@ -33,12 +33,12 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        PlayBgm(true, 1);
+        //PlayBgm(true, 1);
     }
 
     public void Init()
     {
-        //À½·® ÃÊ±â¼³Á¤
+        //ìŒëŸ‰ ì´ˆê¸°ì„¤ì •
         float loadBgm = GameManager.instance.LoadSound("BgmVolume");
         if (loadBgm != -1)
         {
@@ -49,22 +49,15 @@ public class AudioManager : MonoBehaviour
         {
             sfxVolume = loadSfx;
         }
-        // ¹è°æÀ½ ÇÃ·¹ÀÌ¾î ÃÊ±âÈ­
+        // ë°°ê²½ìŒ í”Œë ˆì´ì–´ ì´ˆê¸°í™”
         GameObject bgmObject = new GameObject("BgmPlayer");
         bgmObject.transform.parent = transform;
         bgmPlayer = bgmObject.AddComponent<AudioSource>();
         bgmPlayer.playOnAwake = false;
         bgmPlayer.loop = true;
-
-        // ÃÊ±â Å¬¸³ ¼³Á¤
-        if (bgmClip1 != null)
-            bgmPlayer.clip = bgmClip1;
-        else
-            Debug.LogError("BgmClip1ÀÌ ÃÊ±âÈ­µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
-
         bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
 
-        // È¿°úÀ½ ÇÃ·¹ÀÌ¾î ÃÊ±âÈ­
+        // íš¨ê³¼ìŒ í”Œë ˆì´ì–´ ì´ˆê¸°í™”
         GameObject sfxObject = new GameObject("sfxPlayer");
         sfxObject.transform.parent = transform;
         sfxPlayers = new AudioSource[channels];
@@ -77,37 +70,37 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayBgm(bool isPlay, int bgmIndex = 1)
+    public void PlayBgm(bool isPlay, int bgmIndex = 0)
     {
+
         bgmPlayer.volume = bgmVolume;
 
         if (isPlay)
         {
-            if (bgmPlayer != null)  // null Ã¼Å© Ãß°¡
+            if (bgmPlayer != null)  // null ì²´í¬ ì¶”ê°€
             {
-                if (bgmIndex == 1)
-                    bgmPlayer.clip = bgmClip1;
-                else if (bgmIndex == 2)
-                    bgmPlayer.clip = bgmClip2;
+                //ê³¡ ì‹œì‘ì½”ë“œ
+                bgmPlayer.clip = bgmClip[bgmIndex];
 
                 bgmPlayer.Play();
             }
             else
             {
-                Debug.LogError("BgmPlayer°¡ ÃÊ±âÈ­µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+                Debug.LogError("BgmPlayerê°€ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             }
         }
         else
         {
-            if (bgmPlayer != null)  // null Ã¼Å© Ãß°¡
+            if (bgmPlayer != null)  // null ì²´í¬ ì¶”ê°€
             {
                 bgmPlayer.Stop();
             }
             else
             {
-                Debug.LogError("BgmPlayer°¡ ÃÊ±âÈ­µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+                Debug.LogError("BgmPlayerê°€ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             }
         }
+
     }
 
     public void EffectBgm(bool isPlay)
@@ -129,7 +122,7 @@ public class AudioManager : MonoBehaviour
             channelIndex = loopIndex;
             sfxPlayers[loopIndex].clip = sfxClip[(int)sfx];
 
-            // ¼Ò¸® Å©±â Á¶Àı
+            // ì†Œë¦¬ í¬ê¸° ì¡°ì ˆ
             float adjustedVolume = sfxVolume;
             sfxPlayers[loopIndex].volume = adjustedVolume;
 
@@ -138,7 +131,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // BGM º¼·ı Á¶Àı ¸Ş¼Òµå
+    // BGM ë³¼ë¥¨ ì¡°ì ˆ ë©”ì†Œë“œ
     public void SetBgmVolume(float volume)
     {
         GameManager.instance.SaveSound("BgmVolume", volume);
@@ -146,7 +139,7 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.volume = volume;
     }
 
-    // SFX º¼·ı Á¶Àı ¸Ş¼Òµå
+    // SFX ë³¼ë¥¨ ì¡°ì ˆ ë©”ì†Œë“œ
     public void SetSfxVolume(float volume)
     {
         GameManager.instance.SaveSound("SfxVolume", volume);
