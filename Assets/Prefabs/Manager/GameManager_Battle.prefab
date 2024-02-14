@@ -51,8 +51,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dbManager: {fileID: 9196503681653995781}
   inventoryManager: {fileID: 9196503681863789271}
+  questManager: {fileID: 0}
   uiManager: {fileID: 7018879981599226628}
   audioManager: {fileID: 8229074166146348663}
+  ready: 0
 --- !u!1001 &584534961772838506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,6 +131,10 @@ PrefabInstance:
     - target: {fileID: 1951729182372931737, guid: 9a7ee35ca0a1c344e8b4d2d8caf46872, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4644489907420700714, guid: 9a7ee35ca0a1c344e8b4d2d8caf46872, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -2700
       objectReference: {fileID: 0}
     - target: {fileID: 4644489908153812106, guid: 9a7ee35ca0a1c344e8b4d2d8caf46872, type: 3}
       propertyPath: m_Name
@@ -216,6 +222,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4644489908153812110, guid: 9a7ee35ca0a1c344e8b4d2d8caf46872, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4644489909015139605, guid: 9a7ee35ca0a1c344e8b4d2d8caf46872, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5994031121013124132, guid: 9a7ee35ca0a1c344e8b4d2d8caf46872, type: 3}

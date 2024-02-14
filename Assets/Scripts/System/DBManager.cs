@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -32,7 +32,7 @@ public class DBManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public async Task<List<ItemInfo>> GetItemsTable()
     {
@@ -49,7 +49,7 @@ public class DBManager : MonoBehaviour
                     {
                         Dictionary<string, object> itemData = snapshot.Value as Dictionary<string, object>;
                         Debug.Log("ItemData read successfully");
-                        foreach(var pair in itemData)
+                        foreach (var pair in itemData)
                         {
                             Dictionary<string, object> item = pair.Value as Dictionary<string, object>;
                             ItemInfo result = new ItemInfo();
@@ -117,7 +117,7 @@ public class DBManager : MonoBehaviour
         }
         catch
         {
-            Debug.Log(itemName+": Error");
+            Debug.Log(itemName + ": Error");
             return new ItemInfo();
         }
     }
@@ -130,7 +130,7 @@ public class DBManager : MonoBehaviour
             await ao;
             if (ao.isDone)
             {
-                Dictionary<int, float> list=new Dictionary<int, float>();
+                Dictionary<int, float> list = new Dictionary<int, float>();
                 //테스트 코드
                 list.Add(1, 20);
                 return new DropTable(1, list);

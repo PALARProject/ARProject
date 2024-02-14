@@ -6,12 +6,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     //userInfo
-    UserInfo userInfo=null;
+    UserInfo userInfo = null;
     public UserInfo UserInfo { get { return this.userInfo; } set { this.userInfo = value; } }
 
     //DB
     [SerializeField] protected DBManager dbManager;
-    public DBManager DBManager{get{return this.dbManager;} set { this.dbManager = value; } }
+    public DBManager DBManager { get { return this.dbManager; } set { this.dbManager = value; } }
     //Inventory
     [SerializeField] protected InventoryManager inventoryManager;
     public InventoryManager InventoryManager { get { return this.inventoryManager; } set { this.inventoryManager = value; } }
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
             await DBManager.GetUserQuestInfo();
         }
 
-        if(InventoryManager!=null)
+        if (InventoryManager != null)
             InventoryManager.Init();
 
         if (QuestManager != null)
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         {
             return -1;
         }
-        float sound=PlayerPrefs.GetFloat(key);
+        float sound = PlayerPrefs.GetFloat(key);
         return sound;
     }
 }

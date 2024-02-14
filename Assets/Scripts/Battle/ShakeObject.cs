@@ -4,24 +4,89 @@ using UnityEngine;
 
 public class ShakeObject : MonoBehaviour
 {
-    public void OnShaking()
-    {
-        StartCoroutine(Shake());
-    }
+    public float shakeAmount;
+    float shakeTime;
 
-    IEnumerator Shake()
-    {
-        float t = 3f;
-        float shakePower = 0.02f;
-        Vector3 origin = transform.position;
+    public float camAmount;
+    float camTime;
+    
+    public GameObject cam;
+    public GameObject enemy;
 
-        while(t > 0f)
+    Vector3 initialPosition;
+    Vector3 initialCamPosition;
+
+    public bool isShake;
+    public bool isCamShake;
+
+    public ChangedCam changeCam;
+
+    public void VibrationObject(float amount, float time)
+    {
+        if (changeCam.isAR)
         {
-            t -= 0.05f;
-            transform.position = origin + (Vector3)Random.insideUnitCircle * shakePower * t;
-            yield return null;
+            enemy = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>().enemy;
+            initialPosition = enemy.transform.position;
+        }
+        else
+        {
+            enemy = GameObject.FindWithTag("Enemy");
+            initialPosition = enemy.transform.position;
         }
 
-        transform.position = origin;
+        shakeAmount = amount;
+        shakeTime = time;
+        isShake = true;
+    }
+
+    public void VibrationCam(float amount, float time)
+    {
+        cam = GameObject.FindWithTag("MainCamera");
+        initialCamPosition = cam.transform.position;
+
+        camAmount = amount;
+        camTime = time;
+        isCamShake = true;
+    }
+
+
+    private void Start()
+    {
+        cam = GameObject.FindWithTag("MainCamera");
+        initialCamPosition = cam.transform.position;
+    }
+
+    private void Update()
+    {
+        if(isShake)
+        {
+            if (shakeTime > 0)
+            {
+                enemy.transform.position = Random.insideUnitSphere * shakeAmount + initialPosition;
+                shakeTime -= Time.deltaTime;
+            }
+            else
+            {
+                shakeTime = 0.0f;
+                enemy.transform.position = initialPosition;
+                isShake = false;
+            }
+        }
+
+        if(isCamShake)
+        {
+            if (camTime > 0)
+            {
+                cam.transform.position = Random.insideUnitSphere * camAmount + initialCamPosition;
+                camTime -= Time.deltaTime;
+            }
+            else
+            {
+                camTime = 0.0f;
+                cam.transform.position = initialCamPosition;
+                isCamShake = false;
+            }
+        }
+
     }
 }

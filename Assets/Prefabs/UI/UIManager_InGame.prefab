@@ -538,6 +538,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quest
       objectReference: {fileID: 0}
+    - target: {fileID: 6290995097109806386, guid: 4d30f9cf02499ff4e8d1c70c4672078a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6290995097109806387, guid: 4d30f9cf02499ff4e8d1c70c4672078a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -621,6 +625,10 @@ PrefabInstance:
     - target: {fileID: 6290995097109806387, guid: 4d30f9cf02499ff4e8d1c70c4672078a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290995097630492685, guid: 4d30f9cf02499ff4e8d1c70c4672078a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -2700
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d30f9cf02499ff4e8d1c70c4672078a, type: 3}
