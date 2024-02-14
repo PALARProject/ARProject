@@ -41,36 +41,30 @@ public class FirebaseAuthentication : MonoBehaviour
     }
 
 
-    public void SignUp(string email, string password, string Nickname)
-    {
+    public async Task SignUp(string email, string password, string Nickname) {
+      
         Firebase.Auth.FirebaseAuth auth;
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
-            if(task.IsCanceled) {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
-                return;
-            }
-            if(task.IsFaulted) {
-                // 예외를 처리하여 에러 메시지로 사용합니다.
-                foreach(Exception e in task.Exception.Flatten().InnerExceptions) {
-                    string errorMessage = e.Message;
-                    if(errorMessage == "The email address is already in use by another account.") {
-                        // 이메일을 제공하지 않은 경우
-                        Debug.LogError("Failed to sign up: System.AggregateException: One or more errors occurred. ");
-                        ShowErrorMessage("이미 회원가입된 이메일 입니다 ");
-                    }else{
-                        Debug.LogError("관리자 요청");
-                        ShowErrorMessage("회원가입되지 않았습니다, 관리자에게 문의하세요");
-                    }
-                }
-                return;
-            }
+        try {
+            var task = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
             Debug.Log("User signed up successfully!");
             SignUp_InventoryMaker(Nickname, email, password);
-            JPOpen.JoinPageSetActiveChange();
             LoginEmailInput.text = JoinEmailInput.text;
             LoginPasswordInput.text = JoinPasswordInput.text;
-        });
+            JPOpen.JoinPageSetActiveChange();
+        } catch(Firebase.FirebaseException e) {
+            // 예외 처리를 수행하고 오류 메시지를 출력합니다.
+            Debug.LogError($"Failed to sign up: {e.Message}");
+            ShowErrorMessage("회원가입되지 않았습니다, 관리자에게 문의하세요");
+        }
+        
+
+        Debug.Log("User signed up successfully!");
+
+        SignUp_InventoryMaker(Nickname, email, password);
+
+       
+
     }
     //회원가입 시 생성구문 SignUp 마지막 참조
     public void SignUp_InventoryMaker(string username, string email, string password)
@@ -150,8 +144,7 @@ public class FirebaseAuthentication : MonoBehaviour
             return 0;
         }
     }
-    public void JoinButtonClick()
-    {
+    public async void JoinButtonClick() {
         string email = JoinEmailInput.text;
         string password = JoinPasswordInput.text;
         string Nickname = NicknameInput.text;
@@ -192,8 +185,9 @@ public class FirebaseAuthentication : MonoBehaviour
         }
 
 
-        SignUp(email, password, Nickname);
+        await SignUp(email, password, Nickname);
 
+        
     }
 
     public async void LoginButtonClick()
