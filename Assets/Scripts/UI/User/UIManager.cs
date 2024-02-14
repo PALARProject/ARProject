@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
     public GameObject QuestUI { get { return this.questUI; } set { this.questUI = value; } }
     [SerializeField] protected GameObject resultUI;
     public GameObject ResultUI { get { return this.resultUI; } set { this.resultUI = value; } }
+    public GameObject LogoutUI { get { return this.logoutUI; } set { this.logoutUI = value; } }
+    [SerializeField] protected GameObject logoutUI;
 
     private List<GameObject> UIObjs = new List<GameObject>();
 
@@ -36,20 +38,21 @@ public class UIManager : MonoBehaviour
         UIObjs.Add(StatusUI);
         UIObjs.Add(OptionUI);
         UIObjs.Add(QuestUI);
+        UIObjs.Add(LogoutUI);
     }
 
     private void Start()
     {
-        // AudioManager ¿ÀºêÁ§Æ®¸¦ Ã£¾Æ °¡Á®¿È
+        // AudioManager ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì•„ ê°€ì ¸ì˜´
         audioManager = GameManager.instance.AudioManager;
         if (audioManager == null)
             return;
 
-        // ½½¶óÀÌ´õÀÇ ÃÊ±â°ªÀ» AudioManagerÀÇ º¼·ı °ªÀ¸·Î ¼³Á¤
+        // ìŠ¬ë¼ì´ë”ì˜ ì´ˆê¸°ê°’ì„ AudioManagerì˜ ë³¼ë¥¨ ê°’ìœ¼ë¡œ ì„¤ì •
         bgmSlider.value = audioManager.bgmVolume;
         sfxSlider.value = audioManager.sfxVolume;
 
-        // ½½¶óÀÌ´õ °ªÀÌ º¯°æµÉ ¶§¸¶´Ù AudioManagerÀÇ º¼·ıÀ» ¾÷µ¥ÀÌÆ®ÇÏ´Â ÀÌº¥Æ® ¸®½º³Ê Ãß°¡
+        // ìŠ¬ë¼ì´ë” ê°’ì´ ë³€ê²½ë  ë•Œë§ˆë‹¤ AudioManagerì˜ ë³¼ë¥¨ì„ ì—…ë°ì´íŠ¸í•˜ëŠ” ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€
         bgmSlider.onValueChanged.AddListener(delegate { OnBgmVolumeChanged(); });
         sfxSlider.onValueChanged.AddListener(delegate { OnSfxVolumeChanged(); });
     }
@@ -59,7 +62,7 @@ public class UIManager : MonoBehaviour
         audioManager.SetBgmVolume(bgmSlider.value);
     }
 
-    // SFX º¼·ıÀÌ º¯°æµÉ ¶§ È£ÃâµÇ´Â ¸Ş¼Òµå
+    // SFX ë³¼ë¥¨ì´ ë³€ê²½ë  ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì†Œë“œ
     public void OnSfxVolumeChanged()
     {
         audioManager.SetSfxVolume(sfxSlider.value);
@@ -96,6 +99,7 @@ public class UIManager : MonoBehaviour
         OptionUI.SetActive(!OptionUI.activeSelf);
 
     }
+    
     public void OpenCloseQuest()
     {
         if (QuestUI == null)
@@ -104,6 +108,16 @@ public class UIManager : MonoBehaviour
         if (BottomUI != null)
             BottomUI.GetComponent<BottomUI>().QuestButton.interactable = QuestUI.activeSelf;
         QuestUI.SetActive(!QuestUI.activeSelf);
+
+    }
+    public void OpenCloseLogout()
+    {
+        if (LogoutUI == null)
+            return;
+        OnlyOneUI(LogoutUI.name);
+        if (BottomUI != null)
+            BottomUI.GetComponent<BottomUI>().OptionButton.interactable = LogoutUI.activeSelf;
+        LogoutUI.SetActive(!LogoutUI.activeSelf);
 
     }
     public void OnlyOneUI(string name)
