@@ -34,6 +34,34 @@ public class ItemInfoUI : MonoBehaviour
             gameObject.SetActive(false);
         });
     }
+    public void Result_Init(GameObject obj, ItemInfo item)
+    {
+
+        Trash.onClick.RemoveAllListeners();
+        Exit.onClick.RemoveAllListeners();
+        image.sprite = Resources.Load<Sprite>("Item/Sprite/" + item.name);
+        Name.text = item.name;
+        DP.text = item.status.dp.ToString();
+        AP.text = item.status.ap.ToString();
+        Description.text = item.description;
+        Trash.interactable = true;
+        Trash.onClick.AddListener(async () =>
+        {
+            string itemName = item.name;
+            int list = await GameManager.instance.InventoryManager.InputInventory(itemName);
+            Trash.interactable = false;
+            Trash.onClick.RemoveAllListeners();
+            Exit.onClick.RemoveAllListeners();
+            obj.GetComponent<Button>().interactable = false;
+            gameObject.SetActive(false);
+        });
+        Exit.onClick.AddListener(() =>
+        {
+            gameObject.SetActive(false);
+            Trash.onClick.RemoveAllListeners();
+            Exit.onClick.RemoveAllListeners();
+        });
+    }
     // Start is called before the first frame update
     void Start()
     {

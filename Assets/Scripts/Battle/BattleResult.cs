@@ -19,6 +19,7 @@ public class BattleResult : MonoBehaviour
 
     public GameObject Result_Item;
     public GameObject[] resultLocation=new GameObject[9];
+    public GameObject info;
     // Start is called before the first frame update
 
     private void Awake()
@@ -46,7 +47,7 @@ public class BattleResult : MonoBehaviour
     
     IEnumerator AnimateUI(int result)
     {
-        //æ∆¿Ã≈€ ¡§ªÍ
+        //ÏïÑÏù¥ÌÖú Ï†ïÏÇ∞
         Task<List<ItemInfo>> list= GameManager.instance.DBManager.GetItemsTable();
         float time = 0;
         while (!list.IsCompletedSuccessfully && time<5)
@@ -87,10 +88,11 @@ public class BattleResult : MonoBehaviour
             string name = collectItem[index].name;
             btn.onClick.AddListener(async () =>
             {
-                string itemName = name;
-                int list = await GameManager.instance.InventoryManager.InputInventory(itemName);
-                btn.interactable = false;
-                btn.onClick.RemoveAllListeners();
+                if (info != null)
+                {
+                    info.gameObject.GetComponent<ItemInfoUI>().Result_Init(obj, collectItem[index]);
+                    info.gameObject.SetActive(true);
+                }
             });
         }
         resultUI.SetActive(true);
@@ -112,7 +114,6 @@ public class BattleResult : MonoBehaviour
         while (rectTransform.anchoredPosition.y < targetPosition.y)
         {
             rectTransform.anchoredPosition += Vector2.up * animSpeed * Time.deltaTime;
-            
         }
     }
 
