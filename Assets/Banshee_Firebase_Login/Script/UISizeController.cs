@@ -5,12 +5,12 @@ using UnityEngine.UI;
 using TMPro;
 public class UISizeController : MonoBehaviour
 {
-    public RectTransform[] uiElements; // ¸ğµç UI ¿ä¼Ò¸¦ ¹è¿­·Î ÀúÀå
-
+    public RectTransform[] uiElements; // ëª¨ë“  UI ìš”ì†Œë¥¼ ë°°ì—´ë¡œ ì €ì¥
+    public float currentScreenWidth = 1080f;
+    public float currentScreenHeight = 1920f;
     void Start() {
-        // ÇöÀç ºñÀ²°ú »õ·Î¿î ºñÀ² °è»ê
-        float currentScreenWidth = 1080f;
-        float currentScreenHeight = 1920f;
+        // í˜„ì¬ ë¹„ìœ¨ê³¼ ìƒˆë¡œìš´ ë¹„ìœ¨ ê³„ì‚°
+       
 
         float newScreenWidth = Screen.width; 
         float newScreenHeight = Screen.height;
@@ -18,17 +18,17 @@ public class UISizeController : MonoBehaviour
         float widthRatio = newScreenWidth / currentScreenWidth;
         float heightRatio = newScreenHeight / currentScreenHeight;
 
-        // ¸ğµç UI ¿ä¼Ò¿¡ ´ëÇØ ¹İº¹ÇÏ¿© À§Ä¡¿Í Å©±â¸¦ Á¶Á¤
+        // ëª¨ë“  UI ìš”ì†Œì— ëŒ€í•´ ë°˜ë³µí•˜ì—¬ ìœ„ì¹˜ì™€ í¬ê¸°ë¥¼ ì¡°ì •
         foreach(RectTransform uiElement in uiElements) {
-            // ÇöÀç À§Ä¡¿Í Å©±â °¡Á®¿À±â
+            // í˜„ì¬ ìœ„ì¹˜ì™€ í¬ê¸° ê°€ì ¸ì˜¤ê¸°
             Vector2 currentOffsetMin = uiElement.offsetMin;
             Vector2 currentOffsetMax = uiElement.offsetMax;
 
-            // »õ·Î¿î À§Ä¡¿Í Å©±â °è»ê
+            // ìƒˆë¡œìš´ ìœ„ì¹˜ì™€ í¬ê¸° ê³„ì‚°
             Vector2 newOffsetMin = new Vector2(currentOffsetMin.x * widthRatio, currentOffsetMin.y * heightRatio);
             Vector2 newOffsetMax = new Vector2(currentOffsetMax.x * widthRatio, currentOffsetMax.y * heightRatio);
 
-            // À§Ä¡¿Í Å©±â Àû¿ë
+            // ìœ„ì¹˜ì™€ í¬ê¸° ì ìš©
             uiElement.offsetMin = newOffsetMin;
             uiElement.offsetMax = newOffsetMax;
         }

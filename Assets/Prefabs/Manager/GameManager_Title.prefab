@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dbManager: {fileID: 0}
   inventoryManager: {fileID: 0}
+  questManager: {fileID: 0}
   uiManager: {fileID: 6461229834530990083}
   audioManager: {fileID: 2322300976684478173}
   ready: 0
@@ -215,7 +216,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6461229835436337471}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -566,7 +567,6 @@ RectTransform:
   - {fileID: 6461229834717776821}
   - {fileID: 6461229835436337471}
   - {fileID: 6461229834177931803}
-  - {fileID: 6461229835012624205}
   m_Father: {fileID: 3290293400383034377}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -653,6 +653,8 @@ MonoBehaviour:
   statusUI: {fileID: 0}
   optionUI: {fileID: 1863426942018315631}
   questUI: {fileID: 0}
+  resultUI: {fileID: 0}
+  logoutUI: {fileID: 0}
   bgmSlider: {fileID: 2326260146689122765}
   sfxSlider: {fileID: 8446618613582625682}
 --- !u!1 &6461229834717776810
@@ -1152,7 +1154,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6461229835012624194}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1161,8 +1163,8 @@ RectTransform:
   - {fileID: 6461229834435503767}
   - {fileID: 6461229835949713813}
   - {fileID: 4239451690304535498}
-  m_Father: {fileID: 6461229834530990080}
-  m_RootOrder: 3
+  m_Father: {fileID: 6461229835436337471}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -1199,6 +1201,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6461229835012624205}
   - {fileID: 6461229834406785216}
   m_Father: {fileID: 6461229834530990080}
   m_RootOrder: 1
