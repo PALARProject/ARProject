@@ -1,6 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,10 +33,20 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 1)
+            {
+                SceneManager.sceneLoaded += OnSceneLoaded;
+                DontDestroyOnLoad(this.gameObject);
+            }
+        }
+        else {
+            gameObject.Destroy();
         }
         //매니저 초기화
-        if(AudioManager!=null)
+        if (AudioManager != null)
+        {
             AudioManager.Init();
+        }
 
 
         //유저설정
@@ -46,10 +57,15 @@ public class GameManager : MonoBehaviour
         }
 
         if (InventoryManager != null)
+        {
             InventoryManager.Init();
+        }
 
         if (QuestManager != null)
+        {
             QuestManager.Init();
+        }
+        
         ready = true;
         //UserInfo.inventoryItems;
     }
@@ -80,6 +96,34 @@ public class GameManager : MonoBehaviour
         }
         float sound = PlayerPrefs.GetFloat(key);
         return sound;
+    }
+
+    private void LateUpdate()
+    {
+    }
+    // 체인을 걸어서 이 함수는 매 씬마다 호출된다.
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        try
+        {
+            if (SceneManager.GetActiveScene().buildIndex == 2)
+            {
+                AudioManager.PlayBgm(true, 0);
+                UIManager.BottomUI.SetActive(true);
+                QuestManager.gameObject.SetActive(true);
+            }
+            else if (SceneManager.GetActiveScene().buildIndex == 3)
+            {
+                int random = Random.Range(0, 3);
+                AudioManager.PlayBgm(true, random + 1);
+                UIManager.BottomUI.SetActive(false);
+                QuestManager.gameObject.SetActive(false);
+            }
+        }
+        catch
+        {
+            return;
+        }
     }
 }
 public class UserInfo

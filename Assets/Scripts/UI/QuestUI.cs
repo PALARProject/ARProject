@@ -12,7 +12,7 @@ public class QuestUI : MonoBehaviour
     public Text desc;
     Button btn;
     public bool condition = false;
-
+    int count = 0;
     private void Start()
     {
         btn = GetComponent<Button>();
@@ -42,7 +42,7 @@ public class QuestUI : MonoBehaviour
         switch (questId)
         {
             case 1:
-                //»óÀÚ ¿©´Â ÄÚµå
+                //ìƒì ì—¬ëŠ” ì½”ë“œ
                 if (PlayerPrefs.HasKey("OpenBox"))
                 {
                     if (PlayerPrefs.GetInt("OpenBox") == 1)
@@ -57,6 +57,8 @@ public class QuestUI : MonoBehaviour
                 {
                     if(PlayerPrefs.GetInt("CatchMob") == 1)
                     {
+                        count++;
+                        Debug.Log("count:" +count);
                         condition = true;
                     }
                 }
