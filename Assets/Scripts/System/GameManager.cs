@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
             if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 1)
             {
                 SceneManager.sceneLoaded += OnSceneLoaded;
-                DontDestroyOnLoad(this.gameObject);
             }
         }
         else {

@@ -7,6 +7,8 @@ public class AttackEffect : MonoBehaviour
     public ChangedCam camInfo;
     public EnemyAR enemyAR;
 
+    private GameObject enemy;
+
     public GameObject attackEff;
     public GameObject effectLoc;
     private Vector2 loc = new Vector3(0, 0, 0);
@@ -14,19 +16,6 @@ public class AttackEffect : MonoBehaviour
     void Start()
     {
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(!camInfo.isAR)
-        {
-            loc = effectLoc.transform.position;
-        }
-        else
-        {
-            loc = enemyAR.enemy.transform.position;
-        }
     }
     
     public void PlayerEffectOn()
@@ -36,7 +25,8 @@ public class AttackEffect : MonoBehaviour
 
     IEnumerator OnEffect()
     {
-        GameObject effect = Instantiate(attackEff, loc, Quaternion.identity);
+        Vector3 screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0f));
+        GameObject effect = Instantiate(attackEff, screenCenter, Quaternion.identity);
         effect.gameObject.transform.SetParent(gameObject.transform);
         yield return new WaitForSeconds(0.7f);
         Destroy(effect);
