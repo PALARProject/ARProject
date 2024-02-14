@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public GameObject EnemyManager;
+    public EnemyManager EnemyManager;
     public GameObject enemyPrefab;
     public Transform enemyBattleTransform;
     public Animator enemyAnim;
@@ -76,6 +76,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator SetupBattle()
     {
+        enemyPrefab = EnemyManager.EnemyPrefabs[0];
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
         enemyUnit = enemyGO.GetComponent<Unit>();
         enemyAnim = enemyGO.GetComponent<Animator>();
@@ -100,7 +101,7 @@ public class BattleManager : MonoBehaviour
         shakeObject.VibrationObject(0.02f, 0.2f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
-        dialogueText.text = "°ø°İÀÌ ¼º°øÇß´Ù!";
+        dialogueText.text = "ê³µê²©ì´ ì„±ê³µí–ˆë‹¤!";
 
         yield return new WaitForSeconds(2f);
 
@@ -119,16 +120,17 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyAfterAvoidSucess()
     {
-        yield return new WaitForSeconds(4f);
-        dialogueText.text = enemyUnit.unitName + "°¡ ºóÆ´À» º¸¿´´Ù!";
+        dialogueText.text = enemyUnit.unitName + "ì˜ ê³µê²©ì„ í”¼í–ˆë‹¤!";
+        yield return new WaitForSeconds(2f);
+        dialogueText.text = enemyUnit.unitName + "ê°€ ë¹ˆí‹ˆì„ ë³´ì˜€ë‹¤!";
 
+        yield return new WaitForSeconds(1f);
         playerEffect.PlayerEffectOn();
-        yield return new WaitForSeconds(0.5f);
         shakeObject.VibrationObject(0.02f, 0.2f);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-        dialogueText.text = "Ãß°¡ °ø°İ¿¡ ¼º°øÇß´Ù!";
+        dialogueText.text = "ì¶”ê°€ ê³µê²©ì— ì„±ê³µí–ˆë‹¤!";
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
 
         yield return new WaitForSeconds(2f);
@@ -147,8 +149,8 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyAfterAvoidFailed()
     {
-        yield return new WaitForSeconds(4f);
-        dialogueText.text = enemyUnit.unitName + "°¡ °ø°İÇß´Ù!";
+        yield return new WaitForSeconds(2f);
+        dialogueText.text = enemyUnit.unitName + "ê°€ ê³µê²©í–ˆë‹¤!";
 
         yield return new WaitForSeconds(1f);
         EnemyAnimator("Attack");
@@ -175,7 +177,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        dialogueText.text = enemyUnit.unitName + "°¡ °ø°İÇß´Ù!";
+        dialogueText.text = enemyUnit.unitName + "ê°€ ê³µê²©í–ˆë‹¤!";
         yield return new WaitForSeconds(1f);
 
         bool isEnemyDead = playerUnit.TakeDamage(enemyUnit.damage);
@@ -206,24 +208,24 @@ public class BattleManager : MonoBehaviour
         if (state == BattleState.WON)
         {
             ResultManager.ActiveResultUI(1);
-            dialogueText.text = "½Â¸®Çß´Ù!";
+            dialogueText.text = "ìŠ¹ë¦¬í–ˆë‹¤!";
             PlayerPrefs.SetInt("CatchMob", 1);
         }
         else if (state == BattleState.LOST)
         {
             ResultManager.ActiveResultUI(2);
-            dialogueText.text = "ÆĞ¹èÇß´Ù¡¦.";
+            dialogueText.text = "íŒ¨ë°°í–ˆë‹¤â€¦.";
         }
         else if(state == BattleState.DRAW)
         {
             ResultManager.ActiveResultUI(3);
-            dialogueText.text = "µµÁÖ¿¡ ¼º°øÇß´Ù!";
+            dialogueText.text = "ë„ì£¼ì— ì„±ê³µí–ˆë‹¤!";
         }
     }
 
     IEnumerator TryEscaping()
     {
-        dialogueText.text = "µµÁÖ¸¦ ½ÃµµÇß´Ù¡¦!";
+        dialogueText.text = "ë„ì£¼ë¥¼ ì‹œë„í–ˆë‹¤â€¦!";
 
         int num = Random.Range(0, 3);
         bool trying;
@@ -239,14 +241,14 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if(trying == true)
         {
-            dialogueText.text = "µµÁÖ¿¡ ¼º°øÇß´Ù!";
-            yield return new WaitForSeconds(2f);
+            dialogueText.text = "ë„ì£¼ì— ì„±ê³µí–ˆë‹¤!";
+            yield return new WaitForSeconds(1f);
             state = BattleState.DRAW;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
-            dialogueText.text = "µµÁÖ¿¡ ½ÇÆĞÇß´Ù¡¦.";
+            dialogueText.text = "ë„ì£¼ì— ì‹¤íŒ¨í–ˆë‹¤â€¦.";
             yield return new WaitForSeconds(2f);
             StartCoroutine(EnemyTurn());
         }
@@ -258,7 +260,7 @@ public class BattleManager : MonoBehaviour
         avoidButton.interactable = true;
         EscapeButton.interactable = true;
 
-        dialogueText.text = "¾î¶»°Ô ÇÒ±î?";
+        dialogueText.text = "ì–´ë–»ê²Œ í• ê¹Œ?";
     }
 
     public void OnAvoidButton()
@@ -269,6 +271,8 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+
+        dialogueText.text = enemyUnit.unitName + "ê°€ ê³µê²©í•˜ë ¤ê³  í•œë‹¤!";
 
         if (changeCam.GetComponent<ChangedCam>().isAR == false)
         {
