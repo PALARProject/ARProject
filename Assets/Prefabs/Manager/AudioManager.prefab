@@ -45,8 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultCooldown: 0.5
-  bgmClip1: {fileID: 8300000, guid: 4a7f6871156c97149993871b15d13079, type: 3}
-  bgmClip2: {fileID: 0}
+  bgmClip:
+  - {fileID: 8300000, guid: 4a7f6871156c97149993871b15d13079, type: 3}
+  - {fileID: 8300000, guid: 476a59e0be99aae429a57ef1473121d7, type: 3}
+  - {fileID: 8300000, guid: e0b8c868a4c6f014b9f0529fb2c50b13, type: 3}
+  - {fileID: 8300000, guid: 0bf1f679e97aa7841a226cf15020fa2b, type: 3}
   bgmVolume: 0.5
   sfxClip:
   - {fileID: 0}
