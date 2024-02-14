@@ -617,8 +617,6 @@ MonoBehaviour:
   _map: {fileID: 467812310}
   _locationStrings:
   - 35.1596,129.0606
-  - 35.1600,129.0606
-  - 35.1596,129.0626
   _spawnScale: 10
   _markerPrefab: {fileID: 8153866531458291278, guid: 5a71785cca3fd334ca7b71e7cc714247, type: 3}
   _spawnedObjects: []
@@ -644,8 +642,8 @@ MonoBehaviour:
   - 
   - 
   - 
-  _spawnScale: 5
-  _markerPrefab: {fileID: 566529766319493404, guid: ccc5a97a80c4a72469862341167de4e3, type: 3}
+  _spawnScale: 6
+  _markerPrefab: {fileID: 566529766319493404, guid: 8e4958afd532bf249b642fcc7af6a933, type: 3}
 --- !u!61 &467812313
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -984,7 +982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &494974605
 RectTransform:
   m_ObjectHideFlags: 0
