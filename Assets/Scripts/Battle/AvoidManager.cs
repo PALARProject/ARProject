@@ -11,10 +11,14 @@ public class AvoidManager : MonoBehaviour
     public float countdown;
     public GameObject countUI;
     public Text countText;
-    public Text angleText;
+    public Text playerText;
+    public Text enemyText;
+    public Text resultText;
+    public Text stateText;
 
     public ARFaceManager faceManager;
     public GameObject ChangeCam;
+    public GameObject chamCham;
 
     public Direction playerDirection;
     public Direction AIDirection;
@@ -23,15 +27,13 @@ public class AvoidManager : MonoBehaviour
 
     public GameObject AvoidUI;
     public GameObject BattleUI;
+    public GameObject AwareUI;
+    public GameObject ResultUI;
+    public GameObject StateUI;
 
     private void OnEnable()
     {
-        countdown = 7;
-        isCheck = false;
-        angleText.text = "";
-        countText = countUI.GetComponent<Text>();
-
-        faceManager.facesChanged += OnFaceChanged;
+        AvoidStart();
     }
 
     // Update is called once per frame
@@ -61,6 +63,29 @@ public class AvoidManager : MonoBehaviour
         }
     }
 
+    public void RetryAvoid()
+    {
+        AvoidStart();
+        AwareUI.SetActive(false);
+    }
+
+    public void CancelAvoid()
+    {
+        StartCoroutine(ShowResultReturn(false));
+        AwareUI.SetActive(false);
+    }
+
+    void AvoidStart()
+    {
+        countdown = 7;
+        isCheck = false;
+        StateUI.SetActive(true);
+        countText = countUI.GetComponent<Text>();
+
+        chamCham.transform.eulerAngles = Vector3.zero;
+        faceManager.facesChanged += OnFaceChanged;
+    }
+
     void ControlAvoidValue()
     {
         int randValue = Random.Range(0, 3);
@@ -68,28 +93,33 @@ public class AvoidManager : MonoBehaviour
         {
             case 0:
                 AIDirection = Direction.RIGHT;
+                chamCham.transform.eulerAngles -= new Vector3(0, 0, 30f);
                 break;
             case 1:
                 AIDirection = Direction.LEFT;
+                chamCham.transform.eulerAngles += new Vector3(0, 0, 30f);
                 break;
             case 2:
                 AIDirection = Direction.FORWARD;
+                chamCham.transform.eulerAngles = Vector3.zero;
                 break;
         }
     }
 
     void CheckAvoid()
     {
+        countText.text = "";
+        StateUI.SetActive(false);
+        ResultUI.SetActive(true);
+        playerText.text = playerDirection.ToString();
+        enemyText.text = AIDirection.ToString();
         if (playerDirection == AIDirection)
         {
-            Debug.Log("게임 오버!");
-            ShowResult(false);
-
+            resultText.text = "회피 실패!";
         }
         else
         {
-            Debug.Log("회피 성공!");
-            ShowResult(true);
+            resultText.text = "회피 성공!";
         }
     }
 
@@ -101,33 +131,39 @@ public class AvoidManager : MonoBehaviour
             Quaternion faceRotation = face.transform.rotation;
 
             float yAngle = Quaternion.Euler(0, faceRotation.eulerAngles.y, 0).eulerAngles.y;
-            angleText.text = "";
 
             if (yAngle > 14f && yAngle < 30f)
             {
                 playerDirection = Direction.RIGHT;
-                Debug.Log("사용자가 오른쪽을 향하고 있습니다");
+                stateText.text = "오른쪽";
             }
             else if (yAngle > 330f && yAngle < 355f)
             {
                 playerDirection = Direction.LEFT;
-                Debug.Log("사용자가 왼쪽을 향하고 있습니다");
+                stateText.text = "왼쪽";
             }
             else
             {
                 playerDirection = Direction.FORWARD;
-                Debug.Log("사용자가 정면을 향하고 있습니다.");
+                stateText.text = "정면";
             }
         }
         else
         {
-            angleText.text = "얼굴을 찾을 수 없습니다.";
+            AwareUI.SetActive(true);
         }
     }
 
-    void ShowResult(bool success)
+    public void ShowResult()
     {
-        StartCoroutine(ShowResultReturn(success));
+        if(playerDirection != AIDirection)
+        {
+            StartCoroutine(ShowResultReturn(true));
+        }
+        else
+        {
+            StartCoroutine(ShowResultReturn(false));
+        }
     }
 
     IEnumerator ShowResultReturn(bool success)
@@ -143,11 +179,11 @@ public class AvoidManager : MonoBehaviour
             BattleManager.instance.AvoidFailed();
         }
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
-        countText.text = "";
-        BattleUI.SetActive(true);
         AvoidUI.SetActive(false);
+        ResultUI.SetActive(false);
+        BattleUI.SetActive(true);
         ChangeCam.GetComponent<ChangedCam>().ChangeBattleStateCam();
 
     }

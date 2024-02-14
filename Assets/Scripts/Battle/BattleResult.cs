@@ -26,21 +26,25 @@ public class BattleResult : MonoBehaviour
         isResult = false;
     }
 
-    public void ActiveResultUI(bool result)
+    public void ActiveResultUI(int result)
     {
         endUI.SetActive(true);
-        if(result == true)
+        if(result == 1)
         {
             endText.text = "Victory";
         }
-        else if(result == false)
+        else if(result == 2)
         {
             endText.text = "Dead";
+        }
+        else if(result == 3)
+        {
+            endText.text = "Escape";
         }
         StartCoroutine(AnimateUI(result));
     }
     
-    IEnumerator AnimateUI(bool result)
+    IEnumerator AnimateUI(int result)
     {
         //아이템 정산
         Task<List<ItemInfo>> list= GameManager.instance.DBManager.GetItemsTable();
@@ -90,13 +94,17 @@ public class BattleResult : MonoBehaviour
             });
         }
         resultUI.SetActive(true);
-        if (result == true)
+        if (result == 1)
         {
             resultText.text = "Victory";
         }
-        else if (result == false)
+        else if (result == 2)
         {
             resultText.text = "Dead";
+        }
+        else if (result == 3)
+        {
+            resultText.text = "Escape";
         }
         RectTransform rectTransform = resultUI.GetComponent<RectTransform>();
         Vector3 targetPosition = Vector3.zero; 
