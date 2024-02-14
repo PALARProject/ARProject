@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public GameObject EnemyManager;
+    public EnemyManager EnemyManager;
     public GameObject enemyPrefab;
     public Transform enemyBattleTransform;
     public Animator enemyAnim;
@@ -37,6 +37,7 @@ public class BattleManager : MonoBehaviour
     public Button attackButton;
     public Button avoidButton;
     public Button EscapeButton;
+    public Button camButton;
 
     public GameObject AvoidUI;
     public GameObject BattleUI;
@@ -55,6 +56,7 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+        camButton.interactable = false;
 
         while (!GameManager.instance.ready)
             yield return new WaitForFixedUpdate();
@@ -67,15 +69,16 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (changeCam.isAR)
+        if(changeCam.isAR)
         {
             enemyAR = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>();
-            enemyARanim = enemyAR.enemy.GetComponent<Animator>();
+            enemyARanim = enemyAR.PlacedObject.GetComponent<Animator>();
         }
     }
 
     IEnumerator SetupBattle()
     {
+        enemyPrefab = EnemyManager.EnemyPrefabs[0];
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleTransform);
         enemyUnit = enemyGO.GetComponent<Unit>();
         enemyAnim = enemyGO.GetComponent<Animator>();
@@ -119,14 +122,15 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyAfterAvoidSucess()
     {
-        yield return new WaitForSeconds(4f);
+        dialogueText.text = enemyUnit.unitName + "의 공격을 피했다!";
+        yield return new WaitForSeconds(2f);
         dialogueText.text = enemyUnit.unitName + "가 빈틈을 보였다!";
 
+        yield return new WaitForSeconds(1f);
         playerEffect.PlayerEffectOn();
-        yield return new WaitForSeconds(0.5f);
         shakeObject.VibrationObject(0.02f, 0.2f);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
         dialogueText.text = "추가 공격에 성공했다!";
         enemyHUD.SetHP(enemyUnit, enemyUnit.currentHP);
@@ -147,7 +151,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyAfterAvoidFailed()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
         dialogueText.text = enemyUnit.unitName + "가 공격했다!";
 
         yield return new WaitForSeconds(1f);
@@ -214,7 +218,7 @@ public class BattleManager : MonoBehaviour
             ResultManager.ActiveResultUI(2);
             dialogueText.text = "패배했다….";
         }
-        else if (state == BattleState.DRAW)
+        else if(state == BattleState.DRAW)
         {
             ResultManager.ActiveResultUI(3);
             dialogueText.text = "도주에 성공했다!";
@@ -223,12 +227,11 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator TryEscaping()
     {
-        yield return new WaitForSeconds(1f);
         dialogueText.text = "도주를 시도했다…!";
 
         int num = Random.Range(0, 3);
         bool trying;
-        if (num == 1)
+        if(num == 1)
         {
             trying = true;
         }
@@ -238,16 +241,18 @@ public class BattleManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2f);
-        if (trying == true)
+        if(trying == true)
         {
             dialogueText.text = "도주에 성공했다!";
+            yield return new WaitForSeconds(1f);
             state = BattleState.DRAW;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
             dialogueText.text = "도주에 실패했다….";
-            EnemyTurn();
+            yield return new WaitForSeconds(2f);
+            StartCoroutine(EnemyTurn());
         }
     }
 
@@ -256,6 +261,7 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = true;
         avoidButton.interactable = true;
         EscapeButton.interactable = true;
+        camButton.interactable = true;
 
         dialogueText.text = "어떻게 할까?";
     }
@@ -264,6 +270,13 @@ public class BattleManager : MonoBehaviour
     {
         if (state != BattleState.PLAYERTURN)
             return;
+
+        attackButton.interactable = false;
+        avoidButton.interactable = false;
+        EscapeButton.interactable = false;
+        camButton.interactable = false;
+
+        dialogueText.text = enemyUnit.unitName + "가 공격하려고 한다!";
 
         if (changeCam.GetComponent<ChangedCam>().isAR == false)
         {
@@ -286,6 +299,7 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+        camButton.interactable = false;
 
         StartCoroutine(PlayerAttack());
     }
@@ -302,7 +316,7 @@ public class BattleManager : MonoBehaviour
 
     public void EnemyAnimator(string state)
     {
-        switch (state)
+        switch(state)
         {
             case "Attack":
                 if (changeCam.isAR)
@@ -347,7 +361,8 @@ public class BattleManager : MonoBehaviour
         attackButton.interactable = false;
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
+        camButton.interactable = false;
 
-        TryEscaping();
+        StartCoroutine(TryEscaping());
     }
 }

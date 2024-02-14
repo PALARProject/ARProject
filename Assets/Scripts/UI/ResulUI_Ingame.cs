@@ -8,6 +8,7 @@ public class ResulUI_Ingame : MonoBehaviour
 {
     public GameObject Result_Item;
     public List<GameObject> resultLocation;
+    public ItemInfoUI info = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,31 +24,41 @@ public class ResulUI_Ingame : MonoBehaviour
     {
 
         List<ItemInfo> collectItem = new List<ItemInfo>();
-        //æ∆¿Ã≈€ ±ﬁ±∏
+        //ÏïÑÏù¥ÌÖú Í∏âÍµ¨
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i] == null)
                 continue;
             int index = i;
             ItemInfo list =await GameManager.instance.DBManager.GetItemTable(items[index]);
+
             ItemInfo copy = list.DeepCopy();
             collectItem.Add(copy);
         }
-        //æ∆¿Ã≈€ ¡§ªÍ
+        //ÏïÑÏù¥ÌÖú Ï†ïÏÇ∞
         for (int i = 0; i < collectItem.Count; i++)
         {
             int index = i;
-            GameObject obj = Instantiate(Result_Item, resultLocation[i].transform);
-            Button btn = obj.GetComponent<Button>();
-            Image image = obj.GetComponent<Image>();
-            image.sprite = Resources.Load<Sprite>("Item/Sprite/" + collectItem[i].name);
-            string name = collectItem[index].name;
-            btn.onClick.AddListener(async () =>
+            GameObject obj = null;
+            if (resultLocation[index].transform.childCount>0) {
+                obj=resultLocation[index].transform.GetChild(0).gameObject;
+            }
+            else
             {
-                string itemName = name;
-                int list = await GameManager.instance.InventoryManager.InputInventory(itemName);
-                btn.interactable = false;
-                btn.onClick.RemoveAllListeners();
+                obj = Instantiate(Result_Item, resultLocation[index].transform);
+            }
+            Button btn = obj.GetComponent<Button>();
+            btn.interactable = true;
+            Image image = obj.GetComponent<Image>();
+            image.sprite = Resources.Load<Sprite>("Item/Sprite/" + collectItem[index].name);
+            string name = collectItem[index].name;
+            btn.onClick.AddListener(() =>
+            {
+                if (info != null)
+                {
+                    info.gameObject.GetComponent<ItemInfoUI>().Result_Init(obj,collectItem[index]);
+                    info.gameObject.SetActive(true);
+                }
             });
         }
     }

@@ -25,7 +25,7 @@ public class ShakeObject : MonoBehaviour
     {
         if (changeCam.isAR)
         {
-            enemy = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>().enemy;
+            enemy = GameObject.FindWithTag("ARSession").GetComponent<EnemyAR>().PlacedObject;
             initialPosition = enemy.transform.position;
         }
         else
