@@ -57,9 +57,11 @@ public class BattleManager : MonoBehaviour
         avoidButton.interactable = false;
         EscapeButton.interactable = false;
         camButton.interactable = false;
-
         while (!GameManager.instance.ready)
+        {
             yield return new WaitForFixedUpdate();
+        }
+
 
         playerPrefab.GetComponent<Unit>().Init();
         state = BattleState.START;

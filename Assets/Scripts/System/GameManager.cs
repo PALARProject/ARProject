@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     public bool ready = false;
 
+    float timer = 0;
     private async void Awake()
     {
         if (instance == null)
@@ -96,7 +97,16 @@ public class GameManager : MonoBehaviour
         float sound = PlayerPrefs.GetFloat(key);
         return sound;
     }
-
+    private void FixedUpdate()
+    {
+        if (!ready)
+        {
+            timer += Time.fixedDeltaTime;
+            if (timer > 5){
+                SceneManager.LoadScene(2);
+            }
+        }
+    }
     private void LateUpdate()
     {
     }
